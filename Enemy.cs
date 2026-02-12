@@ -5,11 +5,10 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     EnemyData enemyData;
-    
-
 
     void Start()
     {
+
     }
     
     
@@ -18,8 +17,7 @@ public class Enemy : MonoBehaviour
         enemyData = enemyDt;
         Debug.Log(enemyData.hp);
     }
-
-    
+    public void Enemy
 
 
 }
