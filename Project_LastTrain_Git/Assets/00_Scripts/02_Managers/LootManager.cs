@@ -8,6 +8,7 @@ public class LootManager : SingletonManager<LootManager>
     int coinCnt;
     public GameObject coinPrefab;
     List<Coin> coinList = new List<Coin>();
+    UI_Coin ui_Coin;
 
     void Start()
     {
@@ -28,6 +29,10 @@ public class LootManager : SingletonManager<LootManager>
             GameManager.Instance.OnStageClear += AllCoinUnActive;
             coin.SetActive(false);
         }
+        ui_Coin = UIManager.Instance.ShowUIAt<UI_Coin>(new Vector2(250,-125));
+        Debug.Log(ui_Coin);
+        ui_Coin.SetCoinText(0);
+
     }
     public void OnDisable()
     {
@@ -73,12 +78,14 @@ public class LootManager : SingletonManager<LootManager>
     public void IncreaseCoin()
     {
         coinCnt++;
-        Debug.Log($"CoinCnt : {coinCnt}");
+        ui_Coin.SetCoinText(coinCnt);
+        
     }
 
     public void DecreaseCoin(int useCoin)
     {
         coinCnt -= useCoin;
+        ui_Coin.SetCoinText(coinCnt);
     }
 
     public void AllCoinUnActive()

@@ -38,7 +38,6 @@ public class UIManager : SingletonManager<UIManager>
     public T ShowUI<T>() where T : UI_Base
     {
         Type type = typeof(T);
-        Debug.Log(type);
         T ui = null;
         if (!_uiDics.TryGetValue(type, out UI_Base value))
         {

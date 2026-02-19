@@ -43,7 +43,6 @@ public class BombEvent : Event,ITrainDamageEvent
             rend.material.color = original;
             yield return new WaitForSeconds(warningTime);
             curTime += warningTime;
-            Debug.Log(curTime);
         }
         if(player != null)
         {

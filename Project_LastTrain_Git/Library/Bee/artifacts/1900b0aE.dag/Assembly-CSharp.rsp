@@ -399,6 +399,7 @@
 "Assets/00_Scripts/05_UI/StartButton.cs"
 "Assets/00_Scripts/05_UI/UI_Base.cs"
 "Assets/00_Scripts/05_UI/UI_BigEventCaution.cs"
+"Assets/00_Scripts/05_UI/UI_Coin.cs"
 "Assets/00_Scripts/05_UI/UI_Enhance.cs"
 "Assets/00_Scripts/05_UI/UI_TrainHP.cs"
 "Assets/00_Scripts/CSVReader.cs"
