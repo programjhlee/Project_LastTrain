@@ -44,14 +44,13 @@ public class Train : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("기차 : 아야.");
         _curHp -= damage;
-        if(_curHp <= 0)
+        OnDamaged?.Invoke();
+        if (_curHp <= 0)
         {
             OnTrainDestroy?.Invoke();
             return;
         }
-        OnDamaged?.Invoke();
     }
     public void TakeFix(float fixAmount)
     {
