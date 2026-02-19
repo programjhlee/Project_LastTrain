@@ -1,0 +1,86 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class BombEvent : Event,ITrainDamageEvent
+{
+    Player player;
+    Renderer rend;
+    BoxCollider col;
+    float curTime;
+    float curFixAmount;
+    public event Action<float> OnDamage;
+    public override void Enter(EventData initEventData)
+    {
+        base.Enter(initEventData);
+        rend = GetComponent<Renderer>();
+        curFixAmount = eventData.fixAmount;
+        col = GetComponent<BoxCollider>();
+    }
+
+    public override void Execute()
+    {
+        curTime += Time.deltaTime;
+        if(curTime > eventData.cyclePerTime)
+        {
+            curTime = 0;
+            Exit();
+        }
+
+    }
+
+    IEnumerator ExplosiveProcess()
+    {
+        col.size = new Vector3(2, 2, 2);
+        Color original = rend.material.color;
+        float warningTime = 0.125f;
+        while (curTime <= 1f)
+        {
+            rend.material.color = Color.red;
+            yield return new WaitForSeconds(warningTime);
+            curTime += warningTime;
+            rend.material.color = original;
+            yield return new WaitForSeconds(warningTime);
+            curTime += warningTime;
+            Debug.Log(curTime);
+        }
+        if(player != null)
+        {
+            player.GetComponent<PlayerAction>().TakeDamage(player.transform.position - transform.position);
+        }
+        OnDamage?.Invoke(eventData.damageToTrain);
+        Destroy(gameObject);
+    }
+
+    public override void Exit()
+    {
+        StartCoroutine(ExplosiveProcess());
+    }
+
+    public override void TakeFix(float fixPower)
+    {
+        curFixAmount -= fixPower;
+
+        if(curFixAmount <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.TryGetComponent<Player>(out Player p))
+        {
+            player = p;
+        }
+
+    }
+    public void OnTriggerExit(Collider coll)
+    {
+        if (coll.gameObject.TryGetComponent<Player>(out Player p))
+        {
+            player = null;
+        }
+    }
+}
