@@ -7,29 +7,36 @@ public class BigEvent : MonoBehaviour
     UI_BigEventCaution ui_caution;
     Renderer eventRend;
     Vector3 trainFrontPos;
-    Vector3 eventFrontPos;
     float bigEventSpeed;
     float damage;
-    public event Action<float> OnCrashed;
+
+
+    public event Action<float> OnTrainCrashed;
+    public event Action OnDestroy;
 
 
 
     public void Init(float speed,Train train)
     {
-        damage = 50;
         Renderer trainRend = train.GetComponent<Renderer>();
+        Debug.Log(train);
         eventRend = GetComponent<Renderer>();
+        damage = 50;
         bigEventSpeed = speed;
-        transform.position = new Vector3(trainRend.bounds.center.x + trainRend.bounds.extents.x + speed * 5f, trainRend.bounds.center.y, trainRend.bounds.center.z);
+        float arrivedTime = trainRend.bounds.center.x + trainRend.bounds.extents.x + Mathf.Max(speed * 6 - LevelManager.Instance.Level, 3f); 
+        transform.position = new Vector3(arrivedTime, trainRend.bounds.center.y, trainRend.bounds.center.z);
         trainFrontPos = new Vector3(trainRend.bounds.center.x + trainRend.bounds.extents.x, trainRend.bounds.center.y, trainRend.bounds.center.z);
-
-        OnCrashed += train.TakeDamage;
         ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(750, 250));
     }
 
     public void OnDisable()
     {
-        OnCrashed = null;
+        if (ui_caution != null)
+        {
+            ui_caution.Hide();
+        }
+        OnTrainCrashed = null;
+        OnDestroy = null;
     }
 
     public void Update()
@@ -47,10 +54,11 @@ public class BigEvent : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Train"))
         {
-            ui_caution.Hide();
-            OnCrashed?.Invoke(damage);
-            gameObject.SetActive(false);
+            OnTrainCrashed?.Invoke(damage);
         }
+        ui_caution.Hide();
+        OnDestroy?.Invoke();
+        gameObject.SetActive(false);
     }
 
 

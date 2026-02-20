@@ -6,26 +6,24 @@ using System;
 using System.Runtime.InteropServices.ComTypes;
 public class TrainEventSystem : MonoBehaviour
 {
-
-
     public enum Events
     {
         BROKENEVENT,
         BOMBEVENT
     }
 
-
-
     [SerializeField] List<EventData> eventDatas;
     [SerializeField] PlatformController platformController;
     [SerializeField] string[] events;
-    Train train;
+    [SerializeField] Train train;
+    [SerializeField] GameObject trainBack;
     Renderer rend;
     
     List<Dictionary<string, object>> eventSpawnData;
     List<Dictionary<string, object>> trainEventData;
-    Dictionary<string, EventData> eventDataDic = new Dictionary<string,EventData>();
+    Dictionary<string, EventData> eventDataDic = new Dictionary<string, EventData>();
     Dictionary<string, GameObject> eventPrefabs = new Dictionary<string, GameObject>();
+
     List<Event> executeEvents = new List<Event>();
     List<Event> endEvents = new List<Event>();
 
@@ -35,9 +33,10 @@ public class TrainEventSystem : MonoBehaviour
     {
         eventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
         trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
-        train = GetComponent<Train>();
+        
         events = Enum.GetNames(typeof(Events));
-        rend = train.GetComponent<Renderer>();
+        rend = trainBack.GetComponent<Renderer>();
+        
         for (int i = 0; i < eventDatas.Count; i++)
         {
             for(int j = 0; j < trainEventData.Count; j++)
@@ -48,7 +47,8 @@ public class TrainEventSystem : MonoBehaviour
                     eventDatas[i].eventName = trainEventData[j]["EVENTNAME"].ToString();
                     eventDatas[i].cyclePerTime = float.Parse(trainEventData[j]["CYCLEPERTIME"].ToString());
                     eventDatas[i].damageToTrain = float.Parse(trainEventData[j]["DAMAGETOTRAIN"].ToString());
-                    eventDatas[i].fixAmount = float.Parse(trainEventData[j]["FIXAMOUNT"].ToString());
+                    eventDatas[i].fixAmount = float.Parse(trainEventData[j]["FIXAMOUNT"].ToString()) + float.Parse(trainEventData[j]["FIXAMOUNTPERLEVEL"].ToString()) * LevelManager.Instance.Level;
+                    
                     eventPrefabs.Add(eventDatas[i].name,Resources.Load<GameObject>(trainEventData[j]["PATH"].ToString()));
                     eventDataDic.Add(eventDatas[i].name, eventDatas[i]);
                 }
@@ -78,16 +78,21 @@ public class TrainEventSystem : MonoBehaviour
         {
             curTime = 0;
             int rnd = UnityEngine.Random.Range(0, events.Length);
+
             Event evt = Instantiate(eventPrefabs[events[rnd]]).GetComponent<Event>();
+            Renderer evtRend = evt.GetComponent<Renderer>();
             evt.transform.position = Vector3.zero;
-            Renderer evtRend= evt.GetComponent<Renderer>();
+            
             float rndXPos = UnityEngine.Random.Range(rend.bounds.min.x, rend.bounds.max.x);
             float yPos = rend.bounds.center.y + rend.bounds.extents.y +  evtRend.bounds.extents.y;
+            
             evt.transform.position = new Vector3(rndXPos,yPos, 0);
+            
             if (evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
             {
                 trainDamageEvent.OnDamage += train.TakeDamage;
             }
+            
             evt.Enter(eventDataDic[events[rnd]]);
             executeEvents.Add(evt);
         }
