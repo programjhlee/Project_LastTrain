@@ -390,10 +390,7 @@
 "Assets/00_Scripts/01_Interface/IFixable.cs"
 "Assets/00_Scripts/01_Interface/IGravityAffected.cs"
 "Assets/00_Scripts/01_Interface/IInteract.cs"
-<<<<<<< HEAD
-=======
 "Assets/00_Scripts/01_Interface/IInteractable.cs"
->>>>>>> 59ad2a159330eebdc7e3165ce8dba74488e84070
 "Assets/00_Scripts/02_Managers/DataManager.cs"
 "Assets/00_Scripts/02_Managers/EnhanceManager.cs"
 "Assets/00_Scripts/02_Managers/GameManager.cs"
