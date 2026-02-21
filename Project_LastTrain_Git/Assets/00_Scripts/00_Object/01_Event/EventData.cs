@@ -10,5 +10,4 @@ public class EventData : ScriptableObject
     public float cyclePerTime;
     public float fixAmount;
     public float damageToTrain;
-    public float damageToPlayer;
 }

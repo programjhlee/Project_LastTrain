@@ -6,8 +6,6 @@ public class Train : MonoBehaviour
 {
     float _maxHp;
     float _curHp;
-    TrainEventSystem _eventSystem;
-    float curTime = 0;
 
     public event Action OnDamaged;
     public event Action OnFixed;
@@ -39,7 +37,6 @@ public class Train : MonoBehaviour
     {
         _maxHp = 100;
         _curHp = _maxHp;
-        _eventSystem = GetComponent<TrainEventSystem>();
     }
 
     public void TakeDamage(float damage)

@@ -22510,7 +22510,11 @@
       "DisplayName": "Writing Assembly-CSharp.rsp",
       "ActionType": "WriteFile",
       "PayloadOffset": 1672282,
+<<<<<<< HEAD
       "PayloadLength": 35388,
+=======
+      "PayloadLength": 35430,
+>>>>>>> 59ad2a159330eebdc7e3165ce8dba74488e84070
       "PayloadDebugContentSnippet": "-target:library\n-out:\"Library/",
       "Inputs": [],
       "Outputs": [
@@ -22522,7 +22526,11 @@
       "Annotation": "WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.rsp2",
       "DisplayName": "Writing Assembly-CSharp.rsp2",
       "ActionType": "WriteFile",
+<<<<<<< HEAD
       "PayloadOffset": 1707757,
+=======
+      "PayloadOffset": 1707799,
+>>>>>>> 59ad2a159330eebdc7e3165ce8dba74488e84070
       "PayloadLength": 0,
       "PayloadDebugContentSnippet": "",
       "Inputs": [],
@@ -22774,7 +22782,6 @@
         "Library/Bee/artifacts/1900b0aE.dag/Unity.VSCode.Editor.ref.dll",
         "Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll",
         "Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll",
-        "Assets/00_Scripts/00_Object/00_Player/00_PlayerInterface/IPlayerHit.cs",
         "Assets/00_Scripts/00_Object/00_Player/Player.cs",
         "Assets/00_Scripts/00_Object/00_Player/PlayerAction.cs",
         "Assets/00_Scripts/00_Object/00_Player/PlayerController.cs",
@@ -22796,12 +22803,18 @@
         "Assets/00_Scripts/00_Object/04_Etc/TrainEventSystem.cs",
         "Assets/00_Scripts/00_Object/05_AbstractClass/SingletonManager.cs",
         "Assets/00_Scripts/00_Object/06_Item/Coin.cs",
+        "Assets/00_Scripts/00_Object/Shield.cs",
+        "Assets/00_Scripts/00_Object/Switch.cs",
         "Assets/00_Scripts/01_Interface/IAttack.cs",
         "Assets/00_Scripts/01_Interface/IAttackable.cs",
         "Assets/00_Scripts/01_Interface/IFix.cs",
         "Assets/00_Scripts/01_Interface/IFixable.cs",
         "Assets/00_Scripts/01_Interface/IGravityAffected.cs",
         "Assets/00_Scripts/01_Interface/IInteract.cs",
+<<<<<<< HEAD
+=======
+        "Assets/00_Scripts/01_Interface/IInteractable.cs",
+>>>>>>> 59ad2a159330eebdc7e3165ce8dba74488e84070
         "Assets/00_Scripts/02_Managers/DataManager.cs",
         "Assets/00_Scripts/02_Managers/EnhanceManager.cs",
         "Assets/00_Scripts/02_Managers/GameManager.cs",
@@ -22815,6 +22828,7 @@
         "Assets/00_Scripts/05_UI/UI_Base.cs",
         "Assets/00_Scripts/05_UI/UI_BigEventCaution.cs",
         "Assets/00_Scripts/05_UI/UI_Coin.cs",
+        "Assets/00_Scripts/05_UI/UI_Distance.cs",
         "Assets/00_Scripts/05_UI/UI_Enhance.cs",
         "Assets/00_Scripts/05_UI/UI_TrainHP.cs",
         "Assets/00_Scripts/CSVReader.cs",
@@ -22882,7 +22896,11 @@
       "Annotation": "WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll.mvfrm.rsp",
       "DisplayName": "Writing Assembly-CSharp.dll.mvfrm.rsp",
       "ActionType": "WriteFile",
+<<<<<<< HEAD
       "PayloadOffset": 1707853,
+=======
+      "PayloadOffset": 1707895,
+>>>>>>> 59ad2a159330eebdc7e3165ce8dba74488e84070
       "PayloadLength": 9689,
       "PayloadDebugContentSnippet": "Library\\Bee\\artifacts\\mvdfrm\\U",
       "Inputs": [],

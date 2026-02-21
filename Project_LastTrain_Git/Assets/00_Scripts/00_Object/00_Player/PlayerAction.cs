@@ -100,9 +100,13 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             {
                 Attack(enemy, hit.collider.transform.position - transform.position);
             }
-            if (hit.collider.TryGetComponent<IFixable>(out IFixable _fixable))
+            if (hit.collider.TryGetComponent<IFixable>(out IFixable fixable))
             {
-                Fix(_fixable);
+                Fix(fixable);
+            }
+            if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                Interaction(interactable);
             }
         }
         StartCoroutine(InteractionCoolTimeProcess(0.3f));
@@ -117,6 +121,19 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _fixable.TakeFix(playerData.FixPower);
     }
 
+    public void Rolling()
+    {
+        if (MoveDir == Vector3.zero || canRolling == false)
+        {
+            return;
+        }
+        StartCoroutine(RollingProcess());
+    }
+    public void Interaction(IInteractable interactable)
+    {
+        interactable.Interact();
+    }
+        
     public void TakeDamage(Vector3 dir)
     {
         if (cantHit)
@@ -126,14 +143,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         StartCoroutine(DamageProcess(dir));
     }
 
-    public void Rolling()
-    {
-        if (MoveDir == Vector3.zero || canRolling == false)
-        {
-            return;
-        }
-        StartCoroutine(RollingProcess());
-    }
     IEnumerator InteractionCoolTimeProcess(float interactionCoolTime)
     {
         canInteraction = false;

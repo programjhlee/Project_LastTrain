@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class LandChecker : MonoBehaviour
 {
+
+    [SerializeField] float extraCheckDistance = 0.1f;
+
     private int  groundLayer = 3;
     private int enemyLayer = 7;
-    [SerializeField] float extraCheckDistance = 0.1f;
+
     Vector3 rayOrigin;
     Collider col;
     public bool IsLanding
@@ -26,9 +29,10 @@ public class LandChecker : MonoBehaviour
     }
     public void LandCheck()
     {
+
         Vector3 halfExtents = new Vector3(0.4f, 0.05f, 0.4f);
         RaycastHit hit;
-        if (Physics.BoxCast(transform.position, halfExtents, Vector3.down, out hit, Quaternion.identity, col.bounds.extents.y + 0.1f))
+        if (Physics.BoxCast(transform.position, halfExtents, Vector3.down, out hit, Quaternion.identity, col.bounds.extents.y + extraCheckDistance))
         {
             if (hit.collider.gameObject.layer == groundLayer || hit.collider.gameObject.layer == enemyLayer)
             {
@@ -46,7 +50,7 @@ public class LandChecker : MonoBehaviour
         Vector3 halfExtents = new Vector3(0.4f, 0.05f, 0.4f);
         RaycastHit hit;
         Vector3 hitPoint = Vector3.zero;
-        if (Physics.BoxCast(transform.position, halfExtents, Vector3.down, out hit, Quaternion.identity, col.bounds.extents.y + 0.1f))
+        if (Physics.BoxCast(transform.position, halfExtents, Vector3.down, out hit, Quaternion.identity, col.bounds.extents.y + extraCheckDistance))
         {
             if (hit.collider.gameObject.layer == groundLayer || hit.collider.gameObject.layer == enemyLayer)
             {

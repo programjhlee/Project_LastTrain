@@ -7,6 +7,7 @@ public class PlatformController : MonoBehaviour
 {
     [SerializeField] Train train;
     List<Dictionary<string, object>> platformDataTable;
+    UI_Distance ui_Distance;
     float trainSpeed;
     float platformDistance;
     bool trainDestroy;
@@ -29,6 +30,8 @@ public class PlatformController : MonoBehaviour
     void Awake()
     {
         platformDataTable = DataManager.Instance.GetData((int)Define.DataTables.PlatformData);
+        ui_Distance = UIManager.Instance.ShowUIAt<UI_Distance>(new Vector3(0,285));
+        ui_Distance.Hide();
     }
 
     void OnEnable()
@@ -43,8 +46,10 @@ public class PlatformController : MonoBehaviour
         train.OnTrainDestroy -= TrainDestroy;
     }
 
+
     public void SetPlatformData()
     {
+        ui_Distance.Show();
         for (int i = 0; i < platformDataTable.Count; i++)
         {
             if (int.Parse(platformDataTable[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
@@ -67,12 +72,13 @@ public class PlatformController : MonoBehaviour
             return;
         }
         platformDistance -= trainSpeed * Time.deltaTime;
+        ui_Distance.SetDistanceText(platformDistance);
         if (platformDistance <= 0)
         { 
             platformDistance = 0;
             UIManager.Instance.ShowUI<UI_Enhance>();
+            ui_Distance.Hide();
             OnArrived?.Invoke();
-        
         }
     }
 
