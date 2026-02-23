@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     {
         playerAction.MoveDir = Vector3.zero;
 
-        if (!GameManager.Instance.IsGamePlaying())
+        if (GameManager.Instance.IsPaused())
         {
             return;
         }

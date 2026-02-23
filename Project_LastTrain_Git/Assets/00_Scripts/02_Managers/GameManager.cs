@@ -5,8 +5,9 @@ using System;
 
 public class GameManager : SingletonManager<GameManager>
 {
-    [SerializeField] Train train;
-    [SerializeField] PlatformController platformController;
+    [SerializeField] Train _train;
+    [SerializeField] TutorialSystem _tutorialSystem;
+    [SerializeField] PlatformController _platformController;
 
     public event Action OnGameStart;
     public event Action OnStageClear;
@@ -14,6 +15,7 @@ public class GameManager : SingletonManager<GameManager>
     public enum GameState
     {
         GameReady,
+        Tutorial,
         GamePlaying,
         GamePaused
     }
@@ -26,16 +28,21 @@ public class GameManager : SingletonManager<GameManager>
     void OnEnable()
     {
         State = GameState.GamePaused;
-        train.OnTrainDestroy += GameOver;
-        platformController.OnArrived += StageClear;
+        _train.OnTrainDestroy += GameOver;
+        _platformController.OnArrived += StageClear;
     }
     void OnDisable()
     {
-        train.OnTrainDestroy -= GameOver;
-        platformController.OnArrived -= StageClear;
+        _train.OnTrainDestroy -= GameOver;
+        _platformController.OnArrived -= StageClear;
         OnGameStart = null;
     }
-
+    public void TutorialStart()
+    {
+        State = GameState.Tutorial;
+        UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
+        _tutorialSystem.TutorialStart();
+    }
     public void GameStart()
     {
         if (LevelManager.Instance.IsMaxLevel())
@@ -43,12 +50,19 @@ public class GameManager : SingletonManager<GameManager>
             Debug.Log("올클리어! 더이상 진행할 수 없습니다!");
         }
         State = GameState.GamePlaying;
-        UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420)); 
         OnGameStart?.Invoke();
     }
     public bool IsGamePlaying()
     {
         return State == GameState.GamePlaying;
+    }
+    public bool IsTutorial()
+    {
+        return State == GameState.Tutorial;
+    }
+    public bool IsPaused()
+    {
+        return State == GameState.GamePaused;
     }
     public void GamePaused()
     {

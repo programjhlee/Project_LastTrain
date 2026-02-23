@@ -71,37 +71,51 @@ public class TrainEventSystem : MonoBehaviour
     }
     public void Update()
     {
-        if(GameManager.Instance.State == GameManager.GameState.GamePaused)
+        if (GameManager.Instance.IsPaused() || GameManager.Instance.IsTutorial())
         {
-            ResetTrainEventSystem();
             return;
         }
+
         curTime += Time.deltaTime;
         if(curTime >= eventSpawnTime)
         {
             curTime = 0;
-            int rnd = UnityEngine.Random.Range(0, events.Length);
+            SpawnEventRandomPos();
+        }
+        EventExecute();
+        eventSightChecker.CheckEventSight(executeEvents);
+        endEvents.Clear();
+    }
 
-            Event evt = Instantiate(eventPrefabs[events[rnd]]).GetComponent<Event>();
-            Renderer evtRend = evt.GetComponent<Renderer>();
-            evt.transform.position = Vector3.zero;
-            
-            float rndXPos = UnityEngine.Random.Range(rend.bounds.min.x, rend.bounds.max.x);
-            float yPos = rend.bounds.center.y + rend.bounds.extents.y +  evtRend.bounds.extents.y;
-            
-            evt.transform.position = new Vector3(rndXPos,yPos, 0);
-            
-            if (evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
-            {
-                trainDamageEvent.OnDamage += train.TakeDamage;
-            }
-            
-            evt.Enter(eventDataDic[events[rnd]]);
-            executeEvents.Add(evt);
+    public void SpawnEventAt(float inputxPos)
+    {
+        int rnd = UnityEngine.Random.Range(0, events.Length);
+
+        Event evt = Instantiate(eventPrefabs[events[rnd]]).GetComponent<Event>();
+        Renderer evtRend = evt.GetComponent<Renderer>();
+        evt.transform.position = Vector3.zero;
+
+        float xPos = inputxPos;
+        float yPos = rend.bounds.center.y + rend.bounds.extents.y + evtRend.bounds.extents.y;
+
+        evt.transform.position = new Vector3(xPos, yPos);
+
+        if (evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
+        {
+            trainDamageEvent.OnDamage += train.TakeDamage;
         }
 
-        eventSightChecker.CheckEventSight(executeEvents);
-        
+        evt.Enter(eventDataDic[events[rnd]]);
+        executeEvents.Add(evt);
+    }
+    public void SpawnEventRandomPos()
+    {
+        float rndXPos = UnityEngine.Random.Range(rend.bounds.min.x, rend.bounds.max.x);
+        SpawnEventAt(rndXPos);
+    }
+
+    public void EventExecute()
+    {
         for (int i = 0; i < executeEvents.Count; i++)
         {
             if (executeEvents[i] == null)
@@ -114,9 +128,6 @@ public class TrainEventSystem : MonoBehaviour
                 executeEvents[i].Execute();
             }
         }
-        
-        endEvents.Clear();
-
     }
     public void ResetTrainEventSystem()
     {

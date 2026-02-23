@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerAction : MonoBehaviour,IGravityAffected
 {
@@ -24,19 +25,22 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public float RollingSpeed { get; set; }
 
+    public event Action OnMove;
+    public event Action OnJump;
     
-
     public void Init()
     {
+        GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
         landChecker = GetComponent<LandChecker>();
         playerData = GetComponent<PlayerData>();
         col = GetComponent<Collider>();
+        
         playerData.MoveSpeed =  7f;
         playerData.JumpForce = 15f;
         playerData.AttackPower = 5f;
         playerData.FixPower = 2f;
         RollingSpeed = 20f;
-        GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
+        
         canInteraction = true;
         canRolling = true;
         
@@ -54,25 +58,27 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public void ProcessMovement()
     {
-        if (!GameManager.Instance.IsGamePlaying())
+        if (GameManager.Instance.IsPaused())
         {
             MoveDir = Vector3.zero;
             return;
         }
+
         if (MoveDir != Vector3.zero)
         {
             Quaternion targetRot = Quaternion.LookRotation(MoveDir);
             transform.rotation = targetRot;
+            transform.position += MoveDir * playerData.MoveSpeed * Time.fixedDeltaTime;
+            OnMove?.Invoke();
         }
 
-        if(Physics.Raycast(transform.position,transform.forward,col.bounds.extents.x + 0.1f, (1 << enemyLayer)))
+        if (Physics.Raycast(transform.position, transform.forward, col.bounds.extents.x + 0.1f, (1 << enemyLayer)))
         {
             MoveDir = Vector3.zero;
+            return;
         }
-        transform.position += MoveDir * playerData.MoveSpeed * Time.fixedDeltaTime;
         transform.position += Vector3.up * JumpVel * Time.fixedDeltaTime;
-
-        if(transform.position.y < -20f)
+        if (transform.position.y < -20f)
         {
             transform.position = new Vector3(0, -1f, 0);
             StartCoroutine(DamageProcess(Vector3.zero));
@@ -83,6 +89,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         if (landChecker.IsLanding)
         {
             JumpVel = playerData.JumpForce;
+            OnJump?.Invoke();
         }
     }
 

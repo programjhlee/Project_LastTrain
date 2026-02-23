@@ -1318,6 +1318,56 @@ MonoBehaviour:
   _trainBack: {fileID: 814811383}
   _enemyPrefab: {fileID: 1326882122423022333, guid: 720416052ecdcc24c89e5b4000c9c647, type: 3}
   _baseEnemyData: {fileID: 11400000, guid: bdf2dfc16e7827f41b06f4c1249b2ef0, type: 2}
+--- !u!1 &1186501368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1186501369}
+  - component: {fileID: 1186501370}
+  m_Layer: 0
+  m_Name: TutorialSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1186501369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186501368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1186501370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186501368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89dc3a8015bcf1d46aa15209eea787ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  steps:
+  - {fileID: 11400000, guid: 7c7f1113a8344724a9721f585fb61e9a, type: 2}
+  _player: {fileID: 1945812279}
+  _enemySpawner: {fileID: 1056004541}
+  _train: {fileID: 190456708}
+  _switch: {fileID: 832523910}
 --- !u!1 &1367133188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,8 +1412,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9814d9e8007a4e946a47349753b66208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  train: {fileID: 190456708}
-  platformController: {fileID: 1800714547}
+  _train: {fileID: 190456708}
+  _tutorialSystem: {fileID: 1186501370}
+  _platformController: {fileID: 1800714547}
 --- !u!1 &1389691761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,6 +1810,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5bdfbe4f350454f855dee7b49cfb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1945812279 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6739980339419560312, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
+  m_PrefabInstance: {fileID: 1873437883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310f64598f8ec92408de51fda4098588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1976332040
@@ -2210,3 +2272,4 @@ SceneRoots:
   - {fileID: 1702370745}
   - {fileID: 272517832}
   - {fileID: 1566377788}
+  - {fileID: 1186501369}

@@ -82,4 +82,8 @@ public class BombEvent : Event,ITrainDamageEvent
             player = null;
         }
     }
+    public void OnDestroy()
+    {
+        OnDamage = null;
+    }
 }

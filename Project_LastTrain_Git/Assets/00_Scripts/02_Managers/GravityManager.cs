@@ -12,7 +12,7 @@ public class GravityManager : SingletonManager<GravityManager>
     }
     void FixedUpdate()
     {
-        if (!GameManager.Instance.IsGamePlaying())
+        if (GameManager.Instance.IsPaused())
         {
             return;
         }

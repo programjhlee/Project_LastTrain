@@ -13,7 +13,7 @@ public class StartButton : MonoBehaviour
 
     public void ButtonClicked()
     {
-        GameManager.Instance.GameStart();
+        GameManager.Instance.TutorialStart();
         gameObject.SetActive(false);
     }
    

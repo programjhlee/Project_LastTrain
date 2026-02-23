@@ -63,7 +63,7 @@ public class PlatformController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.IsGamePlaying() == false)
+        if (GameManager.Instance.IsPaused())
         {
             return;
         }
@@ -71,14 +71,17 @@ public class PlatformController : MonoBehaviour
         {
             return;
         }
-        platformDistance -= trainSpeed * Time.deltaTime;
-        ui_Distance.SetDistanceText(platformDistance);
-        if (platformDistance <= 0)
-        { 
-            platformDistance = 0;
-            UIManager.Instance.ShowUI<UI_Enhance>();
-            ui_Distance.Hide();
-            OnArrived?.Invoke();
+        if (GameManager.Instance.IsGamePlaying())
+        {
+            platformDistance -= trainSpeed * Time.deltaTime;
+            ui_Distance.SetDistanceText(platformDistance);
+            if (platformDistance <= 0)
+            {
+                platformDistance = 0;
+                UIManager.Instance.ShowUI<UI_Enhance>();
+                ui_Distance.Hide();
+                OnArrived?.Invoke();
+            }
         }
     }
 

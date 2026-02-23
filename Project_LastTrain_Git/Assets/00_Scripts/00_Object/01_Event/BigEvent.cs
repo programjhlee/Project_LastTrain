@@ -4,12 +4,36 @@ using UnityEngine;
 using System;
 public class BigEvent : MonoBehaviour
 {
-    UI_BigEventCaution ui_caution;
-    Renderer eventRend;
-    Vector3 trainFrontPos;
-    float bigEventSpeed;
-    float damage;
+    UI_BigEventCaution _ui_caution;
+    Renderer _eventRend;
+    Vector3 _trainFrontPos;
+    float _bigEventSpeed;
+    float _damage;
 
+
+    public float BigEventSpeed
+    {
+        get
+        {
+            return _bigEventSpeed;
+        }
+        set
+        {
+            _bigEventSpeed = value;
+        }
+    }
+
+    public float Damage
+    {
+        get
+        {
+            return _damage;
+        }
+        set
+        {
+            _damage = value;
+        }
+    }
 
     public event Action<float> OnTrainCrashed;
     public event Action OnDestroy;
@@ -20,20 +44,20 @@ public class BigEvent : MonoBehaviour
     {
         Renderer trainRend = train.GetComponent<Renderer>();
         Debug.Log(train);
-        eventRend = GetComponent<Renderer>();
-        damage = 50;
-        bigEventSpeed = speed;
+        _eventRend = GetComponent<Renderer>();
+        _damage = 50;
+        _bigEventSpeed = speed;
         float arrivedTime = trainRend.bounds.center.x + trainRend.bounds.extents.x + Mathf.Max(speed * 6 - LevelManager.Instance.Level, 3f); 
         transform.position = new Vector3(arrivedTime, trainRend.bounds.center.y, trainRend.bounds.center.z);
-        trainFrontPos = new Vector3(trainRend.bounds.center.x + trainRend.bounds.extents.x, trainRend.bounds.center.y, trainRend.bounds.center.z);
-        ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(750, 250));
+        _trainFrontPos = new Vector3(trainRend.bounds.center.x + trainRend.bounds.extents.x, trainRend.bounds.center.y, trainRend.bounds.center.z);
+        _ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(750, 250));
     }
 
     public void OnDisable()
     {
-        if (ui_caution != null)
+        if (_ui_caution != null)
         {
-            ui_caution.Hide();
+            _ui_caution.Hide();
         }
         OnTrainCrashed = null;
         OnDestroy = null;
@@ -43,10 +67,17 @@ public class BigEvent : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            float leftDistance = Vector3.Distance(transform.position, trainFrontPos);
-            ui_caution.SetDistanceText(leftDistance - eventRend.bounds.extents.x);
-            transform.Translate(-bigEventSpeed * Time.deltaTime, 0, 0);
+            MoveEvent();
         }
+    }
+
+
+
+    public void MoveEvent()
+    {
+        float leftDistance = Vector3.Distance(transform.position, _trainFrontPos);
+        _ui_caution.SetDistanceText(leftDistance - _eventRend.bounds.extents.x);
+        transform.Translate(-_bigEventSpeed * Time.deltaTime, 0, 0);
     }
 
 
@@ -54,12 +85,11 @@ public class BigEvent : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Train"))
         {
-            OnTrainCrashed?.Invoke(damage);
+            OnTrainCrashed?.Invoke(_damage);
         }
-        ui_caution.Hide();
+        _ui_caution.Hide();
         OnDestroy?.Invoke();
         gameObject.SetActive(false);
     }
-
 
 }

@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (!GameManager.Instance.IsGamePlaying()) return;
+        if (GameManager.Instance.IsPaused()) return;
         playerAction.ProcessMovement();
     }
 }

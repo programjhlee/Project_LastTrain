@@ -44,38 +44,25 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.OnGameStart -= StartEnemySpawn;
     }
 
-    public void StartEnemySpawn()
-    {
-        curTime = 0;
-        SetEnemiesData();
-        AllEnemyUnActive();
-    }
-
     public void Update()
     {
-        if (!GameManager.Instance.IsGamePlaying())
+        if (GameManager.Instance.IsPaused() || GameManager.Instance.IsTutorial())
         {
             return;
         }
 
         curTime += Time.deltaTime;
-        
+
         if (curTime > _spawnTime)
         {
             curTime = 0;
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                if (enemies[i].gameObject.activeSelf)
-                {
-                    continue;
-                }
-                enemies[i].Init(_baseEnemyData);
-                enemies[i].GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
-                enemies[i].transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y, 0);
-                enemies[i].gameObject.SetActive(true);
-                break;
-            }
+            SpawnEnemy();
         }
+        EnemyUpdate();
+    }
+
+    public void EnemyUpdate()
+    {
         for (int i = 0; i < enemies.Count; i++)
         {
             if (enemies[i].gameObject.activeSelf)
@@ -84,6 +71,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
+
 
     public void SetEnemiesData()
     {
@@ -100,12 +88,38 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
+
+
+    public void SpawnEnemy()
+    {
+        
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].gameObject.activeSelf)
+            {
+                continue;
+            }
+            enemies[i].Init(_baseEnemyData);
+            enemies[i].GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
+            enemies[i].transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y, 0);
+            enemies[i].gameObject.SetActive(true);
+            break;
+        }
+    }
+
+
     public void AllEnemyUnActive()
     {
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].gameObject.SetActive(false);
         }
+    }
+    public void StartEnemySpawn()
+    {
+        curTime = 0;
+        SetEnemiesData();
+        AllEnemyUnActive();
     }
 
 
