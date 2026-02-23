@@ -17,6 +17,7 @@ public class TrainEventSystem : MonoBehaviour
     [SerializeField] string[] events;
     [SerializeField] Train train;
     [SerializeField] GameObject trainBack;
+    EventSightChecker eventSightChecker;
     Renderer rend;
     
     List<Dictionary<string, object>> eventSpawnData;
@@ -33,7 +34,9 @@ public class TrainEventSystem : MonoBehaviour
     {
         eventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
         trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
-        
+
+        eventSightChecker = GetComponent<EventSightChecker>();
+
         events = Enum.GetNames(typeof(Events));
         rend = trainBack.GetComponent<Renderer>();
         
@@ -96,6 +99,9 @@ public class TrainEventSystem : MonoBehaviour
             evt.Enter(eventDataDic[events[rnd]]);
             executeEvents.Add(evt);
         }
+
+        eventSightChecker.CheckEventSight(executeEvents);
+        
         for (int i = 0; i < executeEvents.Count; i++)
         {
             if (executeEvents[i] == null)
@@ -108,6 +114,7 @@ public class TrainEventSystem : MonoBehaviour
                 executeEvents[i].Execute();
             }
         }
+        
         endEvents.Clear();
 
     }

@@ -9,7 +9,7 @@ public class UIManager : SingletonManager<UIManager>
 
     [SerializeField] Canvas canvas;
     [SerializeField] List<UI_Base> _uiPrefabs = new List<UI_Base>();
-    Dictionary<Type, UI_Base> _uiDics = new Dictionary<Type,UI_Base>();
+    Dictionary<Type, List<UI_Base>> _uiDics = new Dictionary<Type,List<UI_Base>>();
     
     public void Awake()
     {
@@ -28,48 +28,68 @@ public class UIManager : SingletonManager<UIManager>
             Type type = _uiPrefabs[i].GetType();
             if (!_uiDics.ContainsKey(type))
             {
-                _uiDics[type] = _uiPrefabs[i];
+                _uiDics[type] = new List<UI_Base>();
+                _uiDics[type].Add(_uiPrefabs[i]);
             }
+            _uiDics[type].Add(_uiPrefabs[i]);
         }
     }
 
 
 
-    public T ShowUI<T>() where T : UI_Base
+    public T ShowUI<T>(string name = null) where T : UI_Base
     {
         Type type = typeof(T);
         T ui = null;
-        if (!_uiDics.TryGetValue(type, out UI_Base value))
+        T[] uiInCanvas = canvas.GetComponentsInChildren<T>();
+        
+        for(int i = 0; i < uiInCanvas.Length; i++)
         {
-            return null;
-        }
-        else
-        {
-            if (canvas.transform.GetComponentsInChildren<T>(true).Length <= 0)
+            if (name == null)
             {
-                ui = Instantiate(_uiDics[type]).GetComponent<T>();
-                ui.transform.SetParent(canvas.transform);
-                ui.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                ui = uiInCanvas[0];
                 ui.Show();
             }
-            else
+            else if (uiInCanvas[i].name == name)
             {
-                foreach (var uiInCanvas in canvas.transform.GetComponentsInChildren<T>(true))
+                ui = uiInCanvas[i];
+                ui.Show();
+            }
+        }
+
+        if(ui == null)
+        {
+            if(_uiDics.TryGetValue(type,out List<UI_Base> uis))
+            {
+                for(int i = 0; i < uis.Count; i++)
                 {
-                    if(uiInCanvas.GetType() == type)
+                    if(name == null)
                     {
-                        ui = uiInCanvas;
+                        ui = Instantiate(uis[0]).GetComponent<T>();
+                        ui.name = typeof(T).Name;
+                        ui.transform.SetParent(canvas.transform);
                         ui.Show();
+                        break;
+                    }
+                    if (uis[i].name == name)
+                    {
+                        ui = Instantiate(uis[i]).GetComponent<T>();
+                        ui.name = name;
+                        ui.transform.SetParent(canvas.transform);
+                        ui.Show();
+                        break;
                     }
                 }
             }
         }
+        Debug.Log(ui);
         return ui;
     }
 
-    public T ShowUIAt<T>(Vector2 pos) where T : UI_Base
+    public T ShowUIAt<T>(Vector2 pos,string name = null) where T : UI_Base
     {
-        T ui = ShowUI<T>();
+        T ui = ShowUI<T>(name);
+
         if (ui != null)
         {
             ui.GetComponent<RectTransform>().anchoredPosition = pos;

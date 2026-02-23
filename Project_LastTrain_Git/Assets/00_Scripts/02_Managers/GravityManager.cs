@@ -10,7 +10,7 @@ public class GravityManager : SingletonManager<GravityManager>
     {
         gravityObjects.Clear();
     }
-    void Update()
+    void FixedUpdate()
     {
         if (!GameManager.Instance.IsGamePlaying())
         {

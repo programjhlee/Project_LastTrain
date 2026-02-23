@@ -10,7 +10,7 @@ public class LootManager : SingletonManager<LootManager>
     List<Coin> coinList = new List<Coin>();
     UI_Coin ui_Coin;
 
-    void Start()
+    void Awake()
     {
         Init();
     }
@@ -30,7 +30,6 @@ public class LootManager : SingletonManager<LootManager>
             coin.SetActive(false);
         }
         ui_Coin = UIManager.Instance.ShowUIAt<UI_Coin>(new Vector2(250,-125));
-        Debug.Log(ui_Coin);
         ui_Coin.SetCoinText(0);
 
     }
