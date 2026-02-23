@@ -66,6 +66,7 @@ public class BigEventSystem : MonoBehaviour
     {
         if (bigEvent.gameObject.activeSelf)
         {
+            _switch.SwitchUnActive();
             bigEvent.gameObject.SetActive(false);
         }
     }

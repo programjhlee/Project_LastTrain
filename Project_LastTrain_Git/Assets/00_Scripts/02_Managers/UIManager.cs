@@ -68,6 +68,7 @@ public class UIManager : SingletonManager<UIManager>
                         ui = Instantiate(uis[0]).GetComponent<T>();
                         ui.name = typeof(T).Name;
                         ui.transform.SetParent(canvas.transform);
+                        ui.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                         ui.Show();
                         break;
                     }
@@ -76,13 +77,13 @@ public class UIManager : SingletonManager<UIManager>
                         ui = Instantiate(uis[i]).GetComponent<T>();
                         ui.name = name;
                         ui.transform.SetParent(canvas.transform);
+                        ui.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                         ui.Show();
                         break;
                     }
                 }
             }
         }
-        Debug.Log(ui);
         return ui;
     }
 
