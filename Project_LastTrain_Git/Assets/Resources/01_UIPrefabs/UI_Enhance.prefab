@@ -410,8 +410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9949ff5262eee1540acfcf09d732217f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enhanceButton: {fileID: 7676704266522243564}
-  fixButton: {fileID: 8588032641946348324}
+  _playerLevelText: {fileID: 5375796060385005883}
+  _trainHpText: {fileID: 1667397331442623859}
+  _enhanceButton: {fileID: 7676704266522243564}
+  _fixButton: {fileID: 8588032641946348324}
 --- !u!1 &5290492436094645929
 GameObject:
   m_ObjectHideFlags: 0

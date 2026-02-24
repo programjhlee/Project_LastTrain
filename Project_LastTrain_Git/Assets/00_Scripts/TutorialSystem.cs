@@ -46,8 +46,17 @@ public class TutorialSystem : MonoBehaviour
                     step.Bind(_player);
                     yield return StartCoroutine(step.Run());
                     break;
+                case InteractionTutorialStep step:
+                    step.Bind(_player,_trainEventSystem);
+                    yield return StartCoroutine(step.Run());
+                    break;
+                case EnemyTutorialStep step:
+                    step.Bind(_enemySpawner);
+                    yield return StartCoroutine(step.Run());
+                    break;
             }
         }
+        _skipBtn.gameObject.SetActive(false);
         GameManager.Instance.GameStart();
     }
 

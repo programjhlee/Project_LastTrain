@@ -49,7 +49,7 @@ public class BombEvent : Event,ITrainDamageEvent
             player.GetComponent<PlayerAction>().TakeDamage(player.transform.position - transform.position);
         }
         OnDamage?.Invoke(eventData.damageToTrain);
-        Destroy(gameObject);
+        Explosive();
     }
 
     public override void Exit()
@@ -63,7 +63,8 @@ public class BombEvent : Event,ITrainDamageEvent
 
         if(curFixAmount <= 0)
         {
-            Destroy(gameObject);
+            InvokeOnFix();
+            Fixed();
         }
     }
 
@@ -82,8 +83,16 @@ public class BombEvent : Event,ITrainDamageEvent
             player = null;
         }
     }
-    public void OnDestroy()
+    public void Fixed()
     {
+        ReleaseOnFix();
         OnDamage = null;
+        Destroy(gameObject);
+    }
+    public void Explosive()
+    {
+        ReleaseOnFix();
+        Debug.Log("ลอมü!");
+        Destroy(gameObject);
     }
 }

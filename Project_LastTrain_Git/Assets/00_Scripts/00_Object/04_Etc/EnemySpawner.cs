@@ -90,21 +90,24 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    public void SpawnEnemy()
+    public Enemy SpawnEnemy()
     {
-        
+        Enemy spawnEnemy = null;
         for (int i = 0; i < enemies.Count; i++)
         {
             if (enemies[i].gameObject.activeSelf)
             {
                 continue;
             }
-            enemies[i].Init(_baseEnemyData);
-            enemies[i].GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
-            enemies[i].transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y, 0);
-            enemies[i].gameObject.SetActive(true);
+            spawnEnemy = enemies[i];
+            spawnEnemy.Init(_baseEnemyData);
+            spawnEnemy.GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
+            spawnEnemy.transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y, 0);
+            spawnEnemy.gameObject.SetActive(true);
             break;
         }
+        Debug.Log(spawnEnemy.transform.position);
+        return spawnEnemy;
     }
 
 

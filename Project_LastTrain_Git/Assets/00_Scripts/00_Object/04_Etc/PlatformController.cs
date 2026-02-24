@@ -78,8 +78,8 @@ public class PlatformController : MonoBehaviour
             if (platformDistance <= 0)
             {
                 platformDistance = 0;
-                UIManager.Instance.ShowUI<UI_Enhance>();
                 ui_Distance.Hide();
+                UIManager.Instance.ShowUI<UI_Enhance>();
                 OnArrived?.Invoke();
             }
         }

@@ -26,6 +26,8 @@ public class BrokenEvent : Event,ITrainDamageEvent
     }
     public override void Exit()
     {
+        InvokeOnFix();
+        ReleaseOnFix();
         OnDamage = null;
         Destroy(gameObject);
     }

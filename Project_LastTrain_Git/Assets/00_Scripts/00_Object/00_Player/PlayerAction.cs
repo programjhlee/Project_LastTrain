@@ -5,12 +5,11 @@ using System;
 
 public class PlayerAction : MonoBehaviour,IGravityAffected
 {
-
-    PlayerData playerData;
+    PlayerData _playerData;
+    [SerializeField] Tool _tool;
 
     private LayerMask playerLayer = 6;
     private int enemyLayer = 7;
-    private LayerMask groundLayer = 3;
 
     Collider col;
 
@@ -35,20 +34,20 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     {
         GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
         landChecker = GetComponent<LandChecker>();
-        playerData = GetComponent<PlayerData>();
+        _playerData = GetComponent<PlayerData>();
         col = GetComponent<Collider>();
-        
-        playerData.MoveSpeed =  7f;
-        playerData.JumpForce = 15f;
-        playerData.AttackPower = 5f;
-        playerData.FixPower = 2f;
+        _tool.Init();
+        _playerData.Level = 1;
+        _playerData.AttackPower = 5f + _tool.AttackPower;
+        _playerData.FixPower = 2f + _tool.AttackPower;
+        _playerData.MoveSpeed =  7f;
+        _playerData.JumpForce = 15f;
         RollingSpeed = 20f;
         
         canInteraction = true;
         canRolling = true;
-        
-    }
 
+    }
     public void Move(Vector3 moveDir)
     {
         if (isHit)
@@ -66,19 +65,20 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             MoveDir = Vector3.zero;
             return;
         }
-
         if (MoveDir != Vector3.zero)
         {
             Quaternion targetRot = Quaternion.LookRotation(MoveDir);
             transform.rotation = targetRot;
-            transform.position += MoveDir * playerData.MoveSpeed * Time.fixedDeltaTime;
-            OnMove?.Invoke();
         }
-
         if (Physics.Raycast(transform.position, transform.forward, col.bounds.extents.x + 0.1f, (1 << enemyLayer)))
         {
             MoveDir = Vector3.zero;
             return;
+        }
+        if (MoveDir != Vector3.zero)
+        { 
+            transform.position += MoveDir * _playerData.MoveSpeed * Time.fixedDeltaTime;
+            OnMove?.Invoke();
         }
         transform.position += Vector3.up * JumpVel * Time.fixedDeltaTime;
         if (transform.position.y < -20f)
@@ -91,7 +91,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     {
         if (landChecker.IsLanding)
         {
-            JumpVel = playerData.JumpForce;
+            JumpVel = _playerData.JumpForce;
             OnJump?.Invoke();
         }
     }
@@ -102,10 +102,13 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             return;
         }
+
+
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 2f))
         {
+            Debug.Log("¹º°¡ ¸Â¾Ò´Ù!");
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy))
             {
                 Attack(enemy, hit.collider.transform.position - transform.position);
@@ -123,12 +126,12 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     }
     public void Attack(IAttackable _attackable, Vector3 attackDir)
     {
-        _attackable.TakeDamage(playerData.AttackPower, attackDir);
+        _attackable.TakeDamage(_playerData.AttackPower, attackDir);
     }
-
+    
     public void Fix(IFixable _fixable)
     {
-        _fixable.TakeFix(playerData.FixPower);
+        _fixable.TakeFix(_playerData.FixPower);
     }
 
     public void Rolling()

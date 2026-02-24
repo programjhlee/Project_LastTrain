@@ -1367,6 +1367,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c7f1113a8344724a9721f585fb61e9a, type: 2}
   - {fileID: 11400000, guid: f7693045c1e284a48815824323bdd9ea, type: 2}
   - {fileID: 11400000, guid: d666e23cfe800e3468cd5b6ebb4cb913, type: 2}
+  - {fileID: 11400000, guid: d81997b2eddad9446b2b27e6226dd4bc, type: 2}
   _player: {fileID: 1945812279}
   _enemySpawner: {fileID: 1056004541}
   _train: {fileID: 190456708}
@@ -1695,6 +1696,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 710d3c0afb6e56f4c80b7c50b71f3f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1568921475 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6018776266572623631, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
+  m_PrefabInstance: {fileID: 1873437883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbe9e9338a2eedd46945166eab88766f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1702370744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,8 +1751,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755d1b2cc43d47447b1a8292e7c6554d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 1873437884}
-  train: {fileID: 190456708}
+  _playerData: {fileID: 1873437884}
+  _train: {fileID: 190456708}
+  _platformController: {fileID: 1800714547}
 --- !u!1 &1769046063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1918,33 +1931,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -3196724974636915171, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3196724974636915171, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_IsKinematic
+    - target: {fileID: 24746731712520972, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
+      propertyPath: m_Enabled
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 870456041504967425, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_Constraints
-      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 974029825492914498, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 974029825492914498, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 974029825492914498, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2110458102360681767, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2956217803225478379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1986,20 +1979,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4732976726539979379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4732976726539979379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4732976726539979379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+    - target: {fileID: 7050579652701811348, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
+      propertyPath: _tool
       value: 
-      objectReference: {fileID: 2100000, guid: e3de30d51b31db041a3d8fa54c3c207d, type: 2}
-    m_RemovedComponents:
-    - {fileID: 5220071664131081360, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
+      objectReference: {fileID: 1568921475}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

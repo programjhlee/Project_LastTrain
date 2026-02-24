@@ -81,7 +81,7 @@ public class TrainEventSystem : MonoBehaviour
         {
             curTime = 0;
             Event curEvent = SpawnEventRandomPos();
-            //BindDamageEvent(curEvent);
+            BindDamageEvent(curEvent);
         }
         EventExecute();
         eventSightChecker.CheckEventSight(executeEvents);

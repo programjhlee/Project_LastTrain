@@ -41,7 +41,7 @@ public class UIManager : SingletonManager<UIManager>
     {
         Type type = typeof(T);
         T ui = null;
-        T[] uiInCanvas = canvas.GetComponentsInChildren<T>();
+        T[] uiInCanvas = canvas.GetComponentsInChildren<T>(true);
         
         for(int i = 0; i < uiInCanvas.Length; i++)
         {

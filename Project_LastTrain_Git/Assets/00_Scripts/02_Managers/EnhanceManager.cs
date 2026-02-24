@@ -13,8 +13,11 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         FixPower,
     }
 
-    [SerializeField] PlayerData playerData;
-    [SerializeField] Train train;
+    [SerializeField] PlayerData _playerData;
+    [SerializeField] Train _train;
+    [SerializeField] PlatformController _platformController;
+    UI_Enhance _ui_Enhance;
+
     List<Dictionary<string, object>> enhancePriceData;
     List<Dictionary<string, object>> enhanceValueData;
     
@@ -25,10 +28,16 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
     {
         Init();
     }
+    public void Start()
+    {
+    }
     public void Init()
     {
         enhancePriceData = DataManager.Instance.GetData((int)Define.DataTables.EnhancePriceData);
         enhanceValueData = DataManager.Instance.GetData((int)Define.DataTables.EnhanceValueData);
+
+        _platformController.OnArrived += OnArrived;
+
         for (int i = 0; i < enhancePriceData.Count; i++)
         {
             if (enhancePriceData[i]["ENHANCETYPE"].ToString() == "PLAYERENHANCE")
@@ -42,6 +51,13 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         }
     }
 
+    public void OnArrived()
+    {
+        _ui_Enhance = UIManager.Instance.ShowUI<UI_Enhance>();
+        _ui_Enhance.SetPlayerLevelText(_playerData.Level);
+        _ui_Enhance.SetTrainHpText(_train.CurHp);
+    }
+
 
     public void FixTrain()
     {
@@ -50,22 +66,22 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
             Debug.Log("돈부족함..");
             return;
         }
-        if(train.CurHp >= train.MaxHp)
+        if(_train.CurHp >= _train.MaxHp)
         {
             Debug.Log("열차 체력 만땅..");
             return;
         }
         Debug.Log("열차 수리 완료!");
         LootManager.Instance.DecreaseCoin(fixPrice);
-
-        for(int i = 0; i < enhanceValueData.Count; i++)
+        for (int i = 0; i < enhanceValueData.Count; i++)
         {
             if (enhanceValueData[i]["ENHANCETYPE"].ToString() == "FIXTRAIN")
             {
-                train.TakeFix(int.Parse(enhanceValueData[i]["VALUE"].ToString()));
+                _train.TakeFix(int.Parse(enhanceValueData[i]["VALUE"].ToString()));
                 break;
             }
         }
+        _ui_Enhance.SetTrainHpText(_train.CurHp);
     }
 
     public void Enhance()
@@ -77,6 +93,8 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         };
         Debug.Log("강화 성공!");
         LootManager.Instance.DecreaseCoin(enhancePrice);
+        _playerData.Level++;
+        _ui_Enhance.SetPlayerLevelText(_playerData.Level);
         string[] enhanceTypes = Enum.GetNames(typeof(EnhanceTypes));
         for(int i = 0; i < enhanceTypes.Length; i++)
         {
@@ -88,13 +106,13 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
                     switch (enhanceType)
                     {
                         case "MoveSpeed":
-                            playerData.MoveSpeed += float.Parse(enhanceValueData[j]["VALUE"].ToString());
+                            _playerData.MoveSpeed += float.Parse(enhanceValueData[j]["VALUE"].ToString());
                             break;
                         case "AttackPower":
-                            playerData.AttackPower += float.Parse(enhanceValueData[j]["VALUE"].ToString());
+                            _playerData.AttackPower += float.Parse(enhanceValueData[j]["VALUE"].ToString());
                             break;
                         case "FixPower":
-                            playerData.FixPower += float.Parse(enhanceValueData[j]["VALUE"].ToString());
+                            _playerData.FixPower += float.Parse(enhanceValueData[j]["VALUE"].ToString());
                             break;
                     }
                 }
