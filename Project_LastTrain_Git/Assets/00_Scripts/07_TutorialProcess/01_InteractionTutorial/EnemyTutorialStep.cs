@@ -7,38 +7,40 @@ using System;
 public class EnemyTutorialStep : TutorialStep
 {
     EnemySpawner _enemySpawner;
-    List<Enemy> _enemyList = new List<Enemy>();
-    int curCnt = 0;
-    int targetCnt = 3;
+    List<Enemy> _enemyList;
     public Action OnDied;
     public void Bind(EnemySpawner enemySpawner)
     {
         _enemySpawner = enemySpawner;
+        
     }
 
     public override IEnumerator Run()
     {
-        _enemySpawner.Init();
+        _enemyList = new List<Enemy>();
+        int curCnt = 0;
+        int targetCnt = 3;
         for (int i = 0; i < targetCnt; i++)
         {
             Enemy enemy = _enemySpawner.SpawnEnemy();
             _enemyList.Add(enemy);
-            yield return null; 
         }
-        int enemyIdx = 0;
-        while (_enemyList.Count > 0)
+        yield return null;
+        while (curCnt < targetCnt)
         {
-            int remainCnt = _enemyList.Count;
-            if (_enemyList[enemyIdx] == null)
+            for (int i = 0; i < _enemyList.Count; i++)
             {
-                _enemyList.RemoveAt(enemyIdx);
-                continue;
+                if (!_enemyList[i].gameObject.activeSelf)
+                {
+                    _enemyList.RemoveAt(i);
+                    curCnt++;
+                    continue;
+                }
+                _enemyList[i].OnUpdate();
             }
-            _enemyList[enemyIdx].OnUpdate();
-            enemyIdx = (enemyIdx + 1) % remainCnt;
             yield return null;
         }
-        Release();
+        //Release();
     }
 
     public override void Release()

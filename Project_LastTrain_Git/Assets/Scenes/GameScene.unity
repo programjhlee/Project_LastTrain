@@ -1364,9 +1364,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skipBtn: {fileID: 1295756351}
   _steps:
-  - {fileID: 11400000, guid: 7c7f1113a8344724a9721f585fb61e9a, type: 2}
-  - {fileID: 11400000, guid: f7693045c1e284a48815824323bdd9ea, type: 2}
-  - {fileID: 11400000, guid: d666e23cfe800e3468cd5b6ebb4cb913, type: 2}
   - {fileID: 11400000, guid: d81997b2eddad9446b2b27e6226dd4bc, type: 2}
   _player: {fileID: 1945812279}
   _enemySpawner: {fileID: 1056004541}
