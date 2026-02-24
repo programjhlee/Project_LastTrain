@@ -80,38 +80,55 @@ public class TrainEventSystem : MonoBehaviour
         if(curTime >= eventSpawnTime)
         {
             curTime = 0;
-            SpawnEventRandomPos();
+            Event curEvent = SpawnEventRandomPos();
+            //BindDamageEvent(curEvent);
         }
         EventExecute();
         eventSightChecker.CheckEventSight(executeEvents);
         endEvents.Clear();
     }
 
-    public void SpawnEventAt(float inputxPos)
+    public Event SpawnEventAt(float inputxPos,int eventIdx = -1)
     {
         int rnd = UnityEngine.Random.Range(0, events.Length);
+        Event evt;
+        Renderer evtRend;
 
-        Event evt = Instantiate(eventPrefabs[events[rnd]]).GetComponent<Event>();
-        Renderer evtRend = evt.GetComponent<Renderer>();
-        evt.transform.position = Vector3.zero;
-
+        if(eventIdx < 0) 
+        { 
+            evt = Instantiate(eventPrefabs[events[rnd]]).GetComponent<Event>();
+            evtRend = evt.GetComponent<Renderer>();
+            evt.transform.position = Vector3.zero;
+        }
+        else
+        {
+            evt = Instantiate(eventPrefabs[events[eventIdx]]).GetComponent<Event>();
+            evtRend = evt.GetComponent<Renderer>();
+            evt.transform.position = Vector3.zero;
+        }
+        
         float xPos = inputxPos;
         float yPos = rend.bounds.center.y + rend.bounds.extents.y + evtRend.bounds.extents.y;
 
         evt.transform.position = new Vector3(xPos, yPos);
 
-        if (evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
+        evt.Enter(eventDataDic[events[rnd]]);
+        executeEvents.Add(evt);
+        return evt;
+    }
+
+    public void BindDamageEvent(Event evt)
+    {
+        if(evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
         {
             trainDamageEvent.OnDamage += train.TakeDamage;
         }
-
-        evt.Enter(eventDataDic[events[rnd]]);
-        executeEvents.Add(evt);
     }
-    public void SpawnEventRandomPos()
+
+    public Event SpawnEventRandomPos()
     {
         float rndXPos = UnityEngine.Random.Range(rend.bounds.min.x, rend.bounds.max.x);
-        SpawnEventAt(rndXPos);
+        return SpawnEventAt(rndXPos);
     }
 
     public void EventExecute()

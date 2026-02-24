@@ -27,6 +27,9 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public event Action OnMove;
     public event Action OnJump;
+    public event Action OnAttack;
+    public event Action OnFix;
+    public event Action OnRoll;
     
     public void Init()
     {
@@ -134,6 +137,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             return;
         }
+        OnRoll?.Invoke();
         StartCoroutine(RollingProcess());
     }
     public void Interaction(IInteractable interactable)

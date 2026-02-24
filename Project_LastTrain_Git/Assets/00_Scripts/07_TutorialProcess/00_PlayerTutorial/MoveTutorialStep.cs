@@ -4,15 +4,9 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "MoveTutorialStep" , menuName = "Create Tutorial File / MoveTutorial")]
-public class MoveTutorialStep : TutorialStep
+public class MoveTutorialStep : PlayerTutorialStep
 {
-    PlayerAction _pAction;
     Action _onMoveAction;
-
-    public override void Bind(Player player)
-    {
-        _pAction = player.GetComponent<PlayerAction>();
-    }
     public override IEnumerator Run()
     {
         float curDistance = 0;

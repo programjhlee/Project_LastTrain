@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class JumpTutorialStep : TutorialStep
+[CreateAssetMenu(fileName = "JumpTutorialStep", menuName = "Create Tutorial File / JumpTutorial")]
+public class JumpTutorialStep : PlayerTutorialStep
 {
-    PlayerAction _pAction;
     Action _onJumpAction;
-
-    public override void Bind(Player player)
-    {
-        _pAction = player.GetComponent<PlayerAction>();
-    }
     public override IEnumerator Run()
     {
-        float curCnt = 0;
-        float jumpTutorialClearCnt = 20f;
-        Debug.Log("Alt키는 플레이어가 움직입니다! 움직여보세요!");
-        _onJumpAction = () => { curCnt += 0.3f; };
+        _pAction = _p.GetComponent<PlayerAction>();
+        int curCnt = 0;
+        int jumpTutorialClearCnt = 3;
+        Debug.Log("Alt키는 플레이어가 점프합니다! 점프해보세요!");
+        _onJumpAction = () => { curCnt++; };
         _pAction.OnJump += _onJumpAction;
         while (curCnt < jumpTutorialClearCnt)
         {
@@ -26,7 +22,7 @@ public class JumpTutorialStep : TutorialStep
                 yield return null;
                 continue;
             }
-            Debug.Log($"Distance : {curCnt} / {jumpTutorialClearCnt}");
+            Debug.Log($"JumpCnt : {curCnt} / {jumpTutorialClearCnt}");
             yield return null;
         }
         Release();
@@ -37,7 +33,7 @@ public class JumpTutorialStep : TutorialStep
         {
             return;
         }
-        _pAction.OnMove -= _onJumpAction;
+        _pAction.OnJump -= _onJumpAction;
         _onJumpAction = null;
     }
 }
