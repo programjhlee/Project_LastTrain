@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     {
         enemyState = EnemyState.Move;
         moveDir = Vector3.left;
-        transform.position = Vector3.zero;
+    
     }
 
     void OnDisable()

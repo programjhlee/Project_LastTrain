@@ -21,8 +21,8 @@ public class EnemyTutorialStep : TutorialStep
         _enemySpawner.Init();
         for (int i = 0; i < targetCnt; i++)
         {
-            _enemyList.Add(_enemySpawner.SpawnEnemy());
-            Debug.Log(_enemyList[i]);
+            Enemy enemy = _enemySpawner.SpawnEnemy();
+            _enemyList.Add(enemy);
             yield return null; 
         }
         int enemyIdx = 0;
