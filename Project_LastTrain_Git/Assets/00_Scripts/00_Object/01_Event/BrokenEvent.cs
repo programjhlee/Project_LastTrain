@@ -13,7 +13,6 @@ public class BrokenEvent : Event,ITrainDamageEvent
     {
         base.Enter(initEventData);
         curFixAmount = eventData.fixAmount;
-        Debug.Log(eventData.fixAmount);
     }
     public override void Execute()
     {

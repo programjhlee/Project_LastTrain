@@ -28,12 +28,19 @@ public class EnemyTutorialStep : TutorialStep
         yield return null;
         while (curCnt < targetCnt)
         {
+            if (GameManager.Instance.IsPaused())
+            {
+                yield return null;
+                continue;
+            }
+            yield return null;
             for (int i = 0; i < _enemyList.Count; i++)
             {
                 if (!_enemyList[i].gameObject.activeSelf)
                 {
                     _enemyList.RemoveAt(i);
                     curCnt++;
+                    yield return null;
                     continue;
                 }
                 _enemyList[i].OnUpdate();

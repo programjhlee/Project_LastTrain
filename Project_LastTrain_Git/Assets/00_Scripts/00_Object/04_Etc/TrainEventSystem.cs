@@ -84,11 +84,10 @@ public class TrainEventSystem : MonoBehaviour
             BindDamageEvent(curEvent);
         }
         EventExecute();
-        eventSightChecker.CheckEventSight(executeEvents);
         endEvents.Clear();
     }
 
-    public Event SpawnEventAt(float inputxPos,int eventIdx = -1)
+    public Event SpawnEventAt(float normalizeXPos,int eventIdx = -1)
     {
         int rnd = UnityEngine.Random.Range(0, events.Length);
         Event evt;
@@ -98,16 +97,14 @@ public class TrainEventSystem : MonoBehaviour
         { 
             evt = Instantiate(eventPrefabs[events[rnd]]).GetComponent<Event>();
             evtRend = evt.GetComponent<Renderer>();
-            evt.transform.position = Vector3.zero;
         }
         else
         {
             evt = Instantiate(eventPrefabs[events[eventIdx]]).GetComponent<Event>();
             evtRend = evt.GetComponent<Renderer>();
-            evt.transform.position = Vector3.zero;
         }
         
-        float xPos = inputxPos;
+        float xPos = rend.bounds.center.x + rend.bounds.extents.x * normalizeXPos;
         float yPos = rend.bounds.center.y + rend.bounds.extents.y + evtRend.bounds.extents.y;
 
         evt.transform.position = new Vector3(xPos, yPos);
@@ -127,7 +124,7 @@ public class TrainEventSystem : MonoBehaviour
 
     public Event SpawnEventRandomPos()
     {
-        float rndXPos = UnityEngine.Random.Range(rend.bounds.min.x, rend.bounds.max.x);
+        float rndXPos = UnityEngine.Random.Range(-0.8f, 0.8f);
         return SpawnEventAt(rndXPos);
     }
 
@@ -137,12 +134,14 @@ public class TrainEventSystem : MonoBehaviour
         {
             if (executeEvents[i] == null)
             {
+                Debug.Log("이벤트 제거.");
                 endEvents.Add(executeEvents[i]);
                 executeEvents.RemoveAt(i);
             }
             else
             {
                 executeEvents[i].Execute();
+                eventSightChecker.CheckEventSight(executeEvents[i]);
             }
         }
     }

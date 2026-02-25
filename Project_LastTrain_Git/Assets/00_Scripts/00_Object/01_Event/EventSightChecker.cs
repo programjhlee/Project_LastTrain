@@ -1,7 +1,8 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
+using UnityEngine.UIElements;
 
 public class EventSightChecker : MonoBehaviour
 {
@@ -10,9 +11,8 @@ public class EventSightChecker : MonoBehaviour
     UI_EventCaution ui_eventCautionLeft;
     UI_EventCaution ui_eventCautionRight;
 
-    Dictionary<Event,bool> wasInLeftEvent = new Dictionary<Event,bool>();
-    Dictionary<Event, bool> wasInRightEvent = new Dictionary<Event, bool>();
-
+    Dictionary<Event,bool> wasOutLeftEvent = new Dictionary<Event,bool>();
+    Dictionary<Event, bool> wasOutRightEvent = new Dictionary<Event, bool>();
     int sightOutLeftCnt;
     int sightOutRightCnt;
 
@@ -20,18 +20,28 @@ public class EventSightChecker : MonoBehaviour
     public void Start()
     {
         cam = Camera.main;
+        sightOutLeftCnt = 0;
+        sightOutRightCnt = 0;
+
         ui_eventCautionLeft = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(-800, 0),"UI_EventCautionLeft");
         ui_eventCautionRight = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(800, 0), "UI_EventCautionRight");
         ui_eventCautionLeft.Hide();
         ui_eventCautionRight.Hide();
 
     }
-    public void CheckEventSight(List<Event> eventList)
+    public void CheckEventSight(Event curEvent)
     {
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
-        Plane[] leftBound = new Plane[] { planes[0] };
-        Plane[] rightBound = new Plane[] { planes[1] };
 
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
+        Plane[] leftBound = new Plane[] { planes[0], planes[4], planes[5] };
+        Plane[] rightBound = new Plane[] { planes[1], planes[4], planes[5] };
+
+        Debug.Log(curEvent);
+       
+        StartCoroutine(CheckOutBoundProcess(leftBound, rightBound, curEvent));
+    }
+    public void ShowCautionUI()
+    {
         if (sightOutLeftCnt >= 1)
         {
             ui_eventCautionLeft.Show();
@@ -50,82 +60,76 @@ public class EventSightChecker : MonoBehaviour
         {
             ui_eventCautionRight.Hide();
         }
+    }
 
+    public bool CheckOutBound(Plane[] planes, Transform target)
+    {
+        Collider col = target.GetComponent<Collider>();
+        return !GeometryUtility.TestPlanesAABB(planes,col.bounds);
 
-        if (eventList.Count <= 0)
+    }
+
+    IEnumerator CheckOutBoundProcess(Plane[] leftBound, Plane[] rightBound, Event curEvent)
+    {
+        Collider col = curEvent.GetComponent<Collider>();
+        while (col == null || !col.enabled || col.bounds.center == Vector3.zero)
         {
-            return;
+            col = curEvent.GetComponent<Collider>();
+            yield return null;
         }
-        for (int i = 0; i < eventList.Count; i++)
-        {
-            if (eventList[i] == null)
-            {
-                if (wasInLeftEvent.ContainsKey(eventList[i]))
-                {
-                    if (!wasInLeftEvent[eventList[i]])
-                    {
-                        sightOutLeftCnt--;
-                    }
-                    wasInLeftEvent.Remove(eventList[i]);
-                }
-                if (wasInRightEvent.ContainsKey(eventList[i]))
-                {
-                    if (!wasInRightEvent[eventList[i]])
-                    {
-                        sightOutRightCnt--;
-                    }
-                    wasInRightEvent.Remove(eventList[i]);
-                }
-                return;
-            }
-            if (!wasInLeftEvent.ContainsKey(eventList[i]) && !wasInRightEvent.ContainsKey(eventList[i]))
-            {
-                wasInLeftEvent[eventList[i]] = CheckInBound(leftBound, eventList[i].transform);
-                wasInRightEvent[eventList[i]] = CheckInBound(rightBound, eventList[i].transform);
+        Debug.Log(col.bounds);
 
-                if (!wasInLeftEvent[eventList[i]])
+        if (!wasOutLeftEvent.ContainsKey(curEvent) || !wasOutRightEvent.ContainsKey(curEvent))
+        {
+            if (!wasOutLeftEvent.ContainsKey(curEvent))
+            {
+                wasOutLeftEvent[curEvent] = CheckOutBound(leftBound, curEvent.transform);
+                Debug.Log($"Out Left : {wasOutLeftEvent[curEvent]}");
+                if (wasOutLeftEvent[curEvent])
                 {
                     sightOutLeftCnt++;
                 }
-                if (!wasInRightEvent[eventList[i]])
+            }
+            if (!wasOutRightEvent.ContainsKey(curEvent))
+            {
+                wasOutRightEvent[curEvent] = CheckOutBound(rightBound, curEvent.transform);
+                Debug.Log($"Out Right : {wasOutRightEvent[curEvent]}");
+                if (wasOutRightEvent[curEvent])
                 {
                     sightOutRightCnt++;
                 }
             }
-            else
+        }
+        else
+        {
+            bool curEventBoundLeft = CheckOutBound(leftBound, curEvent.transform);
+            bool curEventBoundRight = CheckOutBound(rightBound, curEvent.transform);
+
+            if (wasOutLeftEvent[curEvent] != curEventBoundLeft)
             {
-                if (wasInLeftEvent[eventList[i]] != CheckInBound(leftBound, eventList[i].transform))
+                if (wasOutLeftEvent[curEvent])
                 {
-                    if (wasInLeftEvent[eventList[i]])
-                    {
-                        sightOutLeftCnt++;
-                    }
-                    else
-                    {
-                        sightOutLeftCnt--;
-                    }
-                    wasInLeftEvent[eventList[i]] = CheckInBound(leftBound, eventList[i].transform);
+                    sightOutLeftCnt--;
                 }
-                if (wasInRightEvent[eventList[i]] != CheckInBound(rightBound, eventList[i].transform))
+                else
                 {
-                    if (wasInRightEvent[eventList[i]])
-                    {
-                        sightOutRightCnt++;
-                    }
-                    else
-                    {
-                        sightOutRightCnt--;
-                    }
-                    wasInRightEvent[eventList[i]] = CheckInBound(rightBound, eventList[i].transform);
+                    sightOutLeftCnt++;
                 }
+                wasOutLeftEvent[curEvent] = curEventBoundLeft;
+            }
+            if (wasOutRightEvent[curEvent] != curEventBoundRight)
+            {
+                if (wasOutRightEvent[curEvent])
+                {
+                    sightOutRightCnt--;
+                }
+                else
+                {
+                    sightOutRightCnt++;
+                }
+                wasOutRightEvent[curEvent] = curEventBoundRight;
             }
         }
-    }
-
-    public bool CheckInBound(Plane[] planes, Transform target)
-    {  
-        Collider col = target.GetComponent<Collider>();   
-        return GeometryUtility.TestPlanesAABB(planes,col.bounds);
-
+        ShowCautionUI();
     }
 }

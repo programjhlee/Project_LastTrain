@@ -106,7 +106,6 @@ public class EnemySpawner : MonoBehaviour
             spawnEnemy.gameObject.SetActive(true);
             break;
         }
-        Debug.Log(spawnEnemy.transform.position);
         return spawnEnemy;
     }
 

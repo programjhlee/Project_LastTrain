@@ -9,9 +9,6 @@ public class InteractionTutorialStep : TutorialStep
     
     Player _p;
     TrainEventSystem _trainEventSystem; 
-    int curCnt = 0;
-    int targetCnt = 2;
-
     public Action _onFixAction;
 
     public void Bind(Player p,TrainEventSystem trainEventSystem)
@@ -21,14 +18,19 @@ public class InteractionTutorialStep : TutorialStep
     }
     public override IEnumerator Run()
     {
+        int curCnt = 0;
+        int targetCnt = 2;
+
         _onFixAction = () => { curCnt++; };
         Debug.Log("열차에 부정적인 영향을 주는 이벤트에요! 없애주세요!");
         Event brokenEvent = _trainEventSystem.SpawnEventAt(0, (int)TrainEventSystem.Events.BROKENEVENT);
-        Event bombEvent = _trainEventSystem.SpawnEventAt(3, (int)TrainEventSystem.Events.BOMBEVENT);
+        Event bombEvent = _trainEventSystem.SpawnEventAt(0.25f, (int)TrainEventSystem.Events.BOMBEVENT);
         brokenEvent.OnFixed += _onFixAction; 
-        bombEvent.OnFixed += _onFixAction; 
-        while(curCnt < targetCnt)
+        bombEvent.OnFixed += _onFixAction;
+        Debug.Log(curCnt);
+        while (curCnt < targetCnt)
         {
+            Debug.Log(curCnt);
             if (GameManager.Instance.IsPaused())
             {
                 yield return null;

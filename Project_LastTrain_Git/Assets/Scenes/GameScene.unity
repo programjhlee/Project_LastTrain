@@ -187,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 128446180}
   serializedVersion: 2
   m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: -3.69, y: 2.4615576, z: -9.9619465}
+  m_LocalPosition: {x: 0, y: 2.8715577, z: -9.9619465}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1014,8 +1014,8 @@ Transform:
   m_GameObject: {fileID: 814811383}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.943716, y: 0, z: 0}
-  m_LocalScale: {x: 4.0726566, y: 1, z: 1}
+  m_LocalPosition: {x: -3, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1414919306}
@@ -1226,7 +1226,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: -3.69, y: 2.4615576, z: -9.9619465}
+  m_LocalPosition: {x: 0, y: 2.871558, z: -9.961947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1364,6 +1364,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skipBtn: {fileID: 1295756351}
   _steps:
+  - {fileID: 11400000, guid: 7c7f1113a8344724a9721f585fb61e9a, type: 2}
+  - {fileID: 11400000, guid: f7693045c1e284a48815824323bdd9ea, type: 2}
+  - {fileID: 11400000, guid: d666e23cfe800e3468cd5b6ebb4cb913, type: 2}
+  - {fileID: 11400000, guid: e57266989ea0f0b43acb1ef85b44cd80, type: 2}
   - {fileID: 11400000, guid: d81997b2eddad9446b2b27e6226dd4bc, type: 2}
   _player: {fileID: 1945812279}
   _enemySpawner: {fileID: 1056004541}
@@ -1641,8 +1645,8 @@ Transform:
   m_GameObject: {fileID: 1414919305}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.07, y: -4, z: 0}
-  m_LocalScale: {x: 6.1384997, y: 5, z: 3}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
+  m_LocalScale: {x: 6, y: 5, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 190456712}
@@ -1938,11 +1942,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2956217803225478379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.69
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2956217803225478379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.41
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2956217803225478379, guid: 8b00c8b3adda7bd4db154caa379fef00, type: 3}
       propertyPath: m_LocalPosition.z

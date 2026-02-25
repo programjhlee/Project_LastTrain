@@ -108,7 +108,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 2f))
         {
-            Debug.Log("¹º°¡ ¸Â¾Ò´Ù!");
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy))
             {
                 Attack(enemy, hit.collider.transform.position - transform.position);
