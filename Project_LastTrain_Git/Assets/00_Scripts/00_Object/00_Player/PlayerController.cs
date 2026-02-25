@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     PlayerAction playerAction;
-
     public void Init()
     {
         playerAction = GetComponent<PlayerAction>();

@@ -5,20 +5,19 @@ using System;
 
 public class PlayerAction : MonoBehaviour,IGravityAffected
 {
-    PlayerData _playerData;
     [SerializeField] Tool _tool;
+    PlayerData _playerData;
+    Collider col;
+    LandChecker landChecker;
 
     private LayerMask playerLayer = 6;
     private int enemyLayer = 7;
-
-    Collider col;
-
-    LandChecker landChecker;
 
     bool isHit;
     bool cantHit;
     bool canRolling;
     bool canInteraction;
+
     public Vector3 MoveDir { get; set; }
     public float JumpVel { get; set; }
 
@@ -102,7 +101,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             return;
         }
-
 
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;

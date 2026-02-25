@@ -12,8 +12,8 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 
     [SerializeField] float _findDistance;
     [SerializeField] float _attackDistance;
-    [SerializeField] float attackSpeed;
-    [SerializeField] float attackStateTime;
+    [SerializeField] float _attackSpeed;
+    [SerializeField] float _attackStateTime;
 
     Vector3 moveDir;
     float curHp;
@@ -36,13 +36,13 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     public void Awake()
     {
         landChecker = GetComponent<LandChecker>();
-        
     }
 
     void OnEnable()
     {
         enemyState = EnemyState.Move;
         moveDir = Vector3.left;
+        _attackStateTime = 0;
     
     }
 
@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
         {
             case EnemyState.None:
                 gameObject.SetActive(false);
+                
                 break;
             case EnemyState.Move:
                 if (landChecker.IsCliff)
@@ -91,7 +92,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
                 Attack();
                 if (Vector3.Distance(transform.position, player.transform.position) > _attackDistance)
                 {
-                    attackStateTime = 0;
+                    _attackStateTime = 0;
                     enemyState = EnemyState.Tracking;
                 }
                 break;
@@ -126,10 +127,10 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 
     public void Attack()
     {
-        attackStateTime += Time.deltaTime;
-        if(attackStateTime > attackSpeed)
+        _attackStateTime += Time.deltaTime;
+        if(_attackStateTime > _attackSpeed)
         {
-            attackStateTime = 0;
+            _attackStateTime = 0;
             player.TakeDamage(moveDir);
         }
     }

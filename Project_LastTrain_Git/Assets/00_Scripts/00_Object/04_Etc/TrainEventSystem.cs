@@ -134,7 +134,7 @@ public class TrainEventSystem : MonoBehaviour
         {
             if (executeEvents[i] == null)
             {
-                Debug.Log("이벤트 제거.");
+                eventSightChecker.CheckEventSight(executeEvents[i]);
                 endEvents.Add(executeEvents[i]);
                 executeEvents.RemoveAt(i);
             }
@@ -156,10 +156,13 @@ public class TrainEventSystem : MonoBehaviour
                     trainDamageEvent.OnDamage -= train.TakeDamage;
                 }
                 executeEvents[i].gameObject.SetActive(false);
+                
+
             }
         }
         executeEvents.Clear();
         endEvents.Clear();
+        eventSightChecker.SightCheckerClear();
         curTime = 0;
 
     }

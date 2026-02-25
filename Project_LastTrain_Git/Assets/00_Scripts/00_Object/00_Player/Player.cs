@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     PlayerAction playerAction;
     PlayerController playerController;
 
-    Vector3 moveDir;
+
     void Start()
     {
         landChecker = GetComponent<LandChecker>();

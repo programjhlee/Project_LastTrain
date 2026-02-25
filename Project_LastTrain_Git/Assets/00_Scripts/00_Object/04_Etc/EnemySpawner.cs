@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject _trainBack;
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] EnemyData _baseEnemyData;
+
     Renderer _rend;
 
 

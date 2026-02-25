@@ -31,13 +31,11 @@ public class EventSightChecker : MonoBehaviour
     }
     public void CheckEventSight(Event curEvent)
     {
-
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
         Plane[] leftBound = new Plane[] { planes[0], planes[4], planes[5] };
         Plane[] rightBound = new Plane[] { planes[1], planes[4], planes[5] };
+     
 
-        Debug.Log(curEvent);
-       
         StartCoroutine(CheckOutBoundProcess(leftBound, rightBound, curEvent));
     }
     public void ShowCautionUI()
@@ -71,14 +69,34 @@ public class EventSightChecker : MonoBehaviour
 
     IEnumerator CheckOutBoundProcess(Plane[] leftBound, Plane[] rightBound, Event curEvent)
     {
+        if (curEvent == null)
+        {
+            if (!wasOutLeftEvent.TryGetValue(curEvent,out bool wasLeftOutValue) || !wasOutRightEvent.TryGetValue(curEvent, out bool wasRightOutValue))
+            {
+                yield break;
+            }
+
+            if (wasOutLeftEvent[curEvent])
+            {
+                sightOutLeftCnt--;
+            }
+            if (wasOutRightEvent[curEvent])
+            {
+                sightOutRightCnt--;
+            }
+            wasOutLeftEvent.Remove(curEvent);
+            wasOutRightEvent.Remove(curEvent);
+            ShowCautionUI();
+            yield break;
+        }
+
         Collider col = curEvent.GetComponent<Collider>();
         while (col == null || !col.enabled || col.bounds.center == Vector3.zero)
         {
             col = curEvent.GetComponent<Collider>();
             yield return null;
         }
-        Debug.Log(col.bounds);
-
+         
         if (!wasOutLeftEvent.ContainsKey(curEvent) || !wasOutRightEvent.ContainsKey(curEvent))
         {
             if (!wasOutLeftEvent.ContainsKey(curEvent))
@@ -131,5 +149,14 @@ public class EventSightChecker : MonoBehaviour
             }
         }
         ShowCautionUI();
+    }
+    public void SightCheckerClear()
+    {
+        sightOutRightCnt = 0;
+        sightOutLeftCnt = 0;
+        wasOutRightEvent.Clear();
+        wasOutLeftEvent.Clear();
+        ui_eventCautionLeft.Hide();
+        ui_eventCautionRight.Hide();
     }
 }
