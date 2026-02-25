@@ -417,6 +417,7 @@
 "Assets/00_Scripts/07_TutorialProcess/00_PlayerTutorial/MoveTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/00_PlayerTutorial/PlayerTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/00_PlayerTutorial/RollingTutorialStep.cs"
+"Assets/00_Scripts/07_TutorialProcess/01_InteractionTutorial/BigEventTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/01_InteractionTutorial/EnemyTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/01_InteractionTutorial/InteractionTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/TutorialStep.cs"

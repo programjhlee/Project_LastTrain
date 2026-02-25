@@ -42,8 +42,8 @@ public class BigEvent : MonoBehaviour
 
     public void Init(float speed,Train train)
     {
+        gameObject.SetActive(true);
         Renderer trainRend = train.GetComponent<Renderer>();
-        Debug.Log(train);
         _eventRend = GetComponent<Renderer>();
         _damage = 50;
         _bigEventSpeed = speed;
@@ -59,6 +59,7 @@ public class BigEvent : MonoBehaviour
         {
             _ui_caution.Hide();
         }
+        OnDestroy?.Invoke();
         OnTrainCrashed = null;
         OnDestroy = null;
     }
@@ -87,8 +88,6 @@ public class BigEvent : MonoBehaviour
         {
             OnTrainCrashed?.Invoke(_damage);
         }
-        _ui_caution.Hide();
-        OnDestroy?.Invoke();
         gameObject.SetActive(false);
     }
 

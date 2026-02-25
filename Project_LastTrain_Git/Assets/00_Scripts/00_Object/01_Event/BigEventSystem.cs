@@ -37,8 +37,6 @@ public class BigEventSystem : MonoBehaviour
             }
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (!GameManager.Instance.IsGamePlaying())
@@ -51,17 +49,21 @@ public class BigEventSystem : MonoBehaviour
         if(curTime >= rndTime && !bigEvent.gameObject.activeSelf)
         {
             curTime = 0;
-            _switch.SwitchActive();
-
-            bigEvent.gameObject.SetActive(true);
-            bigEvent.OnTrainCrashed += train.TakeDamage;
-            bigEvent.OnDestroy += _switch.SwitchUnActive;
-            bigEvent.Init(_platformController.TrainSpeed,train);
-            
-            rndTime = Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
+            SpawnBigEvent();
         }
     }
 
+    public BigEvent SpawnBigEvent()
+    {
+        _switch.SwitchActive();
+        bigEvent.Init(_platformController.TrainSpeed, train);
+        bigEvent.OnTrainCrashed += train.TakeDamage;
+        bigEvent.OnDestroy += _switch.SwitchUnActive;
+
+        rndTime = Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
+        return bigEvent;
+    }
+    
     public void TurnOffBigEvent()
     {
         if (bigEvent.gameObject.activeSelf)

@@ -1372,6 +1372,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d666e23cfe800e3468cd5b6ebb4cb913, type: 2}
   - {fileID: 11400000, guid: e57266989ea0f0b43acb1ef85b44cd80, type: 2}
   - {fileID: 11400000, guid: d81997b2eddad9446b2b27e6226dd4bc, type: 2}
+  - {fileID: 11400000, guid: f4ab452a4a8d69f41a424b6039aee4d3, type: 2}
   _player: {fileID: 1945812279}
   _enemySpawner: {fileID: 1056004541}
   _train: {fileID: 190456708}
