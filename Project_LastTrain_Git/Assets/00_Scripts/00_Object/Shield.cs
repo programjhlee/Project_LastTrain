@@ -15,10 +15,13 @@ public class Shield : MonoBehaviour
         gameObject.SetActive(true);
         StartCoroutine(ShieldProcess(_shieldTime));
     }
-
+    public void TurnOff()
+    {
+        gameObject.SetActive(false);
+    }
     IEnumerator ShieldProcess(WaitForSeconds shieldTime)
     {
         yield return _shieldTime;
-        gameObject.SetActive(false);
+        TurnOff();
     }
 }

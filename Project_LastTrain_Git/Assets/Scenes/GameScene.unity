@@ -408,8 +408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f7c3a055bf237499e00c97b22dca0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasHUD: {fileID: 2030743981}
-  canvasWorld: {fileID: 1861718648}
+  canvas: {fileID: 2030743981}
+  canvasHUD: {fileID: 1861718648}
   _uiPrefabs:
   - {fileID: -8593871962080267166, guid: 0b77b8391eeca4c4685e5a0ce37ee2b3, type: 3}
   - {fileID: -8945956295731650554, guid: 6c237ee3f31ddca4e8e2d90e1e68def6, type: 3}
@@ -418,7 +418,7 @@ MonoBehaviour:
   - {fileID: 8824366621480357148, guid: 72e9cfc5cf32e0d46951aeea2185ed1d, type: 3}
   - {fileID: 7614756725415719256, guid: 9b8a2b1fd92691249a415be5d0bfd45f, type: 3}
   - {fileID: 1827345813648396929, guid: 83cbac2d8913dc74eae0559d219ae3bd, type: 3}
-  _uiWorldPrefabs:
+  _uiHUDPrefabs:
   - {fileID: 1542829374036380565, guid: c2bc2d56fa9852344b1c0195e058cb3a, type: 3}
 --- !u!1 &335100390
 GameObject:
@@ -1318,6 +1318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b08545eb39baa44a9ba56578181a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyHUDData: {fileID: 11400000, guid: 5eac31301c2c6c84ebc068b44b573ae4, type: 2}
   _trainBack: {fileID: 814811383}
   _enemyPrefab: {fileID: 1326882122423022333, guid: 720416052ecdcc24c89e5b4000c9c647, type: 3}
   _baseEnemyData: {fileID: 11400000, guid: bdf2dfc16e7827f41b06f4c1249b2ef0, type: 2}
@@ -1395,7 +1396,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1295756350
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1413,7 +1414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 780, y: 370}
+  m_AnchoredPosition: {x: 780, y: -396}
   m_SizeDelta: {x: 160.8809, y: 156.089}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1295756351
@@ -1941,7 +1942,7 @@ GameObject:
   - component: {fileID: 1861718647}
   - component: {fileID: 1861718646}
   m_Layer: 5
-  m_Name: CanvasWorld
+  m_Name: CanvasHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2197,7 +2198,7 @@ GameObject:
   - component: {fileID: 2030743980}
   - component: {fileID: 2030743979}
   m_Layer: 5
-  m_Name: CanvasHUD
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

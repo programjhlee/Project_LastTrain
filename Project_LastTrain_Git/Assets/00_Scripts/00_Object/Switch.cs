@@ -23,7 +23,8 @@ public class Switch : MonoBehaviour, IInteractable
     public void SwitchActive()
     {
         _rend.material.color = Color.red;
-        gameObject.layer = DEFAULT_RAY; 
+        gameObject.layer = DEFAULT_RAY;
+        sheild.TurnOff();
     }
 
     public void SwitchUnActive()

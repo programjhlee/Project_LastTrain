@@ -6,8 +6,9 @@ using System;
 public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 {
     PlayerAction player;
-
     LandChecker landChecker;
+    EnemyUIController _enemyUIController;
+    UI_HUDValueBar _enemyHUD;
     public EnemyData enemyData;
 
     [SerializeField] float _findDistance;
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     float curHp;
     float yVelocity = 0;
 
+    public event Action<float, float> OnDamage;
     public event Action<Enemy> OnEnemyDied;
 
     public enum EnemyState
@@ -36,6 +38,8 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     public void Awake()
     {
         landChecker = GetComponent<LandChecker>();
+        _enemyUIController = GetComponent<EnemyUIController>();
+        
     }
 
     void OnEnable()
@@ -50,14 +54,13 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     {
         OnEnemyDied = null;
     }
-
-
     public void OnUpdate()
     {
         if(transform.position.y < -20f)
         {
             enemyState = EnemyState.None;
         }
+        _enemyUIController.UpdateUIPos();
         landChecker.LandCheck();
         switch (enemyState)
         {
@@ -122,8 +125,9 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     {
         enemyData = enemydt;
         curHp = enemyData.hp;
+        _enemyHUD = _enemyUIController.GetUIHUD<UI_HUDValueBar>();
+        _enemyHUD.SetValue(curHp, enemyData.hp);
     }
-
 
     public void Attack()
     {
@@ -153,8 +157,10 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     {
         StartCoroutine(DamageProcess(dir));
         curHp -= damage;
+        _enemyHUD.SetValue(curHp, enemyData.hp);
         if(curHp <= 0)
         {
+            _enemyUIController.AllUIHIde();
             enemyState = EnemyState.Die;
         }
     }

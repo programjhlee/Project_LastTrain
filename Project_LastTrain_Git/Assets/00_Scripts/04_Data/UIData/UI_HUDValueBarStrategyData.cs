@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UI_HUDStrategy",menuName = "Create UI_HUD_StrategyData")]
-public class UI_HUDStrategyData : ScriptableObject
+public class UI_HUDValueBarStrategyData : ScriptableObject
 {
     [SerializeField] Color _fillColor;
     [SerializeField] Vector2 _uiHudSize;

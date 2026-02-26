@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_WorldValueBar : UI_World
+public class UI_HUDValueBar : UI_HUD
 {
-    Transform _target;
-    [SerializeField] UI_HUDStrategyData _strategyData;
     [SerializeField] Slider _slider;
     [SerializeField] Image _fillImage;
-    void Start()
+    RectTransform _uiRect;
+    UI_HUDValueBarStrategyData _strategyData;
+
+    void Awake()
     {
-        _fillImage.color = _strategyData.FillColor;
         transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        _uiRect = GetComponent<RectTransform>();
     }
-    public override void Bind(Transform target)
+
+    public void SetStrategyData(UI_HUDValueBarStrategyData strategyData)
     {
-        _target = target;
+        _strategyData = strategyData;
+        _fillImage.color = _strategyData.FillColor;
+        _uiRect.sizeDelta = _strategyData.UIHUDSize;
+
     }
-    public void UpdatePos()
+
+    public void SetValue(float curValue , float maxValue)
     {
-        Debug.Log(_target.position);
-        transform.position = _target.position + Vector3.up;
+        _slider.value = curValue / maxValue;
     }
 }

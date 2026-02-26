@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [SerializeField] UI_HUDValueBarStrategyData _enemyHUDData;
     [SerializeField] GameObject _trainBack;
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] EnemyData _baseEnemyData;
@@ -30,6 +31,12 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < 50; i++)
         {
             GameObject enemy = Instantiate(_enemyPrefab);
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            EnemyUIController enemyUIController = enemy.GetComponent<EnemyUIController>();
+            UI_HUDValueBar enemyHUD = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(enemy.transform);
+            enemyHUD.SetStrategyData(_enemyHUDData);
+            enemyUIController.AddUI<UI_HUDValueBar>(enemyHUD);
+            enemyUIController.AllUIHIde();
             enemy.name = $"Enemy_{i + 1}";
             enemy.transform.SetParent(enemyPool.transform);
             enemies.Add(enemy.GetComponent<Enemy>());
@@ -103,6 +110,7 @@ public class EnemySpawner : MonoBehaviour
             spawnEnemy = enemies[i];
             spawnEnemy.Init(_baseEnemyData);
             spawnEnemy.GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
+            spawnEnemy.GetComponent<EnemyUIController>().AllUIShow();
             spawnEnemy.transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y, 0);
             spawnEnemy.gameObject.SetActive(true);
             break;
