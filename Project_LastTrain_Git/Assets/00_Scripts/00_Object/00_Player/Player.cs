@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    LandChecker landChecker;
+    [SerializeField] PlayerData _playerData;
+    LandChecker _landChecker;
     PlayerAction playerAction;
     PlayerController playerController;
     void Start()
     {
-        landChecker = GetComponent<LandChecker>();
+        _landChecker = GetComponent<LandChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
         
-        playerAction.Init();
+        playerAction.Init(_playerData);
         playerController.Init();
     }
 
     void Update()
     {
         playerController.OnInputUpdate();
-        landChecker.LandCheck();
+        _landChecker.LandCheck();
     }
     void FixedUpdate()
     {

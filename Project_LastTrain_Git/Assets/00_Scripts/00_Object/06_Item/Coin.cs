@@ -5,15 +5,21 @@ using System;
 
 public class Coin : MonoBehaviour, IGravityAffected
 {
-    LandChecker landChecker;
-    float yVelocity = 10;
+    LandChecker _landChecker;
+    float _yVel = 10;
     public event Action GetCoin;
     public Vector3 spawnDir;
+
+    public float YVel { get { return _yVel; } set { _yVel = value; } }
+
+    public Transform TargetTransform { get { return transform; } }
+
+    public LandChecker LandChecker { get { return _landChecker; } }
 
     public void OnEnable()
     {
         spawnDir = UnityEngine.Random.Range(0, 2) == 0 ? Vector3.left : Vector3.right;
-        landChecker = gameObject.AddComponent<LandChecker>();
+        _landChecker = gameObject.AddComponent<LandChecker>();
     }
     public void OnTriggerEnter(Collider coll)
     {
@@ -25,7 +31,7 @@ public class Coin : MonoBehaviour, IGravityAffected
     }
     public void OnUpdate()
     {
-        landChecker.LandCheck();
+        _landChecker.LandCheck();
         
     }
 
@@ -35,17 +41,17 @@ public class Coin : MonoBehaviour, IGravityAffected
         {
             return;
         }
-        if (!landChecker.IsLanding)
+        if (!_landChecker.IsLanding)
         {
-            yVelocity -= gravity * Time.deltaTime;
-            transform.position += new Vector3(spawnDir.x * 3f, yVelocity, 0) * Time.deltaTime;
+            _yVel -= gravity * Time.deltaTime;
+            transform.position += new Vector3(spawnDir.x * 3f, _yVel, 0) * Time.deltaTime;
         }
         else
         {
-            if (yVelocity < 0)
+            if (_yVel < 0)
             {
-                yVelocity = 0;
-                transform.position = new Vector3(transform.position.x, landChecker.GetLandYPos(), 0);
+                _yVel = 0;
+                transform.position = new Vector3(transform.position.x, _landChecker.GetLandYPos(), 0);
             }
         }
     }

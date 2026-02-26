@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 {
     PlayerAction player;
-    LandChecker landChecker;
+    LandChecker _landChecker;
     EnemyUIController _enemyUIController;
     UI_HUDValueBar _enemyHUD;
     public EnemyData enemyData;
@@ -18,7 +19,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 
     Vector3 moveDir;
     float curHp;
-    float yVelocity = 0;
+    float _yVel = 0;
 
     public event Action<float, float> OnDamage;
     public event Action<Enemy> OnEnemyDied;
@@ -34,10 +35,15 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 
     EnemyState enemyState;
 
+    public float YVel { get { return _yVel; } set { _yVel = value; } }
+
+    public Transform TargetTransform { get { return transform; } }
+
+    public LandChecker LandChecker { get { return _landChecker; } }
 
     public void Awake()
     {
-        landChecker = GetComponent<LandChecker>();
+        _landChecker = GetComponent<LandChecker>();
         _enemyUIController = GetComponent<EnemyUIController>();
         
     }
@@ -61,7 +67,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
             enemyState = EnemyState.None;
         }
         _enemyUIController.UpdateUIPos();
-        landChecker.LandCheck();
+        _landChecker.LandCheck();
         switch (enemyState)
         {
             case EnemyState.None:
@@ -69,13 +75,13 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
                 
                 break;
             case EnemyState.Move:
-                if (landChecker.IsCliff)
+                if (_landChecker.IsCliff)
                 {
                     moveDir = -moveDir;
                 }
-                transform.position += new Vector3(moveDir.x * enemyData.moveSpeed, yVelocity, 0) * Time.deltaTime;
+                transform.position += new Vector3(moveDir.x * enemyData.moveSpeed, _yVel, 0) * Time.deltaTime;
                 transform.rotation = Quaternion.LookRotation(moveDir);
-                landChecker.CliffCheck(moveDir);
+                _landChecker.CliffCheck(moveDir);
                 if (player != null)
                 {
                     enemyState = EnemyState.Tracking;
@@ -85,7 +91,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
             case EnemyState.Tracking:
                 moveDir = new Vector3(player.transform.position.x - transform.position.x, 0, player.transform.position.z - transform.position.z);
                 moveDir.Normalize();
-                transform.position += new Vector3(moveDir.x * enemyData.chaseSpeed, yVelocity, moveDir.z) * Time.deltaTime;
+                transform.position += new Vector3(moveDir.x * enemyData.chaseSpeed, _yVel, moveDir.z) * Time.deltaTime;
                 if (Vector3.Distance(transform.position, player.transform.position) <= _attackDistance)
                 {
                     enemyState = EnemyState.Attack;
@@ -162,26 +168,6 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
         {
             _enemyUIController.AllUIHIde();
             enemyState = EnemyState.Die;
-        }
-    }
-
-    public void AffectGravity(float gravity)
-    {
-        if (!gameObject.activeSelf)
-        {
-            return;
-        }
-        if (!landChecker.IsLanding)
-        {
-            yVelocity -= gravity * Time.deltaTime;
-        }
-        else
-        {
-            if (yVelocity < 0)
-            {
-                yVelocity = 0;
-                transform.position = new Vector3(transform.position.x, landChecker.GetLandYPos(), 0);
-            }
         }
     }
 }

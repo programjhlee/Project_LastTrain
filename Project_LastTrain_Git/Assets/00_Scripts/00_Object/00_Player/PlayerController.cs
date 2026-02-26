@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     }
     public void OnInputUpdate()
     {
-        playerAction.MoveDir = Vector3.zero;
+        playerAction.SetMoveDirection(Vector3.zero);
 
         if (GameManager.Instance.IsPaused())
         {
@@ -20,11 +20,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerAction.Move(Vector3.left);
+            playerAction.SetMoveDirection(Vector3.left);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            playerAction.Move(Vector3.right);
+            playerAction.SetMoveDirection((Vector3.right));
         }
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {

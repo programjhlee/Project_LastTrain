@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class GravityManager : SingletonManager<GravityManager>
 {
@@ -20,7 +21,7 @@ public class GravityManager : SingletonManager<GravityManager>
         {
             if(gravityObjects[i] != null)
             {
-                gravityObjects[i].AffectGravity(gravity);
+                AffectGravity(gravityObjects[i]);
             }
         }
     }
@@ -33,5 +34,21 @@ public class GravityManager : SingletonManager<GravityManager>
     public void AddGravityObj(IGravityAffected obj)
     {
         AddList(gravityObjects, obj);
+    }
+
+    public void AffectGravity(IGravityAffected obj)
+    {
+        if (!obj.LandChecker.IsLanding)
+        {
+            obj.YVel -= gravity * Time.fixedDeltaTime;
+        }
+        else
+        {
+            if (obj.YVel < 0)
+            {
+                obj.YVel = 0;
+                obj.TargetTransform.position = new Vector3(obj.TargetTransform.position.x, obj.LandChecker.GetLandYPos(), 0);
+            }
+        }
     }
 }

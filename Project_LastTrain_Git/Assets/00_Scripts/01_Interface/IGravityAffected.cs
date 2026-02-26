@@ -4,6 +4,11 @@ using UnityEngine;
 
 public interface IGravityAffected
 {
-    public void AffectGravity(float gravity);
+    float YVel { get; set; }
+       
+    Transform TargetTransform { get;}
+    LandChecker LandChecker { get; }
+
+
 
 }

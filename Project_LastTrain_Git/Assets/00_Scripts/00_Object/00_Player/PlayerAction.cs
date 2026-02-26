@@ -7,21 +7,10 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 {
     [SerializeField] Tool _tool;
     PlayerData _playerData;
-    Collider col;
-    LandChecker landChecker;
+    Collider _col;
+    LandChecker _landChecker;
 
-    private LayerMask playerLayer = 6;
-    private int enemyLayer = 7;
-
-    bool isHit;
-    bool cantHit;
-    bool canRolling;
-    bool canInteraction;
-
-    public Vector3 MoveDir { get; set; }
-    public float JumpVel { get; set; }
-
-    public float RollingSpeed { get; set; }
+    WaitForSeconds _rollingCoolTime = new WaitForSeconds(1f);
 
     public event Action OnMove;
     public event Action OnJump;
@@ -29,82 +18,119 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     public event Action OnFix;
     public event Action OnInteraction;
     public event Action OnRoll;
+
+    public float YVel { get { return _yVel; } set { _yVel = value; }}
+
+    public Transform TargetTransform { get { return transform; } }
+
+    public LandChecker LandChecker { get { return _landChecker; } }
+
+    LayerMask _playerLayer = 6;
+    int _enemyLayer = 7;
+
+    float _yVel;
+
+    Vector3 _moveDir;
+
+
+
+
+    bool _isHit;
+    bool _canHit;
+    bool _canRolling;
+    bool _canInteraction;
+
     
-    public void Init()
+    public void Init(PlayerData playerData)
     {
         GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
-        landChecker = GetComponent<LandChecker>();
-        _playerData = GetComponent<PlayerData>();
-        col = GetComponent<Collider>();
-        _tool.Init();
-        _playerData.Level = 1;
-        _playerData.AttackPower = 5f + _tool.AttackPower;
-        _playerData.FixPower = 2f + _tool.AttackPower;
-        _playerData.MoveSpeed =  7f;
-        _playerData.JumpForce = 15f;
-        RollingSpeed = 20f;
-        
-        canInteraction = true;
-        canRolling = true;
 
+        _landChecker = GetComponent<LandChecker>();
+        _col = GetComponent<Collider>();
+        _tool.Init();
+        
+        _playerData = playerData;
+        _yVel = 0;
+
+        _isHit = false;
+        _canHit = true;
+        _canInteraction = true;
+        _canRolling = true;
     }
-    public void Move(Vector3 moveDir)
+    public void SetMoveDirection(Vector3 moveDir)
     {
-        if (isHit)
+        if (_isHit)
         {
-            MoveDir = Vector3.zero;
+            _moveDir = Vector3.zero;
             return;
         }
-        MoveDir = moveDir;
+        _moveDir = moveDir;
     }
 
     public void ProcessMovement()
     {
         if (GameManager.Instance.IsPaused())
         {
-            MoveDir = Vector3.zero;
+            SetMoveDirection(Vector3.zero);
             return;
         }
-        if (MoveDir != Vector3.zero)
+
+        RotateToward(_moveDir);
+
+        if (IsFrontBlockedBy(_enemyLayer))
         {
-            Quaternion targetRot = Quaternion.LookRotation(MoveDir);
-            transform.rotation = targetRot;
+            SetMoveDirection(Vector3.zero);
         }
-        if (Physics.Raycast(transform.position, transform.forward, col.bounds.extents.x + 0.1f, (1 << enemyLayer)))
+
+        else
         {
-            MoveDir = Vector3.zero;
-            return;
+            Move(_moveDir);
         }
-        if (MoveDir != Vector3.zero)
-        { 
-            transform.position += MoveDir * _playerData.MoveSpeed * Time.fixedDeltaTime;
+        Apply_yVel();
+    }
+
+    public void Move(Vector3 moveDir)
+    {
+        if (_moveDir != Vector3.zero)
+        {
+            transform.position += _moveDir * _playerData.MoveSpeed * Time.fixedDeltaTime;
             OnMove?.Invoke();
         }
-        transform.position += Vector3.up * JumpVel * Time.fixedDeltaTime;
-        if (transform.position.y < -20f)
+    }
+
+    public void RotateToward(Vector3 dir)
+    {
+        if (_moveDir != Vector3.zero)
         {
-            transform.position = new Vector3(0, -1f, 0);
-            StartCoroutine(DamageProcess(Vector3.zero));
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            transform.rotation = targetRot;
         }
     }
+
+    public bool IsFrontBlockedBy(int layerMask)
+    {
+        return Physics.Raycast(transform.position, transform.forward, _col.bounds.extents.x + 0.1f, (1 << layerMask));
+    }
+
     public void Jump()
     {
-        if (landChecker.IsLanding)
+        if (_landChecker.IsLanding)
         {
-            JumpVel = _playerData.JumpForce;
+            _yVel = _playerData.JumpForce;
             OnJump?.Invoke();
         }
     }
 
     public void Interaction()
     {
-        if (!canInteraction || isHit)
+        if (!_canInteraction || _isHit)
         {
             return;
         }
 
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
+
         if (Physics.Raycast(ray, out hit, 2f))
         {
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy))
@@ -125,19 +151,19 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
         StartCoroutine(InteractionCoolTimeProcess(0.3f));
     }
-    public void Attack(IAttackable _attackable, Vector3 attackDir)
+    void Attack(IAttackable _attackable, Vector3 attackDir)
     {
         _attackable.TakeDamage(_playerData.AttackPower, attackDir);
     }
     
-    public void Fix(IFixable _fixable)
+    void Fix(IFixable _fixable)
     {
         _fixable.TakeFix(_playerData.FixPower);
     }
 
     public void Rolling()
     {
-        if (MoveDir == Vector3.zero || canRolling == false)
+        if (_moveDir == Vector3.zero || _canRolling == false)
         {
             return;
         }
@@ -148,84 +174,97 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     {
         interactable.Interact();
     }
-        
+
     public void TakeDamage(Vector3 dir)
     {
-        if (cantHit)
+        if (!_canHit)
         {
             return;
         }
-        StartCoroutine(DamageProcess(dir));
+        StartCoroutine(GetDamageSequence(dir));
     }
 
     IEnumerator InteractionCoolTimeProcess(float interactionCoolTime)
     {
-        canInteraction = false;
+        _canInteraction = false;
         yield return new WaitForSeconds(interactionCoolTime);
-        canInteraction = true;
+        _canInteraction = true;
     }
 
     IEnumerator RollingProcess()
     {
-        cantHit = true;
-        canRolling = false;
-        Physics.IgnoreLayerCollision(playerLayer, enemyLayer,true);
-        Vector3 target = transform.position + MoveDir * 3f;
-        while (Vector3.Distance(transform.position,target)>0.0001f)
+        _canHit = false;
+        _canRolling = false;
+        Physics.IgnoreLayerCollision(_playerLayer, _enemyLayer,true);
+        Vector3 target = transform.position + _moveDir * 3f;
+        while (Vector3.Distance(transform.position,target) > 0.0001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, RollingSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, _playerData.RollingSpeed * Time.deltaTime);
             yield return null;
         }
-        cantHit = false;
-        Physics.IgnoreLayerCollision(playerLayer, enemyLayer, false);
-        yield return new WaitForSeconds(1f);
-        canRolling = true;
+        _canHit = true;
+        Physics.IgnoreLayerCollision(_playerLayer, _enemyLayer, false);
+        yield return _rollingCoolTime;
+        _canRolling = true;
     }
 
 
-    IEnumerator DamageProcess(Vector3 dir)
+    IEnumerator GetDamageSequence(Vector3 dir)
     {
-        isHit = true;
+        _isHit = true;
+        _canHit = false;
+
         float attackForce = 10f;
+        float stunTime = 0.25f;
+        float iframeTime = 1f;
+
+        yield return StartCoroutine(ForceOut(dir, attackForce));
+        yield return new WaitForSeconds(stunTime);
+
+        _isHit = false;
+
+        yield return StartCoroutine(IFrameDuration(iframeTime));
+
+        _canHit = true;
+    }
+    IEnumerator ForceOut(Vector3 dir, float attackForce)
+    {
         float curTime = 0;
+
         while (curTime <= 0.1f)
         {
             curTime += Time.deltaTime;
             transform.position += new Vector3(dir.x, 0.4f, 0) * attackForce * Time.deltaTime;
             yield return null;
         }
-        curTime = 0;
-        cantHit = true;
-        curTime = 0;
-        Renderer rend = GetComponent<Renderer>();
-        while(curTime <= 1f)
-        {
-            if(curTime >= 0.25f)
-            {
-                isHit = false;
-            }
-            curTime += Time.deltaTime;
-            rend.enabled = false;
-            yield return null;
-            rend.enabled = true;
-            yield return null;
-        }
-        cantHit = false;
     }
 
-    public void AffectGravity(float gravity)
+    IEnumerator IFrameDuration(float duration)
     {
-        if (!landChecker.IsLanding)
+        float curTime = 0;
+
+        Renderer rend = GetComponent<Renderer>();
+        while (curTime <= duration)
         {
-            JumpVel -= gravity * Time.fixedDeltaTime;
+            curTime += Time.deltaTime;
+
+            rend.enabled = false;
+
+            yield return null;
+
+            rend.enabled = true;
+
+            yield return null;
         }
-        else
+    }
+
+    void Apply_yVel()
+    {
+        transform.position += Vector3.up * _yVel * Time.fixedDeltaTime;
+        if (transform.position.y < -20f)
         {
-            if (JumpVel < 0)
-            {
-                JumpVel = 0;
-                transform.position = new Vector3(transform.position.x, landChecker.GetLandYPos(), 0);
-            }
+            transform.position = new Vector3(0, -1f, 0);
+            StartCoroutine(GetDamageSequence(Vector3.zero));
         }
     }
 }
