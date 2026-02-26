@@ -126,7 +126,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
         enemyData = enemydt;
         curHp = enemyData.hp;
         _enemyHUD = _enemyUIController.GetUIHUD<UI_HUDValueBar>();
-        _enemyHUD.SetValue(curHp, enemyData.hp);
+        _enemyHUD.SetValue(curHp / enemyData.hp);
     }
 
     public void Attack()
@@ -157,7 +157,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     {
         StartCoroutine(DamageProcess(dir));
         curHp -= damage;
-        _enemyHUD.SetValue(curHp, enemyData.hp);
+        _enemyHUD.SetValue(curHp / enemyData.hp);
         if(curHp <= 0)
         {
             _enemyUIController.AllUIHIde();

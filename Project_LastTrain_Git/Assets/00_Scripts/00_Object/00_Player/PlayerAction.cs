@@ -27,6 +27,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     public event Action OnJump;
     public event Action OnAttack;
     public event Action OnFix;
+    public event Action OnInteraction;
     public event Action OnRoll;
     
     public void Init()
@@ -109,14 +110,17 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy))
             {
                 Attack(enemy, hit.collider.transform.position - transform.position);
+                OnAttack?.Invoke();
             }
             if (hit.collider.TryGetComponent<IFixable>(out IFixable fixable))
             {
                 Fix(fixable);
+                OnFix?.Invoke();
             }
             if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 Interaction(interactable);
+                OnInteraction?.Invoke();
             }
         }
         StartCoroutine(InteractionCoolTimeProcess(0.3f));

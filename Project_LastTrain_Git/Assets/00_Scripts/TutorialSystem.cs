@@ -14,6 +14,7 @@ public class TutorialSystem : MonoBehaviour
     [SerializeField] Train _train;
     [SerializeField] Switch _switch;
 
+
     TrainEventSystem _trainEventSystem;
     BigEventSystem _bigEventSystem;
     PlayerAction _playerAction;
@@ -38,26 +39,30 @@ public class TutorialSystem : MonoBehaviour
 
     IEnumerator AllTutorialProcess()
     {
-        for (int i = 0; i < _steps.Count; i++) 
+        int idx = 0;
+        while (idx < _steps.Count)
         {
-            switch (_steps[i])
+            for (int i = 0; i < _steps.Count; i++)
             {
-                case PlayerTutorialStep step:
-                    step.Bind(_player);
-                    yield return StartCoroutine(step.Run());
-                    break;
-                case InteractionTutorialStep step:
-                    step.Bind(_player,_trainEventSystem);
-                    yield return StartCoroutine(step.Run());
-                    break;
-                case EnemyTutorialStep step:
-                    step.Bind(_enemySpawner);
-                    yield return StartCoroutine(step.Run());
-                    break;
-                case BigEventTutorialStep step:
-                    step.Bind(_train);
-                    yield return StartCoroutine(step.Run());
-                    break;
+                switch (_steps[i])
+                {
+                    case PlayerTutorialStep step:
+                        step.Bind(_player);
+                        yield return StartCoroutine(step.Run());
+                        break;
+                    case InteractionTutorialStep step:
+                        step.Bind(_player, _trainEventSystem);
+                        yield return StartCoroutine(step.Run());
+                        break;
+                    case EnemyTutorialStep step:
+                        step.Bind(_enemySpawner);
+                        yield return StartCoroutine(step.Run());
+                        break;
+                    case BigEventTutorialStep step:
+                        step.Bind(_train);
+                        yield return StartCoroutine(step.Run());
+                        break;
+                }
             }
         }
         _skipBtn.gameObject.SetActive(false);

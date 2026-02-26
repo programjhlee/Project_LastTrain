@@ -8,6 +8,10 @@ public class BombEvent : Event,ITrainDamageEvent
     Player player;
     Renderer rend;
     BoxCollider col;
+    UIHUDController _uiHUDController;
+    UI_HUDValueBar _uiHUDFixValueBar;
+
+
     float curTime;
     float curFixAmount;
     public event Action<float> OnDamage;
@@ -85,13 +89,13 @@ public class BombEvent : Event,ITrainDamageEvent
     }
     public void Fixed()
     {
-        ReleaseOnFix();
+        ReleaseActionEvent();
         OnDamage = null;
         Destroy(gameObject);
     }
     public void Explosive()
     {
-        ReleaseOnFix();
+        ReleaseActionEvent();
         Debug.Log("ลอมü!");
         Destroy(gameObject);
     }

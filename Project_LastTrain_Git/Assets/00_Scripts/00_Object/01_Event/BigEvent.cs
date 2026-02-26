@@ -37,9 +37,6 @@ public class BigEvent : MonoBehaviour
 
     public event Action<float> OnTrainCrashed;
     public event Action OnDestroy;
-
-
-
     public void Init(float speed,Train train)
     {
         gameObject.SetActive(true);

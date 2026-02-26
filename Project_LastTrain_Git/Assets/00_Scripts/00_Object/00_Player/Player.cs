@@ -7,8 +7,6 @@ public class Player : MonoBehaviour
     LandChecker landChecker;
     PlayerAction playerAction;
     PlayerController playerController;
-
-
     void Start()
     {
         landChecker = GetComponent<LandChecker>();
@@ -19,7 +17,6 @@ public class Player : MonoBehaviour
         playerController.Init();
     }
 
-    // Update is called once per frame
     void Update()
     {
         playerController.OnInputUpdate();

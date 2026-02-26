@@ -7,6 +7,7 @@ public abstract class Event : MonoBehaviour, IFixable
 {
     public EventData eventData;
     public event Action OnFixed;
+    public event Action<float> OnTakeFix;
     public virtual void Enter(EventData initEventData)
     {
         eventData = initEventData;
@@ -18,8 +19,14 @@ public abstract class Event : MonoBehaviour, IFixable
     {
         OnFixed?.Invoke();
     }
-    protected void ReleaseOnFix()
+    protected void InvokeTakeFix(float fixRatio)
+    {
+        OnTakeFix?.Invoke(fixRatio);
+    }
+
+    protected void ReleaseActionEvent()
     {
         OnFixed = null;
+        OnTakeFix = null;
     }
 }

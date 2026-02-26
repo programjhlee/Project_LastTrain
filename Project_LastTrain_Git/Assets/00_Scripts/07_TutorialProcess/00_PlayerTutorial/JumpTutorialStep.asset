@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b936eda5eadd0a45a3335bf6db404f1, type: 3}
   m_Name: JumpTutorialStep
   m_EditorClassIdentifier: 
+  _jumpGuide: {fileID: 11400000, guid: 7e30f08e095084d4b914a9816a3c9303, type: 2}

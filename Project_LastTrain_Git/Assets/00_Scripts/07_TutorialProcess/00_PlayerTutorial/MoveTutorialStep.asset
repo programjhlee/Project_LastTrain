@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422f177bbefa6be41b69000d8103b081, type: 3}
   m_Name: MoveTutorialStep
   m_EditorClassIdentifier: 
+  _moveGuide: {fileID: 11400000, guid: ad66e435ebed96747a84ecfcf43e6579, type: 2}

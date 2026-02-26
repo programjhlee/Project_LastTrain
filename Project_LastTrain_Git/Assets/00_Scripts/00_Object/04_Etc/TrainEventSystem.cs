@@ -4,6 +4,7 @@ using System.Diagnostics.Tracing;
 using UnityEngine;
 using System;
 using System.Runtime.InteropServices.ComTypes;
+using UnityEditor.Search;
 public class TrainEventSystem : MonoBehaviour
 {
     public enum Events
@@ -17,6 +18,7 @@ public class TrainEventSystem : MonoBehaviour
     [SerializeField] string[] events;
     [SerializeField] Train train;
     [SerializeField] GameObject trainBack;
+    [SerializeField] UI_HUDValueBarStrategyData _uiEventFixBarData;
     EventSightChecker eventSightChecker;
     Renderer rend;
     
@@ -81,7 +83,7 @@ public class TrainEventSystem : MonoBehaviour
         {
             curTime = 0;
             Event curEvent = SpawnEventRandomPos();
-            BindDamageEvent(curEvent);
+            BindEvent(curEvent);
         }
         EventExecute();
         endEvents.Clear();
@@ -114,8 +116,13 @@ public class TrainEventSystem : MonoBehaviour
         return evt;
     }
 
-    public void BindDamageEvent(Event evt)
+    public void BindEvent(Event evt)
     {
+        UIHUDController _evtUIHUDController = evt.GetComponent<UIHUDController>();
+        UI_HUDValueBar _uiEventFixValueBar = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(evt.transform);
+        evt.OnTakeFix += _uiEventFixValueBar.SetValue;
+        evt.OnFixed += _evtUIHUDController.UIHUDListClear;
+        _evtUIHUDController.AddUIHUD(_uiEventFixValueBar);
         if(evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
         {
             trainDamageEvent.OnDamage += train.TakeDamage;

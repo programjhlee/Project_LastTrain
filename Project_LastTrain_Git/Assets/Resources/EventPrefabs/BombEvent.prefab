@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2598983825725742909}
   - component: {fileID: 504883756209582247}
   - component: {fileID: 4872977854396457120}
+  - component: {fileID: 6214771062347772668}
   m_Layer: 0
   m_Name: BombEvent
   m_TagString: Untagged
@@ -147,3 +148,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!114 &6214771062347772668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019347958536671918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ce97f1ea7224a489194f15bb88578a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

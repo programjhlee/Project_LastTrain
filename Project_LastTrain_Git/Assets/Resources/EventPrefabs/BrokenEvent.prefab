@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3191780537224955395}
   - component: {fileID: 8960352881333487591}
   - component: {fileID: 5611726204888031329}
+  - component: {fileID: 6380736109028844013}
   m_Layer: 0
   m_Name: BrokenEvent
   m_TagString: Untagged
@@ -119,3 +120,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventData: {fileID: 0}
+--- !u!114 &6380736109028844013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3585338176715042561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ce97f1ea7224a489194f15bb88578a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

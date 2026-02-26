@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be33d7910df4f504184c915184dbc8f6, type: 3}
   m_Name: RollingTutorialStep
   m_EditorClassIdentifier: 
+  _rollGuide: {fileID: 11400000, guid: 1a918914a91a59e41aeb3b37047bac01, type: 2}
