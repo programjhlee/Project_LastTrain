@@ -6,11 +6,13 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 {
+
+    public EnemyData enemyData;
+
     PlayerAction player;
     CollideChecker _CollideChecker;
-    EnemyUIController _enemyUIController;
+    UIHUDStack _enemyUIController;
     UI_HUDValueBar _enemyHUD;
-    public EnemyData enemyData;
 
     [SerializeField] float _findDistance;
     [SerializeField] float _attackDistance;
@@ -44,8 +46,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     public void Awake()
     {
         _CollideChecker = GetComponent<CollideChecker>();
-        _enemyUIController = GetComponent<EnemyUIController>();
-        
+        _enemyUIController = GetComponent<UIHUDStack>();
     }
 
     void OnEnable()
@@ -66,7 +67,7 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
         {
             enemyState = EnemyState.None;
         }
-        _enemyUIController.UpdateUIPos();
+        _enemyUIController.UpdateUIHUDPos();
         _CollideChecker.LandCheck();
         switch (enemyState)
         {

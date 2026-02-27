@@ -32,11 +32,8 @@ public class EnemySpawner : MonoBehaviour
         {
             GameObject enemy = Instantiate(_enemyPrefab);
             Enemy enemyScript = enemy.GetComponent<Enemy>();
-            EnemyUIController enemyUIController = enemy.GetComponent<EnemyUIController>();
             UI_HUDValueBar enemyHUD = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(enemy.transform);
             enemyHUD.SetStrategyData(_enemyHUDData);
-            enemyUIController.AddUI<UI_HUDValueBar>(enemyHUD);
-            enemyUIController.AllUIHIde();
             enemy.name = $"Enemy_{i + 1}";
             enemy.transform.SetParent(enemyPool.transform);
             enemies.Add(enemy.GetComponent<Enemy>());

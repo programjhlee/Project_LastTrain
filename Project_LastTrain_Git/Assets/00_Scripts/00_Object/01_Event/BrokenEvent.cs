@@ -7,13 +7,13 @@ public class BrokenEvent : Event,ITrainDamageEvent
 {
     float curTime = 0;
     float curFixAmount = 0;
-    UIHUDController _evtHUDController;
+    UIHUDStack _evtHUDController;
 
     public event Action<float> OnDamage;
     public override void Enter(EventData initEventData)
     {
         base.Enter(initEventData);
-        _evtHUDController = GetComponent<UIHUDController>();
+        _evtHUDController = GetComponent<UIHUDStack>();
         curFixAmount = eventData.fixAmount;
     }
     public override void Execute()

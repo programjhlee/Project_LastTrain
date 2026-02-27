@@ -1,33 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class UIHUDController : MonoBehaviour
 {
-    List<UI_HUD> _uiHUDList = new List<UI_HUD>();
+    Dictionary<Type, List<UI_HUD>> _uiDics;
+
+
+    public void Init()
+    {
+        _uiDics = new Dictionary<Type, List<UI_HUD>>();
+    }
+
+
 
     public void AddUIHUD(UI_HUD uiHUD)
     {
-        _uiHUDList.Add(uiHUD);
+       Type key = uiHUD.GetType();
+        if (_uiDics[key] == null)
+        {
+            _uiDics[key] = new List<UI_HUD>();
+        }
+        _uiDics[key].Add(uiHUD);
     }
 
     public void UpdateUIHUDPos()
     {
-        for(int i = 0; i < _uiHUDList.Count; i++)
+        foreach (var key in _uiDics.Keys)
         {
-            _uiHUDList[i].SetUpDirScale((i + 1) * 1.2f);
-            _uiHUDList[i].UpdatePos();
+            foreach(var hud in _uiDics[key])
+            {
+                hud.UpdatePos();
+            }
         }
     }
 
     public void UIHUDListClear()
     {
-        for(int i = 0; i < _uiHUDList.Count; i++)
+        foreach (var key in _uiDics.Keys)
         {
-            Destroy(_uiHUDList[i].gameObject);
+            foreach (var hud in _uiDics[key])
+            {
+                hud.Hide();
+            }
+            _uiDics[key].Clear();
         }
-        _uiHUDList.Clear();
     }
 
+    public UI_HUD GetHUDUI<T>(string name = null) where T : UI_HUD
+    {
+        UI_HUD returnUI = null;
+        List<UI_HUD> ui;
+        if (_uiDics.TryGetValue(typeof(T),out ui))
+        {
+            if (name == null)
+            {
+                foreach (var hud in ui)
+                {
+                    if (typeof(T) == hud.GetType())
+                    {
+                        returnUI = hud as T;
+                    }
+                }
+            }
+        }
+        return returnUI;
+    }
 
 }

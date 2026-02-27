@@ -118,11 +118,11 @@ public class TrainEventSystem : MonoBehaviour
 
     public void BindEvent(Event evt)
     {
-        UIHUDController _evtUIHUDController = evt.GetComponent<UIHUDController>();
+        UIHUDStack _evtUIHUDStack = evt.GetComponent<UIHUDStack>();
         UI_HUDValueBar _uiEventFixValueBar = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(evt.transform);
         evt.OnTakeFix += _uiEventFixValueBar.SetValue;
-        evt.OnFixed += _evtUIHUDController.UIHUDListClear;
-        _evtUIHUDController.AddUIHUD(_uiEventFixValueBar);
+        evt.OnFixed += _evtUIHUDStack.UIHUDListClear;
+        _evtUIHUDStack.AddUIHUD(_uiEventFixValueBar);
         if(evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
         {
             trainDamageEvent.OnDamage += train.TakeDamage;
