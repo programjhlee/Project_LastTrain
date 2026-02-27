@@ -41,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
             enemy.transform.SetParent(enemyPool.transform);
             enemies.Add(enemy.GetComponent<Enemy>());
             enemy.SetActive(false);
-            GravityManager.Instance.AddGravityObj(enemy.GetComponent<IGravityAffected>());
+
         }
         GameManager.Instance.OnStageClear += AllEnemyUnActive;
         GameManager.Instance.OnGameStart += StartEnemySpawn;
@@ -111,8 +111,9 @@ public class EnemySpawner : MonoBehaviour
             spawnEnemy.Init(_baseEnemyData);
             spawnEnemy.GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
             spawnEnemy.GetComponent<EnemyUIController>().AllUIShow();
-            spawnEnemy.transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y, 0);
+            spawnEnemy.transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y + 1, 0);
             spawnEnemy.gameObject.SetActive(true);
+            GravityManager.Instance.AddGravityObj(spawnEnemy);
             break;
         }
         return spawnEnemy;

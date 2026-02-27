@@ -43,7 +43,7 @@ public class EnemyTutorialStep : TutorialStep
                     yield return null;
                     continue;
                 }
-                _enemyList[i].OnUpdate();
+                //_enemyList[i].OnUpdate();
             }
             yield return null;
         }

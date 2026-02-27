@@ -7,7 +7,7 @@ using static Cinemachine.DocumentationSortingAttribute;
 public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 {
     PlayerAction player;
-    LandChecker _landChecker;
+    CollideChecker _CollideChecker;
     EnemyUIController _enemyUIController;
     UI_HUDValueBar _enemyHUD;
     public EnemyData enemyData;
@@ -39,11 +39,11 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
 
     public Transform TargetTransform { get { return transform; } }
 
-    public LandChecker LandChecker { get { return _landChecker; } }
+    public CollideChecker CollideChecker { get { return _CollideChecker; } }
 
     public void Awake()
     {
-        _landChecker = GetComponent<LandChecker>();
+        _CollideChecker = GetComponent<CollideChecker>();
         _enemyUIController = GetComponent<EnemyUIController>();
         
     }
@@ -53,7 +53,6 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
         enemyState = EnemyState.Move;
         moveDir = Vector3.left;
         _attackStateTime = 0;
-    
     }
 
     void OnDisable()
@@ -62,12 +61,13 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
     }
     public void OnUpdate()
     {
+        
         if(transform.position.y < -20f)
         {
             enemyState = EnemyState.None;
         }
         _enemyUIController.UpdateUIPos();
-        _landChecker.LandCheck();
+        _CollideChecker.LandCheck();
         switch (enemyState)
         {
             case EnemyState.None:
@@ -75,13 +75,15 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
                 
                 break;
             case EnemyState.Move:
-                if (_landChecker.IsCliff)
+                if (_CollideChecker.IsLanding && _CollideChecker.IsCliff)
                 {
+                    Debug.Log("절벽은 무서워!");
                     moveDir = -moveDir;
                 }
+
                 transform.position += new Vector3(moveDir.x * enemyData.moveSpeed, _yVel, 0) * Time.deltaTime;
                 transform.rotation = Quaternion.LookRotation(moveDir);
-                _landChecker.CliffCheck(moveDir);
+                _CollideChecker.CliffCheck(moveDir);
                 if (player != null)
                 {
                     enemyState = EnemyState.Tracking;
@@ -157,8 +159,6 @@ public class Enemy : MonoBehaviour, IAttackable,IGravityAffected
         }
         curTime = 0;
     }
-
-
     public void TakeDamage(float damage ,Vector3 dir)
     {
         StartCoroutine(DamageProcess(dir));

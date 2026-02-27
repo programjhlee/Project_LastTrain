@@ -187,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 128446180}
   serializedVersion: 2
   m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: 0, y: 2.8715577, z: -9.9619465}
+  m_LocalPosition: {x: -8.91, y: 2.871558, z: -9.961947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 832523913}
   - component: {fileID: 832523912}
   - component: {fileID: 832523910}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Switch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1231,7 +1231,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: 0, y: 2.871558, z: -9.961947}
+  m_LocalPosition: {x: -8.91, y: 2.871558, z: -9.961947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1743,7 +1743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755d1b2cc43d47447b1a8292e7c6554d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerData: {fileID: 0}
+  _playerData: {fileID: 11400000, guid: d6456995e694ac44494d7f848794c4df, type: 2}
   _train: {fileID: 190456708}
   _platformController: {fileID: 1800714547}
 --- !u!1 &1769046063
@@ -2464,7 +2464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5603090469297907198, guid: 629495a1a4f5e93438125e1fc6a12351, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8.91
       objectReference: {fileID: 0}
     - target: {fileID: 5603090469297907198, guid: 629495a1a4f5e93438125e1fc6a12351, type: 3}
       propertyPath: m_LocalPosition.y

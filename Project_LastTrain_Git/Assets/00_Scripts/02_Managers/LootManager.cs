@@ -25,7 +25,6 @@ public class LootManager : SingletonManager<LootManager>
             coin.transform.SetParent(coins.transform);
             coinList.Add(coin.GetComponent<Coin>());
             coinList[i].GetCoin += IncreaseCoin;
-            GravityManager.Instance.AddGravityObj(coinList[i].GetComponent<IGravityAffected>());
             GameManager.Instance.OnStageClear += AllCoinUnActive;
             coin.SetActive(false);
         }
@@ -69,6 +68,7 @@ public class LootManager : SingletonManager<LootManager>
                 }
                 coinList[j].transform.position = new Vector3(enemyInfo.transform.position.x + Random.Range(-2f, 2f), enemyInfo.transform.position.y, 0);
                 coinList[j].gameObject.SetActive(true);
+                GravityManager.Instance.AddGravityObj(coinList[j]);
                 break;
             }
         }

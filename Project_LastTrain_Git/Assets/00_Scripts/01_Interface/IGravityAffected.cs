@@ -7,7 +7,7 @@ public interface IGravityAffected
     float YVel { get; set; }
        
     Transform TargetTransform { get;}
-    LandChecker LandChecker { get; }
+    CollideChecker CollideChecker { get; }
 
 
 

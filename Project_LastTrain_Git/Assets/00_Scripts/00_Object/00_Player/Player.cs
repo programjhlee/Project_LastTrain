@@ -5,12 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerData _playerData;
-    LandChecker _landChecker;
+    CollideChecker _CollideChecker;
     PlayerAction playerAction;
     PlayerController playerController;
     void Start()
     {
-        _landChecker = GetComponent<LandChecker>();
+        _CollideChecker = GetComponent<CollideChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
         
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         playerController.OnInputUpdate();
-        _landChecker.LandCheck();
+        _CollideChecker.LandCheck();
     }
     void FixedUpdate()
     {

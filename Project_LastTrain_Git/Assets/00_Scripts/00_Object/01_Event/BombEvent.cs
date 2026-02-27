@@ -8,8 +8,8 @@ public class BombEvent : Event,ITrainDamageEvent
     Player player;
     Renderer rend;
     BoxCollider col;
-    UIHUDController _uiHUDController;
-    UI_HUDValueBar _uiHUDFixValueBar;
+    UIHUDController _evtHUDController;
+    UI_HUDValueBar _evtHUDFixValueBar;
 
 
     float curTime;
@@ -18,6 +18,7 @@ public class BombEvent : Event,ITrainDamageEvent
     public override void Enter(EventData initEventData)
     {
         base.Enter(initEventData);
+        _evtHUDController = GetComponent<UIHUDController>();
         rend = GetComponent<Renderer>();
         curFixAmount = eventData.fixAmount;
         col = GetComponent<BoxCollider>();
@@ -26,7 +27,8 @@ public class BombEvent : Event,ITrainDamageEvent
     public override void Execute()
     {
         curTime += Time.deltaTime;
-        if(curTime > eventData.cyclePerTime)
+        _evtHUDController.UpdateUIHUDPos();
+        if (curTime > eventData.cyclePerTime)
         {
             curTime = 0;
             Exit();
@@ -64,8 +66,8 @@ public class BombEvent : Event,ITrainDamageEvent
     public override void TakeFix(float fixPower)
     {
         curFixAmount -= fixPower;
-
-        if(curFixAmount <= 0)
+        InvokeTakeFix(curFixAmount / eventData.fixAmount);
+        if (curFixAmount <= 0)
         {
             InvokeOnFix();
             Fixed();
@@ -96,6 +98,7 @@ public class BombEvent : Event,ITrainDamageEvent
     public void Explosive()
     {
         ReleaseActionEvent();
+        _evtHUDController.UIHUDListClear();
         Debug.Log("ลอมü!");
         Destroy(gameObject);
     }

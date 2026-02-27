@@ -137,7 +137,6 @@ public class UIManager : SingletonManager<UIManager>
             {
                 if (uiname == null)
                 {
-                    Debug.Log("Ã£¾Ò´Ù!");
                     ui = Instantiate(uis[0]).GetComponent<T>();
                     ui.name = typeof(T).Name;
                     ui.transform.SetParent(canvasHUD.transform);

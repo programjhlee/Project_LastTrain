@@ -102,7 +102,6 @@ public class EventSightChecker : MonoBehaviour
             if (!wasOutLeftEvent.ContainsKey(curEvent))
             {
                 wasOutLeftEvent[curEvent] = CheckOutBound(leftBound, curEvent.transform);
-                Debug.Log($"Out Left : {wasOutLeftEvent[curEvent]}");
                 if (wasOutLeftEvent[curEvent])
                 {
                     sightOutLeftCnt++;
@@ -111,7 +110,6 @@ public class EventSightChecker : MonoBehaviour
             if (!wasOutRightEvent.ContainsKey(curEvent))
             {
                 wasOutRightEvent[curEvent] = CheckOutBound(rightBound, curEvent.transform);
-                Debug.Log($"Out Right : {wasOutRightEvent[curEvent]}");
                 if (wasOutRightEvent[curEvent])
                 {
                     sightOutRightCnt++;

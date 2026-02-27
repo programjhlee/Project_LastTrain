@@ -8,7 +8,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     [SerializeField] Tool _tool;
     PlayerData _playerData;
     Collider _col;
-    LandChecker _landChecker;
+    CollideChecker _collideChecker;
 
     WaitForSeconds _rollingCoolTime = new WaitForSeconds(1f);
 
@@ -23,10 +23,11 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public Transform TargetTransform { get { return transform; } }
 
-    public LandChecker LandChecker { get { return _landChecker; } }
+    public CollideChecker CollideChecker { get { return _collideChecker; } }
 
-    LayerMask _playerLayer = 6;
+    int _playerLayer = 6;
     int _enemyLayer = 7;
+    int _obstacleLayer = 8;
 
     float _yVel;
 
@@ -45,7 +46,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     {
         GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
 
-        _landChecker = GetComponent<LandChecker>();
+        _collideChecker = GetComponent<CollideChecker>();
         _col = GetComponent<Collider>();
         _tool.Init();
         
@@ -77,16 +78,15 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
         RotateToward(_moveDir);
 
-        if (IsFrontBlockedBy(_enemyLayer))
+        if (_collideChecker.IsFrontBlockedBy(_enemyLayer) || _collideChecker.IsFrontBlockedBy(_obstacleLayer))
         {
             SetMoveDirection(Vector3.zero);
         }
-
         else
         {
             Move(_moveDir);
         }
-        Apply_yVel();
+        ApplyYVel();
     }
 
     public void Move(Vector3 moveDir)
@@ -106,15 +106,9 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             transform.rotation = targetRot;
         }
     }
-
-    public bool IsFrontBlockedBy(int layerMask)
-    {
-        return Physics.Raycast(transform.position, transform.forward, _col.bounds.extents.x + 0.1f, (1 << layerMask));
-    }
-
     public void Jump()
     {
-        if (_landChecker.IsLanding)
+        if (_collideChecker.IsLanding)
         {
             _yVel = _playerData.JumpForce;
             OnJump?.Invoke();
@@ -258,7 +252,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
     }
 
-    void Apply_yVel()
+    void ApplyYVel()
     {
         transform.position += Vector3.up * _yVel * Time.fixedDeltaTime;
         if (transform.position.y < -20f)

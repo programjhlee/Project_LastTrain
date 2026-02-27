@@ -6,7 +6,13 @@ using static Cinemachine.DocumentationSortingAttribute;
 public class GravityManager : SingletonManager<GravityManager>
 {
     float gravity = 40f;
-    List<IGravityAffected> gravityObjects = new List<IGravityAffected>();
+    List<IGravityAffected> gravityObjects;
+
+    public void OnEnable()
+    {
+        gravityObjects = new List<IGravityAffected>();
+    }
+
     public void OnDisable()
     {
         gravityObjects.Clear();
@@ -21,6 +27,7 @@ public class GravityManager : SingletonManager<GravityManager>
         {
             if(gravityObjects[i] != null)
             {
+                Debug.Log(gravityObjects[i]);
                 AffectGravity(gravityObjects[i]);
             }
         }
@@ -31,15 +38,21 @@ public class GravityManager : SingletonManager<GravityManager>
         lst.Add(obj);
     }
 
+    public void RemoveObj(IGravityAffected obj)
+    {
+        gravityObjects.Remove(obj);
+    }
     public void AddGravityObj(IGravityAffected obj)
     {
         AddList(gravityObjects, obj);
     }
 
+
     public void AffectGravity(IGravityAffected obj)
     {
-        if (!obj.LandChecker.IsLanding)
+        if (!obj.CollideChecker.IsLanding)
         {
+            Debug.Log(obj.YVel);
             obj.YVel -= gravity * Time.fixedDeltaTime;
         }
         else
@@ -47,7 +60,7 @@ public class GravityManager : SingletonManager<GravityManager>
             if (obj.YVel < 0)
             {
                 obj.YVel = 0;
-                obj.TargetTransform.position = new Vector3(obj.TargetTransform.position.x, obj.LandChecker.GetLandYPos(), 0);
+                obj.TargetTransform.position = new Vector3(obj.TargetTransform.position.x, obj.CollideChecker.GetLandYPos(), 0);
             }
         }
     }

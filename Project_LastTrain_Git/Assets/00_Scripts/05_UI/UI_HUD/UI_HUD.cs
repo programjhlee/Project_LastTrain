@@ -20,7 +20,6 @@ public abstract class UI_HUD : UI_Base
 
     public virtual void UpdatePos()
     {
-        Debug.Log(_target.position);
         transform.position = _target.position + (Vector3.up * _upDirScale);
     }
 }

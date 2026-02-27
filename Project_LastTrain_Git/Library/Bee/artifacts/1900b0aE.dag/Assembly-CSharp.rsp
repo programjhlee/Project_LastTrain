@@ -425,9 +425,9 @@
 "Assets/00_Scripts/07_TutorialProcess/01_InteractionTutorial/EnemyTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/01_InteractionTutorial/InteractionTutorialStep.cs"
 "Assets/00_Scripts/07_TutorialProcess/TutorialStep.cs"
+"Assets/00_Scripts/CollideChecker.cs"
 "Assets/00_Scripts/CSVReader.cs"
 "Assets/00_Scripts/Define.cs"
-"Assets/00_Scripts/LandChecker.cs"
 "Assets/00_Scripts/TutorialSystem.cs"
 -langversion:9.0
 /deterministic
