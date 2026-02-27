@@ -14,7 +14,6 @@ public class UIHUDController : MonoBehaviour
     }
 
 
-
     public void AddUIHUD(UI_HUD uiHUD)
     {
        Type key = uiHUD.GetType();
@@ -48,9 +47,9 @@ public class UIHUDController : MonoBehaviour
         }
     }
 
-    public UI_HUD GetHUDUI<T>(string name = null) where T : UI_HUD
+    public T GetHUDUI<T>(string name = null) where T : UI_HUD
     {
-        UI_HUD returnUI = null;
+        T returnUI = null;
         List<UI_HUD> ui;
         if (_uiDics.TryGetValue(typeof(T),out ui))
         {

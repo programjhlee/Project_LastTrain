@@ -107,7 +107,6 @@ public class EnemySpawner : MonoBehaviour
             spawnEnemy = enemies[i];
             spawnEnemy.Init(_baseEnemyData);
             spawnEnemy.GetComponent<Enemy>().OnEnemyDied += LootManager.Instance.DropCoinAt;
-            spawnEnemy.GetComponent<EnemyUIController>().AllUIShow();
             spawnEnemy.transform.position = new Vector3(Random.Range(_rend.bounds.min.x, _rend.bounds.max.x), transform.position.y + 1, 0);
             spawnEnemy.gameObject.SetActive(true);
             GravityManager.Instance.AddGravityObj(spawnEnemy);

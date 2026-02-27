@@ -10,7 +10,7 @@ public class MoveTutorialStep : PlayerTutorialStep
     
     UI_ControlGuide _uiControlGuide;
     UI_ControlGuide _uiControlGuide2;
-    UIHUDStack _uiController;
+    UIHUDController _uiController;
     Action _onMoveAction;
     
     public override IEnumerator Run()
@@ -19,7 +19,7 @@ public class MoveTutorialStep : PlayerTutorialStep
         _uiControlGuide.BindData(_moveGuide);
         _uiControlGuide2 = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
         _uiControlGuide2.BindData(_moveGuide);
-        _uiController = _p.GetComponent<UIHUDStack>();
+        _uiController = _p.GetComponent<UIHUDController>();
         float curDistance = 0;
         float movementTutorialClearDistance = 20f;
         _uiController.AddUIHUD(_uiControlGuide);

@@ -8,7 +8,7 @@ public class BombEvent : Event,ITrainDamageEvent
     Player player;
     Renderer rend;
     BoxCollider col;
-    UIHUDStack _evtHUDController;
+    UIHUDController _evtHUDController;
     UI_HUDValueBar _evtHUDFixValueBar;
 
 
@@ -18,7 +18,7 @@ public class BombEvent : Event,ITrainDamageEvent
     public override void Enter(EventData initEventData)
     {
         base.Enter(initEventData);
-        _evtHUDController = GetComponent<UIHUDStack>();
+        _evtHUDController = GetComponent<UIHUDController>();
         rend = GetComponent<Renderer>();
         curFixAmount = eventData.fixAmount;
         col = GetComponent<BoxCollider>();
