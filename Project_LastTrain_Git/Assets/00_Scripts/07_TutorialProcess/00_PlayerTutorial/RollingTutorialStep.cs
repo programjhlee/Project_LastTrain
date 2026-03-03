@@ -11,7 +11,7 @@ public class RollingTutorialStep : TutorialStep
     PlayerAction _pAction;
     
     UI_ControlGuide _uiControlGuide;
-    Action _onRollAction;
+    Action _onDodgeAction;
 
     public override void Bind(TutorialSystem system)
     {
@@ -25,8 +25,8 @@ public class RollingTutorialStep : TutorialStep
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
         _uiControlGuide.BindData(_rollGuide);
         Debug.Log("Shift키는 플레이어가 구릅니다! 구르는동안 무적이에요!");
-        _onRollAction = () => { curCnt++; };
-        _pAction.OnRoll += _onRollAction;
+        _onDodgeAction = () => { curCnt++; };
+        _pAction.OnDodge += _onDodgeAction;
         while (curCnt < jumpTutorialClearCnt)
         {
             _uiControlGuide.UpdatePos();
@@ -47,11 +47,11 @@ public class RollingTutorialStep : TutorialStep
             _uiControlGuide.Hide();
             _uiControlGuide = null;
         }
-        if (_onRollAction == null)
+        if (_onDodgeAction == null)
         {
             return;
         }
-        _pAction.OnRoll -= _onRollAction;
-        _onRollAction = null;
+        _pAction.OnDodge -= _onDodgeAction;
+        _onDodgeAction = null;
     }
 }

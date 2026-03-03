@@ -7,17 +7,21 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 {
     [SerializeField] Tool _tool;
     PlayerData _playerData;
+    PlayerAnim _playerAnim;
+    
     Collider _col;
     CollideChecker _collideChecker;
+    
 
     WaitForSeconds _rollingCoolTime = new WaitForSeconds(1f);
 
     public event Action OnMove;
+    public event Action OnIdle;
     public event Action OnJump;
     public event Action OnAttack;
     public event Action OnFix;
     public event Action OnInteraction;
-    public event Action OnRoll;
+    public event Action OnDodge;
 
 
     bool _isActive =false;
@@ -39,9 +43,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     Vector3 _moveDir;
 
-
-
-
     bool _isHit;
     bool _canHit;
     bool _canRolling;
@@ -53,6 +54,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
 
         _collideChecker = GetComponent<CollideChecker>();
+        _playerAnim = GetComponent<PlayerAnim>();
         _col = GetComponent<Collider>();
         _tool.Init();
 
@@ -72,6 +74,12 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _canHit = true;
         _canInteraction = true;
         _canRolling = true;
+
+        OnMove += _playerAnim.PlayAnimMove;
+        OnIdle += _playerAnim.StopAnimMove;
+        OnJump += _playerAnim.PlayAnimJump;
+        OnDodge += _playerAnim.PlayAnimDodge;
+        OnAttack += _playerAnim.PlayAnimAttack;
     }
     public void SetMoveDirection(Vector3 moveDir)
     {
@@ -111,6 +119,10 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             transform.position += _moveDir * _playerData.MoveSpeed * Time.fixedDeltaTime;
             OnMove?.Invoke();
         }
+        else
+        {
+            OnIdle?.Invoke();
+        }
     }
 
     public void RotateToward(Vector3 dir)
@@ -136,7 +148,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             return;
         }
-
+        OnAttack?.Invoke();
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
@@ -154,7 +166,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             }
             if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
-                Interaction(interactable);
+                DoInteraction(interactable);
                 OnInteraction?.Invoke();
             }
         }
@@ -170,16 +182,16 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _fixable.TakeFix(_playerData.FixPower);
     }
 
-    public void Rolling()
+    public void Dodge()
     {
         if (_moveDir == Vector3.zero || _canRolling == false)
         {
             return;
         }
-        OnRoll?.Invoke();
+        OnDodge?.Invoke();
         StartCoroutine(RollingProcess());
     }
-    public void Interaction(IInteractable interactable)
+    public void DoInteraction(IInteractable interactable)
     {
         interactable.Interact();
     }

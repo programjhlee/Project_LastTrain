@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     UIHUDController _HUDController;
     PlayerAction playerAction;
     PlayerController playerController;
+    PlayerAnim _playerAnim;
     void Awake()
     {
 
@@ -22,16 +23,19 @@ public class Player : MonoBehaviour
         _CollideChecker = GetComponent<CollideChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
+        _playerAnim = GetComponent<PlayerAnim>();
         _HUDController = GetComponent<UIHUDController>();
         
         playerAction.Init(_playerData);
         playerController.Init();
+        _playerAnim.Init();
         _HUDController.Init();
     }
 
     void Update()
     {
         playerController.OnInputUpdate();
+        _playerAnim.OnUpdate();
         _CollideChecker.LandCheck();
     }
     void FixedUpdate()

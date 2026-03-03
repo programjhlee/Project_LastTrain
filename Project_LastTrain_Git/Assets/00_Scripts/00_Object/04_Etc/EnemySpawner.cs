@@ -137,7 +137,6 @@ public class EnemySpawner : MonoBehaviour
                     _enemyDataDics[_enemyName[i]].chaseSpeed *= float.Parse(_enemyDataTable[j]["CHASESPEED"].ToString());
                     _enemyDataDics[_enemyName[i]].coin = int.Parse(_enemyDataTable[j]["COINPERENEMY"].ToString());
                     _spawnTime = float.Parse(_enemyDataTable[j]["SPAWNTIME"].ToString());
-                    Debug.Log(_enemyDataDics[_enemyName[j]].maxHp);
                     break;
                 }
             }

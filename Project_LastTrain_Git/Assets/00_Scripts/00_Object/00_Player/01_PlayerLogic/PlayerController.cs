@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            playerAction.Rolling();
+            playerAction.Dodge();
         }
     }
 
