@@ -130,11 +130,14 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (int.Parse(_enemyDataTable[j]["LEVEL"].ToString()) == LevelManager.Instance.Level)
                 {
-                    _enemyDataDics[_enemyName[i]].maxHp *= float.Parse(_enemyDataTable[i]["HP"].ToString());
-                    _enemyDataDics[_enemyName[i]].moveSpeed *= float.Parse(_enemyDataTable[i]["MOVESPEED"].ToString());
-                    _enemyDataDics[_enemyName[i]].chaseSpeed *= float.Parse(_enemyDataTable[i]["CHASESPEED"].ToString());
-                    _enemyDataDics[_enemyName[i]].coin = int.Parse(_enemyDataTable[i]["COINPERENEMY"].ToString());
-                    _spawnTime = float.Parse(_enemyDataTable[i]["SPAWNTIME"].ToString());
+                    Debug.Log(LevelManager.Instance.Level);
+                    Debug.Log(float.Parse(_enemyDataTable[j]["HP"].ToString()));
+                    _enemyDataDics[_enemyName[i]].maxHp *= float.Parse(_enemyDataTable[j]["HP"].ToString());
+                    _enemyDataDics[_enemyName[i]].moveSpeed *= float.Parse(_enemyDataTable[j]["MOVESPEED"].ToString());
+                    _enemyDataDics[_enemyName[i]].chaseSpeed *= float.Parse(_enemyDataTable[j]["CHASESPEED"].ToString());
+                    _enemyDataDics[_enemyName[i]].coin = int.Parse(_enemyDataTable[j]["COINPERENEMY"].ToString());
+                    _spawnTime = float.Parse(_enemyDataTable[j]["SPAWNTIME"].ToString());
+                    Debug.Log(_enemyDataDics[_enemyName[j]].maxHp);
                     break;
                 }
             }

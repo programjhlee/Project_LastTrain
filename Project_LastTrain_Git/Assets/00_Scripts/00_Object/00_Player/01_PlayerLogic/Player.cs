@@ -11,6 +11,14 @@ public class Player : MonoBehaviour
     PlayerController playerController;
     void Awake()
     {
+
+        _playerData.Level = 1;
+        _playerData.AttackPower = 5;
+        _playerData.FixPower = 2;
+        _playerData.MoveSpeed = 5;
+        _playerData.JumpForce = 15;
+        _playerData.RollingSpeed = 15;
+
         _CollideChecker = GetComponent<CollideChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();

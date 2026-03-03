@@ -60,7 +60,6 @@ public class CollideChecker : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * distance);
         if (Physics.Raycast(transform.position, dir, out hit, distance,layer))
         {
-            Debug.Log(hit.collider.gameObject.layer);
             return true;
         }
         return false;

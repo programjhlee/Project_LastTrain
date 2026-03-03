@@ -51,8 +51,6 @@ public class Zombie : GroundEnemy, IAttackable
         }
 
         base.Init(enemydt);
-        _enemyUIController.Init();
-
         IsActive = true;
         Curhp = enemyData.maxHp;
         Maxhp = enemyData.maxHp;
@@ -60,11 +58,12 @@ public class Zombie : GroundEnemy, IAttackable
         enemyData.attackSpeed = 0.25f;
         enemyData.attackDistance = 1.5f;
         
+        _enemyUIController.Init();
+        
         _enemyState = EnemyState.Detect;
         _moveDir = Vector3.left;
         stateTime = 0;
         
-        _enemyUIController.SetValueBarRatio();
         OnDamaged += _enemyUIController.SetValueBarRatio;
         OnDied += LootManager.Instance.DropCoinAt;
     }
@@ -150,6 +149,7 @@ public class Zombie : GroundEnemy, IAttackable
             case EnemyState.Die:
                 //TO - DO 죽었을때의 애니메이션등 연출처리
                 _enemyState = EnemyState.None;
+                OnDied?.Invoke(this);
                 break;
         }
     }
