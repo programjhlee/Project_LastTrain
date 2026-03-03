@@ -10,9 +10,9 @@ public class BigEventTutorialStep : TutorialStep
     BigEventSystem _bigEventSystem;
     BigEvent _bigEvent;
     Action _onCrashed;
-    public void Bind(Train train)
+    public override void Bind(TutorialSystem system)
     {
-        _train = train;
+        _train = system.train;
         _bigEventSystem = _train.GetComponent<BigEventSystem>();
     }
     public override IEnumerator Run()

@@ -19,17 +19,23 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     public event Action OnInteraction;
     public event Action OnRoll;
 
+
+    bool _isActive =false;
+    float _yVel;
+    public bool IsActive { get { return _isActive; } set { _isActive = value; } }
     public float YVel { get { return _yVel; } set { _yVel = value; }}
 
     public Transform TargetTransform { get { return transform; } }
 
     public CollideChecker CollideChecker { get { return _collideChecker; } }
 
-    int _playerLayer = 6;
-    int _enemyLayer = 7;
-    int _obstacleLayer = 8;
+    LayerMask _playerLayer;
+    LayerMask _enemyLayer;
+    LayerMask _obstacleLayer;
 
-    float _yVel;
+    int _playerLayerNum;
+    int _enemyLayerNum;
+    int _obstacleLayerNum;
 
     Vector3 _moveDir;
 
@@ -49,9 +55,18 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _collideChecker = GetComponent<CollideChecker>();
         _col = GetComponent<Collider>();
         _tool.Init();
-        
+
+        _playerLayer = LayerMask.GetMask("Player");
+        _enemyLayer = LayerMask.GetMask("Enemy");
+        _obstacleLayer = LayerMask.GetMask("Obstacle");
+
+        _playerLayerNum = LayerMask.NameToLayer("Player");
+        _enemyLayerNum = LayerMask.NameToLayer("Enemy");
+        _obstacleLayerNum = LayerMask.NameToLayer("Obstacle");
+
         _playerData = playerData;
         _yVel = 0;
+        IsActive = true;
 
         _isHit = false;
         _canHit = true;
@@ -189,7 +204,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     {
         _canHit = false;
         _canRolling = false;
-        Physics.IgnoreLayerCollision(_playerLayer, _enemyLayer,true);
+        Physics.IgnoreLayerCollision(_playerLayerNum, _enemyLayerNum, true);
         Vector3 target = transform.position + _moveDir * 3f;
         while (Vector3.Distance(transform.position,target) > 0.0001f)
         {
@@ -197,7 +212,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             yield return null;
         }
         _canHit = true;
-        Physics.IgnoreLayerCollision(_playerLayer, _enemyLayer, false);
+        Physics.IgnoreLayerCollision(_playerLayerNum, _enemyLayerNum, false);
         yield return _rollingCoolTime;
         _canRolling = true;
     }

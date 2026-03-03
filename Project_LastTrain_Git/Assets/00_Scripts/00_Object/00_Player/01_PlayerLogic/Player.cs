@@ -6,16 +6,19 @@ public class Player : MonoBehaviour
 {
     [SerializeField] PlayerData _playerData;
     CollideChecker _CollideChecker;
+    UIHUDController _HUDController;
     PlayerAction playerAction;
     PlayerController playerController;
-    void Start()
+    void Awake()
     {
         _CollideChecker = GetComponent<CollideChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
+        _HUDController = GetComponent<UIHUDController>();
         
         playerAction.Init(_playerData);
         playerController.Init();
+        _HUDController.Init();
     }
 
     void Update()

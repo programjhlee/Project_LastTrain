@@ -57,7 +57,8 @@ public class CollideChecker : MonoBehaviour
 
     public bool CollideCheckRay(Vector3 dir, LayerMask layer ,float distance, out RaycastHit hit)
     {
-        if (Physics.Raycast(transform.position, dir, out hit, distance,(1<< layer)))
+        Debug.DrawRay(transform.position, transform.forward * distance);
+        if (Physics.Raycast(transform.position, dir, out hit, distance,layer))
         {
             Debug.Log(hit.collider.gameObject.layer);
             return true;

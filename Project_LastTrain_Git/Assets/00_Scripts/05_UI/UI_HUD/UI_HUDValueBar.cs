@@ -9,18 +9,14 @@ public class UI_HUDValueBar : UI_HUD
     [SerializeField] Image _fillImage;
     RectTransform _uiRect;
     UI_HUDValueBarStrategyData _strategyData;
-
-    void Awake()
+    public void Init(UI_HUDValueBarStrategyData strategyData)
     {
         transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
         _uiRect = GetComponent<RectTransform>();
-    }
-
-    public void SetStrategyData(UI_HUDValueBarStrategyData strategyData)
-    {
         _strategyData = strategyData;
         _fillImage.color = _strategyData.FillColor;
         _uiRect.sizeDelta = _strategyData.UIHUDSize;
+        _slider.value = 1;
 
     }
 

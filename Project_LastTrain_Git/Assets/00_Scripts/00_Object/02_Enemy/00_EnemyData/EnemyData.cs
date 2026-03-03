@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyData")]
 public class EnemyData : ScriptableObject
 {
-    public float curHp;
+    public string enemyName;
+    public GameObject enemyPrefab;
     public float maxHp;
     public float moveSpeed;
     public float chaseSpeed;

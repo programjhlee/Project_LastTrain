@@ -9,7 +9,6 @@ public class BombEvent : Event,ITrainDamageEvent
     Renderer rend;
     BoxCollider col;
     UIHUDController _evtHUDController;
-    UI_HUDValueBar _evtHUDFixValueBar;
 
 
     float curTime;
@@ -19,6 +18,7 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         base.Enter(initEventData);
         _evtHUDController = GetComponent<UIHUDController>();
+        _evtHUDController.Init();
         rend = GetComponent<Renderer>();
         curFixAmount = eventData.fixAmount;
         col = GetComponent<BoxCollider>();

@@ -19,11 +19,26 @@ public class TutorialSystem : MonoBehaviour
     BigEventSystem _bigEventSystem;
     PlayerAction _playerAction;
 
+    TutorialContext _tutorialContext;
 
-
+    public Player player
+    {
+        get { return _player; }
+    }
+    public EnemySpawner enemySpawner => _enemySpawner;
+    public Train train
+    {
+        get { return _train; }
+    }
 
     void Start()
     {
+        _tutorialContext = new TutorialContext
+        {
+            train = _train,
+            player = _player
+        };
+
         _trainEventSystem = _train.GetComponent<TrainEventSystem>();
         _bigEventSystem = _train.GetComponent<BigEventSystem>();
         _playerAction = _player.GetComponent<PlayerAction>();
@@ -39,33 +54,12 @@ public class TutorialSystem : MonoBehaviour
 
     IEnumerator AllTutorialProcess()
     {
-        int idx = 0;
-        while (idx < _steps.Count)
+        for (int i = 0; i < _steps.Count; i++)
         {
-            for (int i = 0; i < _steps.Count; i++)
-            {
-                switch (_steps[i])
-                {
-                    case PlayerTutorialStep step:
-                        step.Bind(_player);
-                        yield return StartCoroutine(step.Run());
-                        break;
-                    case InteractionTutorialStep step:
-                        step.Bind(_player, _trainEventSystem);
-                        yield return StartCoroutine(step.Run());
-                        break;
-                    case EnemyTutorialStep step:
-                        step.Bind(_enemySpawner);
-                        yield return StartCoroutine(step.Run());
-                        break;
-                    case BigEventTutorialStep step:
-                        step.Bind(_train);
-                        yield return StartCoroutine(step.Run());
-                        break;
-                }
-            }
+            _steps[i].Bind(this);
+            yield return StartCoroutine(_steps[i].Run());
+            _steps[i].Release();
         }
-        _skipBtn.gameObject.SetActive(false);
         GameManager.Instance.GameStart();
     }
 

@@ -14,6 +14,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
     {
         base.Enter(initEventData);
         _evtHUDController = GetComponent<UIHUDController>();
+        _evtHUDController.Init();
         curFixAmount = eventData.fixAmount;
     }
     public override void Execute()

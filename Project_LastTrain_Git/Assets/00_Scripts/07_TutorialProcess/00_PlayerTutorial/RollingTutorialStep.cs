@@ -4,11 +4,20 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "RollingTutorialStep", menuName = "Create Tutorial File / RollingTutorial")]
-public class RollingTutorialStep : PlayerTutorialStep
+public class RollingTutorialStep : TutorialStep
 {
     [SerializeField] UI_HUDControlGuideStrategyData _rollGuide;
+    Player _p;
+    PlayerAction _pAction;
+    
     UI_ControlGuide _uiControlGuide;
     Action _onRollAction;
+
+    public override void Bind(TutorialSystem system)
+    {
+        _p = system.player;
+        _pAction = _p.GetComponent<PlayerAction>();
+    }
     public override IEnumerator Run()
     {
         int curCnt = 0;

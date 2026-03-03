@@ -4,15 +4,25 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "MoveTutorialStep" , menuName = "Create Tutorial File / MoveTutorial")]
-public class MoveTutorialStep : PlayerTutorialStep
+public class MoveTutorialStep : TutorialStep
 {
     [SerializeField] UI_HUDControlGuideStrategyData _moveGuide;
-    
+    Player _p;
+    PlayerAction _pAction;
+
+
     UI_ControlGuide _uiControlGuide;
     UI_ControlGuide _uiControlGuide2;
     UIHUDController _uiController;
     Action _onMoveAction;
     
+
+    public override void Bind(TutorialSystem system)
+    {
+        _p = system.player;
+        _pAction = _p.GetComponent<PlayerAction>();
+    }
+
     public override IEnumerator Run()
     {
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);

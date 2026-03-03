@@ -5,18 +5,37 @@ using System;
 
 public class EnemyUIController : MonoBehaviour
 {
+    [SerializeField] UI_HUDValueBarStrategyData _enemyHUDGraphicData;
     Enemy _enemy;
+    IAttackable _attackableEnemy;
     UI_HUDValueBar _enemyHUDValueBar;
-    public void Init()
+
+    public void Awake()
     {
         _enemy = GetComponent<Enemy>();
+        _attackableEnemy = GetComponent<IAttackable>();
+    }
+    public void Init()
+    {
         _enemyHUDValueBar = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(transform);
-        _enemy.OnDamage += SetValueBarRatio;
+        _enemyHUDValueBar.Init(_enemyHUDGraphicData);
+        _enemyHUDValueBar.SetValue(_attackableEnemy.Curhp / _attackableEnemy.Maxhp);
     }
 
-    public void SetValueBarRatio(EnemyData enemyData)
+    public void SetValueBarRatio()
     {
-        _enemyHUDValueBar.SetValue(enemyData.curHp / enemyData.maxHp);
+        _enemyHUDValueBar.SetValue(_attackableEnemy.Curhp / _attackableEnemy.Maxhp);
     }
     
+    public void UpdateUIPos()
+    {
+        _enemyHUDValueBar.UpdatePos();
+    }
+
+    public void HideUIHUD()
+    {
+        _enemyHUDValueBar.Hide();
+    }
+
+
 }

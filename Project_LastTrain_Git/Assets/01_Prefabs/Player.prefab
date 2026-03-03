@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6963714038281394776}
   - component: {fileID: 2490817828299787879}
   - component: {fileID: 8090990921270433300}
+  - component: {fileID: 217467473809681100}
   - component: {fileID: 6109710914492798652}
   m_Layer: 6
   m_Name: Player
@@ -141,6 +142,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   extraCheckDistance: 0.1
+--- !u!114 &217467473809681100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2619117868352139460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ce97f1ea7224a489194f15bb88578a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &6109710914492798652
 BoxCollider:
   m_ObjectHideFlags: 0

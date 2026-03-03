@@ -9,9 +9,9 @@ public class EnemyTutorialStep : TutorialStep
     EnemySpawner _enemySpawner;
     List<Enemy> _enemyList;
     public Action OnDied;
-    public void Bind(EnemySpawner enemySpawner)
+    public override void Bind(TutorialSystem system)
     {
-        _enemySpawner = enemySpawner;
+        _enemySpawner = system.enemySpawner;
         
     }
 
@@ -43,11 +43,11 @@ public class EnemyTutorialStep : TutorialStep
                     yield return null;
                     continue;
                 }
-                //_enemyList[i].OnUpdate();
+                _enemyList[i].OnUpdate();
             }
             yield return null;
         }
-        //Release();
+        Release();
     }
 
     public override void Release()

@@ -17,7 +17,7 @@ public class UIHUDController : MonoBehaviour
     public void AddUIHUD(UI_HUD uiHUD)
     {
        Type key = uiHUD.GetType();
-        if (_uiDics[key] == null)
+        if (!_uiDics.TryGetValue(key, out List<UI_HUD> lst))
         {
             _uiDics[key] = new List<UI_HUD>();
         }

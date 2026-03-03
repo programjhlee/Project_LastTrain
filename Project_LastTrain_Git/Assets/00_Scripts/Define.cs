@@ -7,6 +7,7 @@ public static class Define
     public enum DataTables
     {
         PlatformData,
+        EnemyInfoData,
         BigEventSpawnData,
         EnhancePriceData,
         EnhanceValueData,

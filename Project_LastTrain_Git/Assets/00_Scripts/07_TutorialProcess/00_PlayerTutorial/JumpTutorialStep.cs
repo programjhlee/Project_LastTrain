@@ -4,12 +4,25 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "JumpTutorialStep", menuName = "Create Tutorial File / JumpTutorial")]
-public class JumpTutorialStep : PlayerTutorialStep
+public class JumpTutorialStep : TutorialStep
 {
     [SerializeField] UI_HUDControlGuideStrategyData _jumpGuide;
+    
+    Player _p;
+    PlayerAction _pAction;
+    
     UI_ControlGuide _uiControlGuide;
     UIHUDController _uiController;
+    
     Action _onJumpAction;
+
+    public override void Bind(TutorialSystem system)
+    {
+        _p = system.player;
+        _pAction = _p.GetComponent<PlayerAction>();
+    }
+
+
     public override IEnumerator Run()
     {
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);

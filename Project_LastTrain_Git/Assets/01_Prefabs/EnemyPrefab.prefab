@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5173309879017470240}
   - component: {fileID: 6072672384364312820}
   - component: {fileID: 7944995543803341899}
-  - component: {fileID: 3273825496271300592}
-  - component: {fileID: 6851723059717449525}
+  - component: {fileID: 3316261694893320496}
+  - component: {fileID: 8533313531350649339}
   m_Layer: 7
   m_Name: EnemyPrefab
   m_TagString: Enemy
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   extraCheckDistance: 0.1
---- !u!114 &3273825496271300592
+--- !u!114 &3316261694893320496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,15 +131,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1326882122423022333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60982ccfe28753a4793c51563fc7990c, type: 3}
+  m_Script: {fileID: 11500000, guid: a3f3123dee59b1f4ab1bdbc22674533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 0}
-  _findDistance: 5
-  _attackDistance: 1.5
-  _attackSpeed: 0.25
-  _attackStateTime: 0
---- !u!114 &6851723059717449525
+--- !u!114 &8533313531350649339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,9 +144,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1326882122423022333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23ce97f1ea7224a489194f15bb88578a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9846a32821c6a55488a7fe8f1ea12b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyHUDGraphicData: {fileID: 11400000, guid: 5eac31301c2c6c84ebc068b44b573ae4, type: 2}
 --- !u!1 &3990147250753027919
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,10 +11,10 @@ public class InteractionTutorialStep : TutorialStep
     TrainEventSystem _trainEventSystem; 
     public Action _onFixAction;
 
-    public void Bind(Player p,TrainEventSystem trainEventSystem)
+    public override void Bind(TutorialSystem system)
     {
-        _p = p;
-        _trainEventSystem = trainEventSystem;
+        _p = system.player;
+        _trainEventSystem = system.train.GetComponent<TrainEventSystem>();
     }
     public override IEnumerator Run()
     {

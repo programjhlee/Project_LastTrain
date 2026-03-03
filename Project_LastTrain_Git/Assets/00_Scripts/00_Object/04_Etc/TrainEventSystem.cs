@@ -19,6 +19,7 @@ public class TrainEventSystem : MonoBehaviour
     [SerializeField] Train train;
     [SerializeField] GameObject trainBack;
     [SerializeField] UI_HUDValueBarStrategyData _uiEventFixBarData;
+    
     EventSightChecker eventSightChecker;
     Renderer rend;
     

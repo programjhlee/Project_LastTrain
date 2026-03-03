@@ -25,9 +25,8 @@ public class GravityManager : SingletonManager<GravityManager>
         }
         for(int i = 0; i < gravityObjects.Count; i++)
         {
-            if(gravityObjects[i] != null)
+            if(gravityObjects[i].IsActive)
             {
-                Debug.Log(gravityObjects[i]);
                 AffectGravity(gravityObjects[i]);
             }
         }
@@ -38,12 +37,9 @@ public class GravityManager : SingletonManager<GravityManager>
         lst.Add(obj);
     }
 
-    public void RemoveObj(IGravityAffected obj)
-    {
-        gravityObjects.Remove(obj);
-    }
     public void AddGravityObj(IGravityAffected obj)
     {
+        Debug.Log(obj);
         AddList(gravityObjects, obj);
     }
 
@@ -52,7 +48,6 @@ public class GravityManager : SingletonManager<GravityManager>
     {
         if (!obj.CollideChecker.IsLanding)
         {
-            Debug.Log(obj.YVel);
             obj.YVel -= gravity * Time.fixedDeltaTime;
         }
         else
@@ -63,5 +58,9 @@ public class GravityManager : SingletonManager<GravityManager>
                 obj.TargetTransform.position = new Vector3(obj.TargetTransform.position.x, obj.CollideChecker.GetLandYPos(), 0);
             }
         }
+    }
+    public void ClearList()
+    {
+        gravityObjects.Clear();
     }
 }
