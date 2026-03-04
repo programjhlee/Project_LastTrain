@@ -102,7 +102,7 @@ RectTransform:
   m_GameObject: {fileID: 1570136018834591827}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2876377308920422730}
@@ -177,7 +177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33d915a77c4f0344293202ca68fd08f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _strategyData: {fileID: 11400000, guid: 5eac31301c2c6c84ebc068b44b573ae4, type: 2}
   _slider: {fileID: 8103237004362203466}
   _fillImage: {fileID: 6981713167954128480}
 --- !u!1 &2744005312205905819

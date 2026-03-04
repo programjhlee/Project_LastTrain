@@ -121,6 +121,7 @@ public class TrainEventSystem : MonoBehaviour
     {
         UIHUDController _evtUIHUDStack = evt.GetComponent<UIHUDController>();
         UI_HUDValueBar _uiEventFixValueBar = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(evt.transform);
+        _uiEventFixValueBar.transform.localScale = new Vector3(1, 1, 1);
         evt.OnTakeFix += _uiEventFixValueBar.SetValue;
         evt.OnFixed += _evtUIHUDStack.UIHUDListClear;
         _evtUIHUDStack.AddUIHUD(_uiEventFixValueBar);

@@ -12,15 +12,6 @@ public class Player : MonoBehaviour
     PlayerAnim _playerAnim;
     void Awake()
     {
-        Debug.Log(transform.position);
-
-        _playerData.Level = 1;
-        _playerData.AttackPower = 5;
-        _playerData.FixPower = 2;
-        _playerData.MoveSpeed = 5;
-        _playerData.JumpForce = 15;
-        _playerData.RollingSpeed = 15;
-
         _CollideChecker = GetComponent<CollideChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
@@ -31,6 +22,7 @@ public class Player : MonoBehaviour
         playerController.Init();
         _playerAnim.Init();
         _HUDController.Init();
+        _H
     }
 
     void Update()

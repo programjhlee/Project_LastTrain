@@ -69,6 +69,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _obstacleLayerNum = LayerMask.NameToLayer("Obstacle");
 
         _playerData = playerData;
+        PlayerDataInit(playerData);
         _yVel = 0;
         IsActive = true;
 
@@ -84,6 +85,14 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         OnAttack += _playerAnim.PlayAnimAttack;
         OnHit += _playerAnim.PlayAnimHit;
     }
+
+    public void PlayerDataInit(PlayerData playerData)
+    {
+        playerData.Level = 1;
+        playerData.AttackPower = 5;
+        playerData.FixPower = 2;
+    }
+
     public void SetMoveDirection(Vector3 moveDir)
     {
         if (_isHit)
@@ -107,6 +116,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         if (_collideChecker.IsFrontBlockedBy(_enemyLayer) || _collideChecker.IsFrontBlockedBy(_obstacleLayer))
         {
             SetMoveDirection(Vector3.zero);
+            OnIdle?.Invoke();
         }
         else
         {
@@ -182,6 +192,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     
     void Fix(IFixable _fixable)
     {
+        Debug.Log($"PlayerFix : {_playerData.FixPower}");
         _fixable.TakeFix(_playerData.FixPower);
     }
 

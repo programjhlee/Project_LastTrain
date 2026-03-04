@@ -169,6 +169,11 @@ public class EnemySpawner : MonoBehaviour
     }
     public void AllEnemyClear()
     {
+        for(int i = 0; i<_activeEnemies.Count; i++)
+        {
+            _activeEnemies[i].Clear();
+        }
+
         _activeEnemies.Clear();
         _removeEnemies.Clear();
     }

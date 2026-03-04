@@ -9,10 +9,9 @@ public class MoveTutorialStep : TutorialStep
     [SerializeField] UI_HUDControlGuideStrategyData _moveGuide;
     Player _p;
     PlayerAction _pAction;
-
+    WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
     UI_ControlGuide _uiControlGuide;
-    UI_ControlGuide _uiControlGuide2;
     UIHUDController _uiController;
     Action _onMoveAction;
     
@@ -27,13 +26,10 @@ public class MoveTutorialStep : TutorialStep
     {
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
         _uiControlGuide.BindData(_moveGuide);
-        _uiControlGuide2 = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
-        _uiControlGuide2.BindData(_moveGuide);
         _uiController = _p.GetComponent<UIHUDController>();
         float curDistance = 0;
         float movementTutorialClearDistance = 20f;
         _uiController.AddUIHUD(_uiControlGuide);
-        _uiController.AddUIHUD(_uiControlGuide2);
         Debug.Log("방향키는 플레이어가 움직입니다! 움직여보세요!");
         _onMoveAction = () => { curDistance += 0.3f; };
         _pAction.OnMove += _onMoveAction;
@@ -46,7 +42,7 @@ public class MoveTutorialStep : TutorialStep
                 continue;
             }
             Debug.Log($"Distance : {curDistance} / {movementTutorialClearDistance}");
-            yield return null;
+            yield return _waitForEndOfFrame;
         }
         Release();
     }

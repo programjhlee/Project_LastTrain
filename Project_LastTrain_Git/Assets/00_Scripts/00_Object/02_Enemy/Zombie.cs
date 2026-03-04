@@ -86,9 +86,6 @@ public class Zombie : GroundEnemy, IAttackable
         switch (_enemyState)
         {
             case EnemyState.None:
-                IsActive = false;
-                gameObject.SetActive(false);
-                _enemyUIController.HideUIHUD();
                 break;
 
             case EnemyState.Detect:
@@ -147,13 +144,16 @@ public class Zombie : GroundEnemy, IAttackable
                 break;
 
             case EnemyState.Die:
-                //TO - DO 죽었을때의 애니메이션등 연출처리
-                _enemyState = EnemyState.None;
                 OnDied?.Invoke(this);
+                Clear();
                 break;
         }
     }
 
+    public void LateUpdate()
+    {
+        _enemyUIController.UpdateUIPos();
+    }
     IEnumerator DamageProcess(Vector3 dir)
     {
         float attackForce = 10f;
@@ -176,5 +176,14 @@ public class Zombie : GroundEnemy, IAttackable
         {
             _enemyState = EnemyState.Die;
         }
+    }
+
+    public override void Clear()
+    {
+        _enemyState = EnemyState.None;
+        IsActive = false;
+        gameObject.SetActive(false);
+        transform.position = Vector3.zero;
+        _enemyUIController.HideUIHUD();
     }
 }

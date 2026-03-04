@@ -103,8 +103,6 @@ public class CollideChecker : MonoBehaviour
         if (_col == null) return;
 
         Gizmos.color = IsLanding ? Color.red : Color.green;
-        Debug.Log(transform.position);
-
         Gizmos.DrawWireCube(
             transform.position,
             _halfExtents * 2f

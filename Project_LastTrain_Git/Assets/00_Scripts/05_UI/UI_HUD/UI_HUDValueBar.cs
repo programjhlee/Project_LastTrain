@@ -10,14 +10,13 @@ public class UI_HUDValueBar : UI_HUD
     RectTransform _uiRect;
     UI_HUDValueBarStrategyData _strategyData;
     public void Init(UI_HUDValueBarStrategyData strategyData)
-    {
-        transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+    { 
         _uiRect = GetComponent<RectTransform>();
         _strategyData = strategyData;
         _fillImage.color = _strategyData.FillColor;
         _uiRect.sizeDelta = _strategyData.UIHUDSize;
+        transform.localScale = new Vector3(1, 1, 1);
         _slider.value = 1;
-
     }
 
     public void SetValue(float ratio)

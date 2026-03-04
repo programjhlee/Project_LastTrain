@@ -139,8 +139,7 @@ public class UIManager : SingletonManager<UIManager>
                 {
                     ui = Instantiate(uis[0]).GetComponent<T>();
                     ui.name = typeof(T).Name;
-                    ui.transform.SetParent(canvasHUD.transform);
-                    ui.Bind(target, upDirScale);
+                    ui.Bind(canvasHUD,target, upDirScale);
                     ui.Show();
                     break;
                 }
@@ -148,8 +147,7 @@ public class UIManager : SingletonManager<UIManager>
                 {
                     ui = Instantiate(uis[i]).GetComponent<T>();
                     ui.name = name;
-                    ui.transform.SetParent(canvasHUD.transform);
-                    ui.Bind(target, upDirScale);
+                    ui.Bind(canvasHUD,target, upDirScale);
                     ui.Show();
                     break;
                 }
