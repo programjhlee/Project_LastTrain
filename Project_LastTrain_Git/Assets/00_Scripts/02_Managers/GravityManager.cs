@@ -8,11 +8,6 @@ public class GravityManager : SingletonManager<GravityManager>
     float gravity = 40f;
     List<IGravityAffected> gravityObjects;
 
-    public void OnEnable()
-    {
-        gravityObjects = new List<IGravityAffected>();
-    }
-
     public void OnDisable()
     {
         gravityObjects.Clear();
@@ -39,7 +34,10 @@ public class GravityManager : SingletonManager<GravityManager>
 
     public void AddGravityObj(IGravityAffected obj)
     {
-        Debug.Log(obj);
+        if(gravityObjects == null)
+        {
+            gravityObjects = new List<IGravityAffected>();
+        }
         AddList(gravityObjects, obj);
     }
 

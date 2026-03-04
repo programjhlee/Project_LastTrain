@@ -5,6 +5,7 @@ using System;
 
 public class PlayerAction : MonoBehaviour,IGravityAffected
 {
+    [SerializeField] List<Renderer> _playerRend;
     [SerializeField] Tool _tool;
     PlayerData _playerData;
     PlayerAnim _playerAnim;
@@ -21,6 +22,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     public event Action OnAttack;
     public event Action OnFix;
     public event Action OnInteraction;
+    public event Action OnHit;
     public event Action OnDodge;
 
 
@@ -80,6 +82,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         OnJump += _playerAnim.PlayAnimJump;
         OnDodge += _playerAnim.PlayAnimDodge;
         OnAttack += _playerAnim.PlayAnimAttack;
+        OnHit += _playerAnim.PlayAnimHit;
     }
     public void SetMoveDirection(Vector3 moveDir)
     {
@@ -202,6 +205,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             return;
         }
+        OnHit?.Invoke();
         StartCoroutine(GetDamageSequence(dir));
     }
 
@@ -269,11 +273,17 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             curTime += Time.deltaTime;
 
-            rend.enabled = false;
+            for (int i = 0; i < _playerRend.Count; i++)
+            {
+                _playerRend[i].enabled = false;
+            }
 
             yield return null;
 
-            rend.enabled = true;
+            for (int i = 0; i < _playerRend.Count; i++)
+            {
+                _playerRend[i].enabled = true;
+            }
 
             yield return null;
         }

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     PlayerAnim _playerAnim;
     void Awake()
     {
+        Debug.Log(transform.position);
 
         _playerData.Level = 1;
         _playerData.AttackPower = 5;
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         _playerAnim = GetComponent<PlayerAnim>();
         _HUDController = GetComponent<UIHUDController>();
-        
+
         playerAction.Init(_playerData);
         playerController.Init();
         _playerAnim.Init();

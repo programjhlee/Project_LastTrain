@@ -5,17 +5,20 @@ using UnityEngine;
 public class PlayerAnim : MonoBehaviour
 {
     [SerializeField] Animator _playerAnim;
+    [SerializeField]GameObject _dodgeEffect;
+
     CollideChecker _collideChecker;
     readonly int JUMP = Animator.StringToHash("Jump");
     readonly int MOVE = Animator.StringToHash("IsMove");
     readonly int ISLAND = Animator.StringToHash("IsLand");
     readonly int DODGE = Animator.StringToHash("Dodge");
     readonly int ATTACK = Animator.StringToHash("Attack");
+    readonly int HIT = Animator.StringToHash("Hit");
 
     public void Init()
     {
         _collideChecker = GetComponent<CollideChecker>();
-        Debug.Log(_playerAnim);
+        _dodgeEffect.SetActive(false);
     }
 
     public void OnUpdate()
@@ -34,10 +37,15 @@ public class PlayerAnim : MonoBehaviour
     public void PlayAnimDodge()
     {
         _playerAnim.SetTrigger(DODGE);
+        _dodgeEffect.SetActive(true);
     }
     public void PlayAnimAttack()
     {
         _playerAnim.SetTrigger(ATTACK);
+    }
+    public void PlayAnimHit()
+    {
+        _playerAnim.SetTrigger(HIT);
     }
     public void StopAnimMove()
     {

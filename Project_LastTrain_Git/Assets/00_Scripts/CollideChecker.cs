@@ -7,7 +7,7 @@ public class CollideChecker : MonoBehaviour
 {
 
     [SerializeField] float extraCheckDistance = 0.1f;
-    Collider _col;
+    BoxCollider _col;
 
     LayerMask _groundLayer;
     LayerMask _enemyLayer;
@@ -37,12 +37,13 @@ public class CollideChecker : MonoBehaviour
     }
     public void Awake()
     {
-        _col = GetComponent<Collider>();
+        _col = GetComponent<BoxCollider>();
         _groundLayer = LayerMask.GetMask("Ground");
         _enemyLayer = LayerMask.GetMask("Enemy");
         _checkLayer = _enemyLayer | _groundLayer;
         _halfExtents = new Vector3(_col.bounds.extents.x - 0.05f, 0.05f, _col.bounds.extents.z - 0.05f);
         _footDistance = _col.bounds.extents.y + extraCheckDistance;
+        Debug.Log(_col.center);
     }
 
     public bool CollideCheckBox(Vector3 dir, Vector3 extents, LayerMask layer,out RaycastHit hit)
@@ -102,6 +103,7 @@ public class CollideChecker : MonoBehaviour
         if (_col == null) return;
 
         Gizmos.color = IsLanding ? Color.red : Color.green;
+        Debug.Log(transform.position);
 
         Gizmos.DrawWireCube(
             transform.position,
