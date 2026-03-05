@@ -27,7 +27,6 @@ public abstract class UI_HUD : UI_Base
 
     public virtual void UpdatePos()
     {
-        Debug.Log(_rect.localScale);
         Vector2 targetPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, cam.WorldToScreenPoint(_target.position + Vector3.up * _upDirScale), cam, out targetPos);
         _rect.localPosition = targetPos;

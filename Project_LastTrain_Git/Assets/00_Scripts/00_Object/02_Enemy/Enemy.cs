@@ -13,10 +13,12 @@ public abstract class Enemy : MonoBehaviour
         enemyData = enemydt;
     }
     public abstract void OnUpdate();
+    public abstract void OnLateUpdate();
     public virtual void SetEnemyPos(Vector3 pos)
     {
         transform.position = pos;
     }
+
 
     public abstract void Clear();
 }

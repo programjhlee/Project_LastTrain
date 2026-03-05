@@ -6,11 +6,12 @@ using System;
 [CreateAssetMenu(fileName = "InteractionTutorialStep",menuName = "Create Tutorial File/InteractionTutorial")]
 public class InteractionTutorialStep : TutorialStep
 {
-    
+    public string ControlGuideName { get; private set; } = "Interaction";
     Player _p;
     TrainEventSystem _trainEventSystem; 
     public Action _onFixAction;
 
+    WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
         _p = system.player;
@@ -36,7 +37,7 @@ public class InteractionTutorialStep : TutorialStep
                 yield return null;
                 continue;
             }
-            yield return null;
+            yield return _waitForEndOfFrame;
         }
         Release();
     }

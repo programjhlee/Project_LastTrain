@@ -7,7 +7,6 @@ public class UIHUDController : MonoBehaviour
 {
     Dictionary<Type, List<UI_HUD>> _uiDics;
 
-
     public void Init()
     {
         _uiDics = new Dictionary<Type, List<UI_HUD>>();

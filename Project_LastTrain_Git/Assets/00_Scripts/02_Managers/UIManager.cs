@@ -125,7 +125,7 @@ public class UIManager : SingletonManager<UIManager>
         }
     }
 
-    public T ShowUIHUD<T>(Transform target, float upDirScale = 1, string uiname = null) where T : UI_HUD
+    public T ShowUIHUD<T>(Transform target, float upDirScale = 1.5f, string uiname = null) where T : UI_HUD
     {
         Type type = typeof(T);
         T ui = null;
@@ -139,7 +139,7 @@ public class UIManager : SingletonManager<UIManager>
                 {
                     ui = Instantiate(uis[0]).GetComponent<T>();
                     ui.name = typeof(T).Name;
-                    ui.Bind(canvasHUD,target, upDirScale);
+                    ui.Bind(canvasHUD, target, upDirScale);
                     ui.Show();
                     break;
                 }

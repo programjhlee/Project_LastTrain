@@ -23,7 +23,6 @@ public abstract class Event : MonoBehaviour, IFixable
     {
         OnTakeFix?.Invoke(fixRatio);
     }
-
     protected void ReleaseActionEvent()
     {
         OnFixed = null;

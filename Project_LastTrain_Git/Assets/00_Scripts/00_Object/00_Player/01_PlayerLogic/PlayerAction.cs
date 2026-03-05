@@ -7,6 +7,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 {
     [SerializeField] List<Renderer> _playerRend;
     [SerializeField] Tool _tool;
+    PlayerUIController _playerUIController;
     PlayerData _playerData;
     PlayerAnim _playerAnim;
     
@@ -58,6 +59,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _collideChecker = GetComponent<CollideChecker>();
         _playerAnim = GetComponent<PlayerAnim>();
         _col = GetComponent<Collider>();
+        _playerUIController = GetComponent<PlayerUIController>();
         _tool.Init();
 
         _playerLayer = LayerMask.GetMask("Player");
@@ -112,6 +114,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
 
         RotateToward(_moveDir);
+        CheckInteraction();
 
         if (_collideChecker.IsFrontBlockedBy(_enemyLayer) || _collideChecker.IsFrontBlockedBy(_obstacleLayer))
         {
@@ -162,10 +165,9 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             return;
         }
         OnAttack?.Invoke();
-        Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 2f))
+        if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
         {
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy))
             {
@@ -185,6 +187,26 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
         StartCoroutine(InteractionCoolTimeProcess(0.3f));
     }
+
+    public void CheckInteraction()
+    {
+        RaycastHit hit;
+        if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
+        {
+            if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy) || hit.collider.TryGetComponent<IFixable>(out IFixable fixable)||
+                hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                Debug.Log("상호작용 할수있는 무언가 발견!");
+                _playerUIController.ShowControlGuide(PlayerUIController.ControlGuideType.Interaction);
+            }
+        }
+        else
+        {
+            _playerUIController.HideControlGuide();
+        }
+    }
+
+
     void Attack(IAttackable _attackable, Vector3 attackDir)
     {
         _attackable.TakeDamage(_playerData.AttackPower, attackDir);
@@ -308,5 +330,21 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             transform.position = new Vector3(0, -1f, 0);
             StartCoroutine(GetDamageSequence(Vector3.zero));
         }
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (_col == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(
+            _col.bounds.center,
+            new Vector3(0.5f, 0.5f, 0.5f) *2
+        );
+        Vector3 checkBoundary = _col.bounds.center + (transform.forward);
+        Gizmos.DrawWireCube(
+            checkBoundary,
+            new Vector3(0.5f, 0.5f, 0.5f) *2
+        );
     }
 }

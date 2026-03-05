@@ -26,7 +26,7 @@ public class MoveTutorialStep : TutorialStep
     {
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
         _uiControlGuide.BindData(_moveGuide);
-        _uiController = _p.GetComponent<UIHUDController>();
+        _uiController = _p.GetComponentInChildren<UIHUDController>();
         float curDistance = 0;
         float movementTutorialClearDistance = 20f;
         _uiController.AddUIHUD(_uiControlGuide);

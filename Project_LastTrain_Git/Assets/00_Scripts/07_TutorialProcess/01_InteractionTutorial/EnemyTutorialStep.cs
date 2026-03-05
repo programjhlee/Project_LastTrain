@@ -9,6 +9,7 @@ public class EnemyTutorialStep : TutorialStep
     EnemySpawner _enemySpawner;
     List<Enemy> _enemyList;
     public Action OnDied;
+    WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
         _enemySpawner = system.enemySpawner;
@@ -45,7 +46,7 @@ public class EnemyTutorialStep : TutorialStep
                 }
                 _enemyList[i].OnUpdate();
             }
-            yield return null;
+            yield return _waitForEndOfFrame;
         }
         Release();
     }

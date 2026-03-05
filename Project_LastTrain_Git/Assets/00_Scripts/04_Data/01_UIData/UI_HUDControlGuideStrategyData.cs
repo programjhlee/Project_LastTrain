@@ -6,8 +6,22 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "UI_HUDControlGuide", menuName = "Create UI_HUD_StrategyData/UI_HUDControlGuide")]
 public class UI_HUDControlGuideStrategyData : ScriptableObject
 {
+    [SerializeField] string _controlGuideName;
     [SerializeField] Sprite _controlGuideKeyImage;
     [SerializeField] string _controlGuideText;
+
+
+    public string ControlGuideName
+    {
+        get
+        {
+            return _controlGuideName;
+        }
+        set
+        {
+            _controlGuideName = value;
+        }
+    }
 
     public Sprite ControlGuideKeyImage
     {

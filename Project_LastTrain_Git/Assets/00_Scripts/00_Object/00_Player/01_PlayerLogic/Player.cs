@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] PlayerData _playerData;
     CollideChecker _CollideChecker;
+    PlayerUIController _playerUIController;
     UIHUDController _HUDController;
     PlayerAction playerAction;
     PlayerController playerController;
@@ -16,13 +17,16 @@ public class Player : MonoBehaviour
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
         _playerAnim = GetComponent<PlayerAnim>();
-        _HUDController = GetComponent<UIHUDController>();
+        _playerUIController = GetComponent<PlayerUIController>();
+        _HUDController = GetComponentInChildren<UIHUDController>();
+
 
         playerAction.Init(_playerData);
         playerController.Init();
         _playerAnim.Init();
         _HUDController.Init();
-        _H
+        _playerUIController.Init();
+
     }
 
     void Update()
@@ -35,5 +39,9 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance.IsPaused()) return;
         playerAction.ProcessMovement();
+    }
+    public void LateUpdate()
+    {
+        _playerUIController.UIUpdate();
     }
 }

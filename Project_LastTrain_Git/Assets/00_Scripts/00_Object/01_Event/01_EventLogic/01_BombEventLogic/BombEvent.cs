@@ -31,7 +31,7 @@ public class BombEvent : Event,ITrainDamageEvent
         if (curTime > eventData.cyclePerTime)
         {
             curTime = 0;
-            Exit();
+            StartCoroutine(ExplosiveProcess());
         }
 
     }
@@ -60,7 +60,10 @@ public class BombEvent : Event,ITrainDamageEvent
 
     public override void Exit()
     {
-        StartCoroutine(ExplosiveProcess());
+        InvokeOnFix();
+        ReleaseActionEvent();
+        _evtHUDController.UIHUDListClear();
+        Destroy(gameObject);
     }
 
     public override void TakeFix(float fixPower)
@@ -100,6 +103,6 @@ public class BombEvent : Event,ITrainDamageEvent
         ReleaseActionEvent();
         _evtHUDController.UIHUDListClear();
         Debug.Log("ลอมü!");
-        Destroy(gameObject);
+        Exit();
     }
 }

@@ -165,7 +165,6 @@ public class TrainEventSystem : MonoBehaviour
                     trainDamageEvent.OnDamage -= train.TakeDamage;
                 }
                 executeEvents[i].gameObject.SetActive(false);
-                
 
             }
         }

@@ -43,7 +43,6 @@ public class CollideChecker : MonoBehaviour
         _checkLayer = _enemyLayer | _groundLayer;
         _halfExtents = new Vector3(_col.bounds.extents.x - 0.05f, 0.05f, _col.bounds.extents.z - 0.05f);
         _footDistance = _col.bounds.extents.y + extraCheckDistance;
-        Debug.Log(_col.center);
     }
 
     public bool CollideCheckBox(Vector3 dir, Vector3 extents, LayerMask layer,out RaycastHit hit)

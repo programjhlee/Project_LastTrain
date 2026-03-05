@@ -32,6 +32,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
         InvokeOnFix();
         ReleaseActionEvent();
         OnDamage = null;
+        _evtHUDController.UIHUDListClear();
         Destroy(gameObject);
     }
     public override void TakeFix(float fixPower)

@@ -15,6 +15,7 @@ public class JumpTutorialStep : TutorialStep
     UIHUDController _uiController;
     
     Action _onJumpAction;
+    WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
     public override void Bind(TutorialSystem system)
     {
@@ -44,7 +45,7 @@ public class JumpTutorialStep : TutorialStep
                 continue;
             }
             Debug.Log($"JumpCnt : {curCnt} / {jumpTutorialClearCnt}");
-            yield return null;
+            yield return _waitForEndOfFrame;
         }
         Release();
     }

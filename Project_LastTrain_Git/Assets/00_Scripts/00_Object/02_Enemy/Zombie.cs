@@ -150,7 +150,7 @@ public class Zombie : GroundEnemy, IAttackable
         }
     }
 
-    public void LateUpdate()
+    public override void OnLateUpdate()
     {
         _enemyUIController.UpdateUIPos();
     }

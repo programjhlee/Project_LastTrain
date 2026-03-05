@@ -13,6 +13,8 @@ public class RollingTutorialStep : TutorialStep
     UI_ControlGuide _uiControlGuide;
     Action _onDodgeAction;
 
+    WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+
     public override void Bind(TutorialSystem system)
     {
         _p = system.player;
@@ -36,7 +38,7 @@ public class RollingTutorialStep : TutorialStep
                 continue;
             }
             Debug.Log($"RollCnt : {curCnt} / {jumpTutorialClearCnt}");
-            yield return null;
+            yield return _waitForEndOfFrame;
         }
         Release();
     }

@@ -80,7 +80,17 @@ public class EnemySpawner : MonoBehaviour
         InActiveEnemyClear();
     }
 
-
+    public void LateUpdate()
+    {
+        for (int i = 0; i < _activeEnemies.Count; i++)
+        {
+            if (!_activeEnemies[i].gameObject.activeSelf)
+            {
+                _removeEnemies.Add(_activeEnemies[i]);
+            }
+            _activeEnemies[i].OnLateUpdate();
+        }
+    }
     public void EnemyDataInit()
     {
         _enemyDataDics = new Dictionary<string, EnemyData>();
