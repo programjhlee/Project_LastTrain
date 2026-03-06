@@ -14,7 +14,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     Collider _col;
     CollideChecker _collideChecker;
     
-
     WaitForSeconds _rollingCoolTime = new WaitForSeconds(1f);
 
     public event Action OnMove;
@@ -50,7 +49,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     bool _canHit;
     bool _canRolling;
     bool _canInteraction;
-
     
     public void Init(PlayerData playerData)
     {
@@ -114,7 +112,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
 
         RotateToward(_moveDir);
-        CheckInteraction();
 
         if (_collideChecker.IsFrontBlockedBy(_enemyLayer) || _collideChecker.IsFrontBlockedBy(_obstacleLayer))
         {
@@ -187,26 +184,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
         StartCoroutine(InteractionCoolTimeProcess(0.3f));
     }
-
-    public void CheckInteraction()
-    {
-        RaycastHit hit;
-        if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
-        {
-            if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy) || hit.collider.TryGetComponent<IFixable>(out IFixable fixable)||
-                hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
-            {
-                Debug.Log("상호작용 할수있는 무언가 발견!");
-                _playerUIController.ShowControlGuide(PlayerUIController.ControlGuideType.Interaction);
-            }
-        }
-        else
-        {
-            _playerUIController.HideControlGuide();
-        }
-    }
-
-
     void Attack(IAttackable _attackable, Vector3 attackDir)
     {
         _attackable.TakeDamage(_playerData.AttackPower, attackDir);

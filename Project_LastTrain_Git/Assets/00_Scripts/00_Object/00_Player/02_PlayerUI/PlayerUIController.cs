@@ -13,11 +13,13 @@ public class PlayerUIController : MonoBehaviour
     
     
     [SerializeField] List<UI_HUDControlGuideStrategyData> _controlGuideList;
+    Collider _col;
     Dictionary<string,UI_HUDControlGuideStrategyData> _controlGuideDics;
     UI_ControlGuide _uiControlGuide;
 
     public void Init()
     {
+        _col = GetComponent<Collider>();
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(transform);
         _uiControlGuide.Hide();
         _controlGuideDics = new Dictionary<string, UI_HUDControlGuideStrategyData>();
@@ -33,15 +35,33 @@ public class PlayerUIController : MonoBehaviour
         _uiControlGuide.Show();
     }
 
+
+    public void CheckInteraction()
+    {
+        RaycastHit hit;
+        if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
+        {
+            if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy) || hit.collider.TryGetComponent<IFixable>(out IFixable fixable) ||
+                hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                ShowControlGuide(ControlGuideType.Interaction);
+            }
+        }
+        else
+        {
+            HideControlGuide();
+        }
+    }
+
+
     public void HideControlGuide()
     {
         _uiControlGuide.Hide();
     }
 
-    // Update is called once per frame
     public void UIUpdate()
     {
-        
         _uiControlGuide.UpdatePos();
+        CheckInteraction();
     }
 }

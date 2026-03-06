@@ -7,7 +7,6 @@ using UnityEngine;
 public class Zombie : GroundEnemy, IAttackable
 {
     Transform _player;
-    Collider _enemyCol;
     PlayerAction _playerAction;
     EnemyUIController _enemyUIController;
     ZombieAnim _anim;
@@ -32,14 +31,12 @@ public class Zombie : GroundEnemy, IAttackable
     public event Action OnDamaged;
     public event Action OnAttack;
     public event Action<Enemy> OnDied;
-
     public override void Awake()
     {
         base.Awake();
         _playerLayer = LayerMask.GetMask("Player");
         _enemyUIController = GetComponent<EnemyUIController>();
         _anim = GetComponent<ZombieAnim>();
-        _enemyCol = GetComponent<Collider>();
     }
     public override void Init(EnemyData enemydt)
     {
@@ -54,8 +51,8 @@ public class Zombie : GroundEnemy, IAttackable
             enemyData.attackSpeed = 0.25f;
             enemyData.attackDistance = 1.5f;
         }
-
         base.Init(enemydt);
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
         IsActive = true;
         Curhp = enemyData.maxHp;
         Maxhp = enemyData.maxHp;
@@ -64,9 +61,7 @@ public class Zombie : GroundEnemy, IAttackable
         enemyData.attackDistance = 1.5f;
         
         _enemyUIController.Init();
-        _anim.ZombieAnimInit();
-
-        _enemyCol.enabled = true;
+        _anim.Init();
         _enemyState = EnemyState.Detect;
         _moveDir = Vector3.left;
         stateTime = 0;
@@ -82,9 +77,7 @@ public class Zombie : GroundEnemy, IAttackable
 
     public override void OnUpdate()
     {
-        Debug.Log($"IsLanding : {CollideChecker.IsLanding} , IsActive : {IsActive}");
         CollideChecker.LandCheck();
-        _enemyUIController.UpdateUIPos();
 
         if (transform.position.y < -20f)
         {
@@ -119,10 +112,8 @@ public class Zombie : GroundEnemy, IAttackable
 
                 if (CollideChecker.CollideCheckRay(transform.forward, _playerLayer, enemyData.findDistance, out hit))
                 {
-                    Debug.Log(hit.collider.gameObject);
                     if (hit.collider.gameObject.CompareTag("Player"))
                     {
-                        Debug.Log("플레이어 발견!");
                         _player = hit.transform;
                         _playerAction = hit.transform.GetComponent<PlayerAction>();
                     }
@@ -172,6 +163,42 @@ public class Zombie : GroundEnemy, IAttackable
     {
         _enemyUIController.UpdateUIPos();
     }
+
+    public override void Clear()
+    {
+        IsActive = false;
+        transform.position = Vector3.zero;
+        gameObject.SetActive(false);
+    }
+
+    public void TakeDamage(float damage, Vector3 dir)
+    {
+        if (_enemyState == EnemyState.Die || _enemyState == EnemyState.None)
+        {
+            return;
+        }
+
+        StartCoroutine(DamageProcess(dir));
+
+        _moveDir = -dir;
+        Curhp -= damage;
+
+        OnDamaged?.Invoke();
+        if (Curhp <= 0)
+        {
+            _enemyState = EnemyState.Die;
+        }
+    }
+
+    public void Die()
+    {
+        OnDied?.Invoke(this);
+        _enemyUIController.HideUIHUD();
+        _enemyState = EnemyState.None;
+        gameObject.layer = LayerMask.NameToLayer("Dead");
+    }
+
+
     IEnumerator DamageProcess(Vector3 dir)
     {
         float attackForce = 10f;
@@ -183,29 +210,5 @@ public class Zombie : GroundEnemy, IAttackable
             yield return null;
         }
         curTime = 0;
-    }
-    public void TakeDamage(float damage, Vector3 dir)
-    {
-        StartCoroutine(DamageProcess(dir));
-        _moveDir = -dir;
-        Curhp -= damage;
-        OnDamaged?.Invoke();
-        if (Curhp <= 0)
-        {
-            _enemyState = EnemyState.Die;
-        }
-    }
-    public void Die()
-    {
-        OnDied?.Invoke(this);
-        _enemyUIController.HideUIHUD();
-        _enemyState = EnemyState.None;
-    }
-
-    public override void Clear()
-    {
-        IsActive = false;
-        gameObject.SetActive(false);
-        transform.position = Vector3.zero;
     }
 }

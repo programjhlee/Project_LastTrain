@@ -13,7 +13,7 @@ public class ZombieAnim : MonoBehaviour
     readonly int MOVE = Animator.StringToHash("Move");
 
 
-    public void ZombieAnimInit()
+    public void Init()
     {
         _zombie = GetComponent<Zombie>();
         _animator = GetComponentInChildren<Animator>();

@@ -18,7 +18,5 @@ public abstract class Enemy : MonoBehaviour
     {
         transform.position = pos;
     }
-
-
     public abstract void Clear();
 }

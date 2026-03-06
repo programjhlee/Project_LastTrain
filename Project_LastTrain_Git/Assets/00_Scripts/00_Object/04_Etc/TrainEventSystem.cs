@@ -13,10 +13,10 @@ public class TrainEventSystem : MonoBehaviour
         BOMBEVENT
     }
 
+    [SerializeField] Train train;
     [SerializeField] List<EventData> eventDatas;
     [SerializeField] PlatformController platformController;
     [SerializeField] string[] events;
-    [SerializeField] Train train;
     [SerializeField] GameObject trainBack;
     [SerializeField] UI_HUDValueBarStrategyData _uiEventFixBarData;
     
@@ -25,6 +25,7 @@ public class TrainEventSystem : MonoBehaviour
     
     List<Dictionary<string, object>> eventSpawnData;
     List<Dictionary<string, object>> trainEventData;
+
     Dictionary<string, EventData> eventDataDic = new Dictionary<string, EventData>();
     Dictionary<string, GameObject> eventPrefabs = new Dictionary<string, GameObject>();
 
