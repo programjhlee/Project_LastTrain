@@ -382,12 +382,12 @@
 "Assets/00_Scripts/00_Object/01_Event/BigEvent.cs"
 "Assets/00_Scripts/00_Object/01_Event/BigEventSystem.cs"
 "Assets/00_Scripts/00_Object/01_Event/EventSightChecker.cs"
-"Assets/00_Scripts/00_Object/02_Enemy/00_EnemyData/EnemyData.cs"
-"Assets/00_Scripts/00_Object/02_Enemy/00_GroundEnemy/GroundEnemy.cs"
+"Assets/00_Scripts/00_Object/02_Enemy/00_EnemyData/00_BaseEnemy/EnemyData.cs"
+"Assets/00_Scripts/00_Object/02_Enemy/00_EnemyData/01_GroundEnemy/00_Zombie/Zombie.cs"
+"Assets/00_Scripts/00_Object/02_Enemy/00_EnemyData/01_GroundEnemy/00_Zombie/ZombieAnim.cs"
+"Assets/00_Scripts/00_Object/02_Enemy/00_EnemyData/01_GroundEnemy/GroundEnemy.cs"
 "Assets/00_Scripts/00_Object/02_Enemy/Enemy.cs"
 "Assets/00_Scripts/00_Object/02_Enemy/EnemyUIController.cs"
-"Assets/00_Scripts/00_Object/02_Enemy/TestScript.cs"
-"Assets/00_Scripts/00_Object/02_Enemy/Zombie.cs"
 "Assets/00_Scripts/00_Object/03_Vehicle/Train.cs"
 "Assets/00_Scripts/00_Object/04_Etc/EnemySpawner.cs"
 "Assets/00_Scripts/00_Object/04_Etc/EventManager.cs"
@@ -441,6 +441,9 @@
 "Assets/00_Scripts/CSVReader.cs"
 "Assets/00_Scripts/Define.cs"
 "Assets/00_Scripts/TutorialSystem.cs"
+"Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieCameraLogic.cs"
+"Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieCharacterControl.cs"
+"Assets/Supercyan Character Pack Zombie Sample/Scripts/ZombieFree.cs"
 -langversion:9.0
 /deterministic
 /optimize+
