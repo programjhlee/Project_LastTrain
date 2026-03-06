@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyHUDData: {fileID: 11400000, guid: 5eac31301c2c6c84ebc068b44b573ae4, type: 2}
   _trainBack: {fileID: 814811383}
-  _enemyPrefab: {fileID: 1326882122423022333, guid: 720416052ecdcc24c89e5b4000c9c647, type: 3}
+  _enemyPrefab: {fileID: 1326882122423022333, guid: dc09cd6583a15f541aa38f5f8aa5bf99, type: 3}
   _enemyDataSOList:
   - {fileID: 11400000, guid: bdf2dfc16e7827f41b06f4c1249b2ef0, type: 2}
 --- !u!1 &1186501368
