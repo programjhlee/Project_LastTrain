@@ -25,10 +25,11 @@ public class Coin : Item, IGravityAffected
     public override void Init(ItemData itemData, Vector3 spawnPos)
     {
         base.Init(itemData, spawnPos);
-        _CollideChecker = gameObject.AddComponent<CollideChecker>();
+        _CollideChecker = GetComponent<CollideChecker>();
         spawnDirX = UnityEngine.Random.Range(-1f, 1f);
         GetItem += LootManager.Instance.IncreaseResource;
         GravityManager.Instance.AddGravityObj(this);
+        _yVel = 10;
         IsActive = true;
     }
 
@@ -46,8 +47,8 @@ public class Coin : Item, IGravityAffected
     public override void Clear()
     {
         ReleaseEvent();
-        gameObject.SetActive(false);
         IsActive = false;
+        gameObject.SetActive(false);
     }
     public void OnTriggerEnter(Collider coll)
     {

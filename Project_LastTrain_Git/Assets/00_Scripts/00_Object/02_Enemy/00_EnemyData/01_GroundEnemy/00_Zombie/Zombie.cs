@@ -78,20 +78,12 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         if (transform.position.y < -20f)
         {
             _enemyState = EnemyState.None;
+            OnDespawn();
         }
 
         switch (_enemyState)
         {
             case EnemyState.None:
-                transform.position += new Vector3(0, YVel, 0) * Time.deltaTime;
-                if (CollideChecker.IsLanding)
-                {
-                    stateTime += Time.deltaTime;
-                }
-                if(stateTime >= 3f)
-                {
-                    OnDespawn();
-                }
                 break;
 
             case EnemyState.Detect:
@@ -150,7 +142,15 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
                 break;
 
             case EnemyState.Die:
-                Die();
+                transform.position += new Vector3(0, YVel, 0) * Time.deltaTime;
+                if (CollideChecker.IsLanding)
+                {
+                    stateTime += Time.deltaTime;
+                }
+                if (stateTime >= 3f)
+                {
+                    OnDespawn();
+                }
                 break;
         }
     }
@@ -164,6 +164,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     {
         IsActive = false;
         transform.position = Vector3.zero;
+        _enemyState = EnemyState.None;
         gameObject.SetActive(false);
     }
 
@@ -182,18 +183,15 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         OnDamaged?.Invoke();
         if (Curhp <= 0)
         {
+            DropPoint = transform.position;
+            _enemyUIController.HideUIHUD();
+            gameObject.layer = LayerMask.NameToLayer("Dead");
+            OnDied?.Invoke(this);
             _enemyState = EnemyState.Die;
         }
     }
 
-    public void Die()
-    {
-        DropPoint = transform.position;
-        OnDied?.Invoke(this);
-        _enemyUIController.HideUIHUD();
-        _enemyState = EnemyState.None;
-        gameObject.layer = LayerMask.NameToLayer("Dead");
-    }
+
 
 
     IEnumerator DamageProcess(Vector3 dir)

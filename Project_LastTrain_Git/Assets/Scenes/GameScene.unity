@@ -1073,6 +1073,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 9154538045290521704, guid: 8b0718e8cee165444b73a02a31db904f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1335,7 +1339,7 @@ Transform:
   m_GameObject: {fileID: 814811383}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3, y: 0, z: 0}
+  m_LocalPosition: {x: -3, y: -0.06, z: 0}
   m_LocalScale: {x: 4, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2397,7 +2401,7 @@ GameObject:
   - component: {fileID: 1800714546}
   - component: {fileID: 1800714547}
   m_Layer: 0
-  m_Name: PlayfomerController
+  m_Name: PlatformerController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2431,6 +2435,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   train: {fileID: 190456708}
+  _rails: []
+  _railPrefab: {fileID: 6198771732201420017, guid: 992ec97c517007e428d92d7670f4c1f5, type: 3}
 --- !u!1 &1808592077
 GameObject:
   m_ObjectHideFlags: 0

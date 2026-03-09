@@ -7,7 +7,14 @@ public class GravityManager : SingletonManager<GravityManager>
 {
     float gravity = 40f;
     List<IGravityAffected> gravityObjects;
+    List<IGravityAffected> removeObjects;
 
+
+    public void Awake()
+    {
+        gravityObjects = new List<IGravityAffected>();
+        removeObjects = new List<IGravityAffected>();
+    }
     public void OnDisable()
     {
         gravityObjects.Clear();
@@ -24,7 +31,16 @@ public class GravityManager : SingletonManager<GravityManager>
             {
                 AffectGravity(gravityObjects[i]);
             }
+            else
+            {
+                removeObjects.Add(gravityObjects[i]);
+            }
         }
+        for (int i = 0; i < removeObjects.Count; i++)
+        {
+            gravityObjects.Remove(removeObjects[i]);
+        }
+        removeObjects.Clear();
     }
 
     public void AddList(List<IGravityAffected> lst,IGravityAffected obj)
@@ -34,16 +50,14 @@ public class GravityManager : SingletonManager<GravityManager>
 
     public void AddGravityObj(IGravityAffected obj)
     {
-        if(gravityObjects == null)
-        {
-            gravityObjects = new List<IGravityAffected>();
-        }
+        Debug.Log(obj);
         AddList(gravityObjects, obj);
     }
 
 
     public void AffectGravity(IGravityAffected obj)
     {
+        Debug.Log($"{obj} : LandCheck : {obj.CollideChecker.IsLanding}");
         if (!obj.CollideChecker.IsLanding)
         {
             obj.YVel -= gravity * Time.fixedDeltaTime;

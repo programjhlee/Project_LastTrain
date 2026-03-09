@@ -15,10 +15,10 @@ public abstract class GroundEnemy : Enemy, IGravityAffected
     public override void OnAwake()
     {
         _collideChecker = GetComponent<CollideChecker>();
-        GravityManager.Instance.AddGravityObj(this);
     }
     public override void Init(EnemyData enemydt)
     {
         base.Init(enemydt);
+        GravityManager.Instance.AddGravityObj(this);
     }
 }

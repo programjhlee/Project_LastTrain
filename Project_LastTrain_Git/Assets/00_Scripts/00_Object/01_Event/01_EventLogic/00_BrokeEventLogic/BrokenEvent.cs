@@ -12,6 +12,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
     public event Action<float> OnDamage;
     public override void Enter(EventData initEventData)
     {
+        curTime = 0;
         EventData = initEventData;
         _evtHUDController = GetComponent<UIHUDController>();
         _evtHUDController.Init();

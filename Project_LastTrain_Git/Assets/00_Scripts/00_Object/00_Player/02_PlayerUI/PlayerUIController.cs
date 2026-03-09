@@ -66,7 +66,6 @@ public class PlayerUIController : MonoBehaviour
 
     public void UIUpdate()
     {
-        Debug.Log("업데이트중!");
         _uiControlGuide.UpdatePos();
         CheckInteraction();
     }
