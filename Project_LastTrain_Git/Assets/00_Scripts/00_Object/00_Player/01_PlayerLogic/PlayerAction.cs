@@ -7,7 +7,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 {
     [SerializeField] List<Renderer> _playerRend;
     [SerializeField] Tool _tool;
-    PlayerUIController _playerUIController;
     PlayerData _playerData;
     PlayerAnim _playerAnim;
     
@@ -20,6 +19,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     public event Action OnIdle;
     public event Action OnJump;
     public event Action OnAttack;
+    public event Action OnSwing;
     public event Action OnFix;
     public event Action OnInteraction;
     public event Action OnHit;
@@ -55,9 +55,9 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
 
         _collideChecker = GetComponent<CollideChecker>();
-        _playerAnim = GetComponent<PlayerAnim>();
+        _playerAnim = GetComponentInChildren<PlayerAnim>();
         _col = GetComponent<Collider>();
-        _playerUIController = GetComponent<PlayerUIController>();
+
         _tool.Init();
 
         _playerLayer = LayerMask.GetMask("Player");
@@ -81,6 +81,8 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         OnMove += _playerAnim.PlayAnimMove;
         OnIdle += _playerAnim.StopAnimMove;
         OnJump += _playerAnim.PlayAnimJump;
+        OnJump += _playerAnim.PlayAnimJump;
+        OnSwing += _playerAnim.PlayAnimAttack;
         OnDodge += _playerAnim.PlayAnimDodge;
         OnAttack += _playerAnim.PlayAnimAttack;
         OnHit += _playerAnim.PlayAnimHit;
@@ -161,8 +163,8 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         {
             return;
         }
-        OnAttack?.Invoke();
         RaycastHit hit;
+        OnSwing?.Invoke();
 
         if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
         {
@@ -308,8 +310,20 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             StartCoroutine(GetDamageSequence(Vector3.zero));
         }
     }
+    public void OnDisable()
+    {
+        OnMove = null;
+        OnIdle = null;
+        OnJump = null;
+        OnAttack = null;
+        OnFix = null;
+        OnInteraction = null;
+        OnHit = null;
+        OnDodge = null;
 
-    public void OnDrawGizmos()
+}
+
+public void OnDrawGizmos()
     {
         if (_col == null) return;
 

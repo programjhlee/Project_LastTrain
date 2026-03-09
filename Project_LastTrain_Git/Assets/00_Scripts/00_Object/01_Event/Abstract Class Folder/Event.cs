@@ -5,13 +5,11 @@ using UnityEngine;
 
 public abstract class Event : MonoBehaviour, IFixable
 {
-    public EventData eventData;
+    EventData _eventData;
+    public EventData EventData { get; protected set; }
     public event Action OnFixed;
     public event Action<float> OnTakeFix;
-    public virtual void Enter(EventData initEventData)
-    {
-        eventData = initEventData;
-    }
+    public abstract void Enter(EventData initEventData);
     public abstract void Execute();
     public abstract void Exit();
     public abstract void TakeFix(float fixPower);

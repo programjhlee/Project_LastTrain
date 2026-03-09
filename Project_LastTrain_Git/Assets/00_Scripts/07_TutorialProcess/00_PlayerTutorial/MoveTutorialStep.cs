@@ -11,8 +11,7 @@ public class MoveTutorialStep : TutorialStep
     PlayerAction _pAction;
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
-    UI_ControlGuide _uiControlGuide;
-    UIHUDController _uiController;
+    PlayerUIController _uiController;
     Action _onMoveAction;
     
 
@@ -20,37 +19,33 @@ public class MoveTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
+        _uiController = _p.GetComponentInChildren<PlayerUIController>();
+        Debug.Log(_uiController);
     }
 
     public override IEnumerator Run()
     {
-        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
-        _uiControlGuide.BindData(_moveGuide);
-        _uiController = _p.GetComponentInChildren<UIHUDController>();
         float curDistance = 0;
         float movementTutorialClearDistance = 20f;
-        _uiController.AddUIHUD(_uiControlGuide);
+        _uiController.ShowControlGuide(_moveGuide);
         Debug.Log("방향키는 플레이어가 움직입니다! 움직여보세요!");
         _onMoveAction = () => { curDistance += 0.3f; };
         _pAction.OnMove += _onMoveAction;
         while (curDistance < movementTutorialClearDistance)
         {
-            _uiController.UpdateUIHUDPos();
             if (GameManager.Instance.IsPaused())
             {
                 yield return null;
                 continue;
             }
-            Debug.Log($"Distance : {curDistance} / {movementTutorialClearDistance}");
-            yield return _waitForEndOfFrame;
+            yield return null;
         }
         Release();
     }
 
     public override void Release()
     {
-        _uiController.UIHUDListClear();
-        _uiControlGuide = null;
+        _uiController.HideControlGuide();
         if(_onMoveAction == null)
         {
             return;

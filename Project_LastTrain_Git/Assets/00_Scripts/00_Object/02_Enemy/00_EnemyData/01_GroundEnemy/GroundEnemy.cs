@@ -12,7 +12,7 @@ public abstract class GroundEnemy : Enemy, IGravityAffected
     public Transform TargetTransform { get { return transform; } }
     public CollideChecker CollideChecker { get { return _collideChecker; } }
 
-    public virtual void Awake()
+    public override void OnAwake()
     {
         _collideChecker = GetComponent<CollideChecker>();
         GravityManager.Instance.AddGravityObj(this);

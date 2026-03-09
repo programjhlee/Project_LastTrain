@@ -10,9 +10,7 @@ public class JumpTutorialStep : TutorialStep
     
     Player _p;
     PlayerAction _pAction;
-    
-    UI_ControlGuide _uiControlGuide;
-    UIHUDController _uiController;
+    PlayerUIController _uiController;
     
     Action _onJumpAction;
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
@@ -26,10 +24,8 @@ public class JumpTutorialStep : TutorialStep
 
     public override IEnumerator Run()
     {
-        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
-        _uiControlGuide.BindData(_jumpGuide);
-        _uiController = _p.GetComponent<UIHUDController>();
-        _uiController.AddUIHUD(_uiControlGuide);
+        _uiController = _p.GetComponent<PlayerUIController>();
+        _uiController.ShowControlGuide(_jumpGuide);
         _pAction = _p.GetComponent<PlayerAction>();
         int curCnt = 0;
         int jumpTutorialClearCnt = 3;
@@ -38,7 +34,6 @@ public class JumpTutorialStep : TutorialStep
         _pAction.OnJump += _onJumpAction;
         while (curCnt < jumpTutorialClearCnt)
         {
-            _uiController.UpdateUIHUDPos();
             if (GameManager.Instance.IsPaused())
             {
                 yield return null;
@@ -51,12 +46,6 @@ public class JumpTutorialStep : TutorialStep
     }
     public override void Release()
     {
-        if (_uiControlGuide != null)
-        {
-            _uiControlGuide.Hide();
-            _uiControlGuide = null;
-        }
-            
         if (_onJumpAction == null)
         {
             return;

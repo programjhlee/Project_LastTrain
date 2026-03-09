@@ -6,21 +6,19 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] UI_HUDValueBarStrategyData _enemyHUDData;
     [SerializeField] GameObject _trainBack;
-    [SerializeField] GameObject _enemyPrefab;
     [SerializeField] List<EnemyData> _enemyDataSOList;
 
-    Renderer _trainRend;
-    string[] _enemyName;
+    Collider _trainCol;
+    int[] _enemyID;
 
     List<Enemy> _activeEnemies;
     List<Enemy> _removeEnemies;
 
-
-    List<Dictionary<string, object>> _enemyDataTable;
+    List<Dictionary<string, object>> _enemyLevelTable;
     List<Dictionary<string, object>> _enemyInfoTable;
     
-    Dictionary<string, GameObject> _enemyPools;
-    Dictionary<string, EnemyData> _enemyDataDics;
+    Dictionary<int, GameObject> _enemyPools;
+    Dictionary<int, EnemyData> _enemyDataDics;
 
     float curTime = 0;
     float _spawnTime;
@@ -31,26 +29,28 @@ public class EnemySpawner : MonoBehaviour
     }
     public void Init()
     {
-        _enemyDataTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyLevelData);
+        _enemyLevelTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyLevelData);
         _enemyInfoTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyInfoData);
         
-        _enemyPools = new Dictionary<string, GameObject>();
+        _enemyPools = new Dictionary<int, GameObject>();
         
         _activeEnemies = new List<Enemy>();
         _removeEnemies = new List<Enemy>();
         
         EnemyDataInit();
-        _trainRend = _trainBack.GetComponent<Renderer>();
+        
+        _trainCol = _trainBack.GetComponent<Collider>();
 
-        for (int i = 0; i < _enemyName.Length; i++)
+        for (int i = 0; i < _enemyID.Length; i++)
         {
-            GameObject enemyPool = new GameObject(_enemyName[i]);
+            GameObject enemyPool = new GameObject(_enemyDataDics[_enemyID[i]].enemyName);
             for (int j = 0; j < 20; j++)
             {
-                Enemy enemy = Instantiate(_enemyDataDics[_enemyName[i]].enemyPrefab).GetComponent<Enemy>();
-                enemy.name = $"{_enemyName[i]}_{i + 1}";
+                Enemy enemy = Instantiate(Resources.Load<GameObject>(_enemyDataDics[_enemyID[i]].prefabAddress)).GetComponent<Enemy>();
+                enemy.name = $"{_enemyDataDics[_enemyID[i]].enemyName}_{j + 1}";
                 enemy.transform.SetParent(enemyPool.transform);
-                _enemyPools[_enemyName[i]] = enemyPool;
+                _enemyPools[_enemyID[i]] = enemyPool;
+                enemy.OnAwake();
                 enemy.gameObject.SetActive(false);
             }
         }
@@ -93,22 +93,22 @@ public class EnemySpawner : MonoBehaviour
     }
     public void EnemyDataInit()
     {
-        _enemyDataDics = new Dictionary<string, EnemyData>();
-        _enemyName = new string[_enemyInfoTable.Count];
+        _enemyDataDics = new Dictionary<int, EnemyData>();
+        _enemyID = new int[_enemyInfoTable.Count];
+
         for(int i = 0; i < _enemyInfoTable.Count; i++)
         {
-            _enemyName[i] = _enemyDataSOList[i].enemyName;
+            _enemyID[i] = int.Parse(_enemyInfoTable[i]["ENEMYID"].ToString());
+            _enemyDataSOList[i].enemyID = _enemyID[i];
             _enemyDataSOList[i].maxHp = float.Parse((_enemyInfoTable[i]["HP"].ToString()));
             _enemyDataSOList[i].moveSpeed = float.Parse((_enemyInfoTable[i]["MOVESPEED"].ToString()));
             _enemyDataSOList[i].chaseSpeed = float.Parse((_enemyInfoTable[i]["CHASESPEED"].ToString()));
-            _enemyDataSOList[i].coin = int.Parse((_enemyInfoTable[i]["COIN"].ToString()));
             _enemyDataSOList[i].findDistance = float.Parse((_enemyInfoTable[i]["FINDDISTANCE"].ToString()));
             _enemyDataSOList[i].attackDistance = float.Parse((_enemyInfoTable[i]["ATTACKSPEED"].ToString()));
-            _enemyDataDics[_enemyName[i]] = _enemyDataSOList[i];
+            _enemyDataSOList[i].prefabAddress = _enemyInfoTable[i]["ADDRESS"].ToString();
+            _enemyDataDics[_enemyID[i]] = _enemyDataSOList[i];
         }
-
     }
-
 
     public void EnemyUpdate()
     {
@@ -134,19 +134,18 @@ public class EnemySpawner : MonoBehaviour
 
     public void SetEnemiesData()
     {
-        for (int i = 0; i < _enemyName.Length; i++)
+        for (int i = 0; i < _enemyID.Length; i++)
         {
-            for (int j = 0; j < _enemyDataTable.Count; j++)
+            for (int j = 0; j < _enemyLevelTable.Count; j++)
             {
-                if (int.Parse(_enemyDataTable[j]["LEVEL"].ToString()) == LevelManager.Instance.Level)
+                if (int.Parse(_enemyLevelTable[j]["LEVEL"].ToString()) == LevelManager.Instance.Level)
                 {
                     Debug.Log(LevelManager.Instance.Level);
-                    Debug.Log(float.Parse(_enemyDataTable[j]["HP"].ToString()));
-                    _enemyDataDics[_enemyName[i]].maxHp *= float.Parse(_enemyDataTable[j]["HP"].ToString());
-                    _enemyDataDics[_enemyName[i]].moveSpeed *= float.Parse(_enemyDataTable[j]["MOVESPEED"].ToString());
-                    _enemyDataDics[_enemyName[i]].chaseSpeed *= float.Parse(_enemyDataTable[j]["CHASESPEED"].ToString());
-                    _enemyDataDics[_enemyName[i]].coin = int.Parse(_enemyDataTable[j]["COINPERENEMY"].ToString());
-                    _spawnTime = float.Parse(_enemyDataTable[j]["SPAWNTIME"].ToString());
+                    Debug.Log(float.Parse(_enemyLevelTable[j]["HP"].ToString()));
+                    _enemyDataDics[_enemyID[i]].maxHp *= float.Parse(_enemyLevelTable[j]["HP"].ToString());
+                    _enemyDataDics[_enemyID[i]].moveSpeed *= float.Parse(_enemyLevelTable[j]["MOVESPEED"].ToString());
+                    _enemyDataDics[_enemyID[i]].chaseSpeed *= float.Parse(_enemyLevelTable[j]["CHASESPEED"].ToString());
+                    _spawnTime = float.Parse(_enemyLevelTable[j]["SPAWNTIME"].ToString());
                     break;
                 }
             }
@@ -156,10 +155,10 @@ public class EnemySpawner : MonoBehaviour
 
     public Enemy SpawnEnemy()
     {
-        int rnd = Random.Range(0, _enemyName.Length);
-        string selectEnemyName = _enemyName[rnd];
+        int rnd = Random.Range(0, _enemyID.Length);
+        int selectEnemyID = _enemyID[rnd];
 
-        GameObject selectEnemyPool = _enemyPools[selectEnemyName];
+        GameObject selectEnemyPool = _enemyPools[selectEnemyID];
         Enemy spawnEnemy = null;
         
         for (int i = 0; i < selectEnemyPool.transform.childCount; i++)
@@ -169,8 +168,8 @@ public class EnemySpawner : MonoBehaviour
                 continue;
             }
             spawnEnemy = selectEnemyPool.transform.GetChild(i).GetComponent<Enemy>();
-            spawnEnemy.Init(_enemyDataDics[selectEnemyName]);
-            spawnEnemy.SetEnemyPos(new Vector3(Random.Range(_trainRend.bounds.min.x, _trainRend.bounds.max.x), transform.position.y, 0));
+            spawnEnemy.Init(_enemyDataDics[selectEnemyID]);
+            spawnEnemy.SetEnemyPos(new Vector3(Random.Range(_trainCol.bounds.min.x, _trainCol.bounds.max.x), transform.position.y, 0));
             spawnEnemy.gameObject.SetActive(true);
             _activeEnemies.Add(spawnEnemy);
             break;
@@ -181,7 +180,7 @@ public class EnemySpawner : MonoBehaviour
     {
         for(int i = 0; i<_activeEnemies.Count; i++)
         {
-            _activeEnemies[i].Clear();
+            _activeEnemies[i].OnDespawn();
         }
 
         _activeEnemies.Clear();

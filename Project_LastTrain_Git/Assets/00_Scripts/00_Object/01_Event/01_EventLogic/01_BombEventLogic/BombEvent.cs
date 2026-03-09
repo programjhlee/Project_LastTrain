@@ -16,11 +16,12 @@ public class BombEvent : Event,ITrainDamageEvent
     public event Action<float> OnDamage;
     public override void Enter(EventData initEventData)
     {
-        base.Enter(initEventData);
+        curTime = 0;
+        EventData = initEventData;
         _evtHUDController = GetComponent<UIHUDController>();
         _evtHUDController.Init();
         rend = GetComponent<Renderer>();
-        curFixAmount = eventData.fixAmount;
+        curFixAmount = EventData.FixAmount;
         col = GetComponent<BoxCollider>();
     }
 
@@ -28,7 +29,7 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         curTime += Time.deltaTime;
         _evtHUDController.UpdateUIHUDPos();
-        if (curTime > eventData.cyclePerTime)
+        if (curTime > EventData.CyclePerTime)
         {
             curTime = 0;
             StartCoroutine(ExplosiveProcess());
@@ -54,7 +55,7 @@ public class BombEvent : Event,ITrainDamageEvent
         {
             player.GetComponent<PlayerAction>().TakeDamage(player.transform.position - transform.position);
         }
-        OnDamage?.Invoke(eventData.damageToTrain);
+        OnDamage?.Invoke(EventData.DamageToTrain);
         Explosive();
     }
 
@@ -63,13 +64,13 @@ public class BombEvent : Event,ITrainDamageEvent
         InvokeOnFix();
         ReleaseActionEvent();
         _evtHUDController.UIHUDListClear();
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public override void TakeFix(float fixPower)
     {
         curFixAmount -= fixPower;
-        InvokeTakeFix(curFixAmount / eventData.fixAmount);
+        InvokeTakeFix(curFixAmount / EventData.FixAmount);
         if (curFixAmount <= 0)
         {
             InvokeOnFix();
@@ -96,13 +97,11 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         ReleaseActionEvent();
         OnDamage = null;
-        Destroy(gameObject);
+        Exit();
     }
     public void Explosive()
     {
         ReleaseActionEvent();
-        _evtHUDController.UIHUDListClear();
-        Debug.Log("ลอมü!");
         Exit();
     }
 }

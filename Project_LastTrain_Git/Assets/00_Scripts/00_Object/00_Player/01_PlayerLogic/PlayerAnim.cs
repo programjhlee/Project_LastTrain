@@ -17,7 +17,7 @@ public class PlayerAnim : MonoBehaviour
 
     public void Init()
     {
-        _collideChecker = GetComponent<CollideChecker>();
+        _collideChecker = GetComponentInParent<CollideChecker>();
         _dodgeEffect.SetActive(false);
     }
 

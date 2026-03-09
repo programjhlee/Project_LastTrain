@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Zombie : GroundEnemy, IAttackable
+public class Zombie : GroundEnemy, IAttackable, IDroppedItem
 {
     Transform _player;
     PlayerAction _playerAction;
@@ -15,6 +15,7 @@ public class Zombie : GroundEnemy, IAttackable
     LayerMask _playerLayer;
     public float Maxhp { get; set; }
     public float Curhp { get; set; }
+    public Vector3 DropPoint { get; set; }
 
     float stateTime;
     public enum EnemyState
@@ -30,44 +31,39 @@ public class Zombie : GroundEnemy, IAttackable
 
     public event Action OnDamaged;
     public event Action OnAttack;
-    public event Action<Enemy> OnDied;
-    public override void Awake()
+    public event Action<Zombie> OnDied;
+
+    public override void OnAwake()
     {
-        base.Awake();
+        base.OnAwake();
         _playerLayer = LayerMask.GetMask("Player");
         _enemyUIController = GetComponent<EnemyUIController>();
         _anim = GetComponent<ZombieAnim>();
     }
     public override void Init(EnemyData enemydt)
     {
-        if (enemydt == null)
-        {
-            enemyData.maxHp = 5f;
-            enemyData.moveSpeed = 3f;
-            enemyData.chaseSpeed = 5f;
-            enemyData.coin = 2;
-            enemyData.attackDistance = 1.5f;
-            enemyData.findDistance = 5f;
-            enemyData.attackSpeed = 0.25f;
-            enemyData.attackDistance = 1.5f;
-        }
         base.Init(enemydt);
-        gameObject.layer = LayerMask.NameToLayer("Enemy");
+
         IsActive = true;
+
         Curhp = enemyData.maxHp;
         Maxhp = enemyData.maxHp;
+
         enemyData.findDistance = 5f;
         enemyData.attackSpeed = 0.25f;
         enemyData.attackDistance = 1.5f;
-        
-        _enemyUIController.Init();
-        _anim.Init();
+
         _enemyState = EnemyState.Detect;
         _moveDir = Vector3.left;
         stateTime = 0;
-        
+
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
+
+        _enemyUIController.Init();
+        _anim.Init();
+
         OnDamaged += _enemyUIController.SetValueBarRatio;
-        OnDied += LootManager.Instance.DropCoinAt;
+        OnDied += LootManager.Instance.DropItemAt;
     }
     void OnDisable()
     {
@@ -94,7 +90,7 @@ public class Zombie : GroundEnemy, IAttackable
                 }
                 if(stateTime >= 3f)
                 {
-                    Clear();
+                    OnDespawn();
                 }
                 break;
 
@@ -164,7 +160,7 @@ public class Zombie : GroundEnemy, IAttackable
         _enemyUIController.UpdateUIPos();
     }
 
-    public override void Clear()
+    public override void OnDespawn()
     {
         IsActive = false;
         transform.position = Vector3.zero;
@@ -192,6 +188,7 @@ public class Zombie : GroundEnemy, IAttackable
 
     public void Die()
     {
+        DropPoint = transform.position;
         OnDied?.Invoke(this);
         _enemyUIController.HideUIHUD();
         _enemyState = EnemyState.None;
@@ -211,4 +208,6 @@ public class Zombie : GroundEnemy, IAttackable
         }
         curTime = 0;
     }
+
+
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_ControlGuide : UI_HUD
+public class UI_HUDControlGuide : UI_HUD
 {
     UI_HUDControlGuideStrategyData _uiControlGuideData;
     [SerializeField] Text _uiGuideText;
@@ -15,5 +15,8 @@ public class UI_ControlGuide : UI_HUD
         _uiGuideText.text = _uiControlGuideData.ControlGuideText;
         transform.localScale = new Vector3(1f, 1f, 1f);
     }
-
+    public void SetText(string Text)
+    {
+        _uiGuideText.text = Text;
+    }
 }

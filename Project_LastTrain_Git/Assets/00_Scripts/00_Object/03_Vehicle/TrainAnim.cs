@@ -10,7 +10,6 @@ public class TrainAnim : MonoBehaviour
     [SerializeField] GameObject _trainBack_2;
     [SerializeField] GameObject _trainBack_3;
 
-    float _curTime = 0;
     float _timerFront;
     float _timerBack1;
     float _timerBack2;
@@ -66,7 +65,6 @@ public class TrainAnim : MonoBehaviour
         
 
     }
-
     public void OnTakeDamage(float damage)
     {
         float shakeForce = damage / 20;

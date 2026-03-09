@@ -24,8 +24,8 @@ public class InteractionTutorialStep : TutorialStep
 
         _onFixAction = () => { curCnt++; };
         Debug.Log("열차에 부정적인 영향을 주는 이벤트에요! 없애주세요!");
-        Event brokenEvent = _trainEventSystem.SpawnEventAt(0, (int)TrainEventSystem.Events.BROKENEVENT);
-        Event bombEvent = _trainEventSystem.SpawnEventAt(0.25f, (int)TrainEventSystem.Events.BOMBEVENT);
+        Event brokenEvent = _trainEventSystem.SpawnEventAt(0, 0);
+        Event bombEvent = _trainEventSystem.SpawnEventAt(0.25f, 1);
         brokenEvent.OnFixed += _onFixAction; 
         bombEvent.OnFixed += _onFixAction;
         Debug.Log(curCnt);

@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyData")]
 public class EnemyData : ScriptableObject
 {
+    public int enemyID;
     public string enemyName;
-    public GameObject enemyPrefab;
     public float maxHp;
     public float moveSpeed;
     public float chaseSpeed;
-    public int coin;
     public float findDistance;
     public float attackDistance;
     public float attackSpeed;
+    public string prefabAddress;
 }

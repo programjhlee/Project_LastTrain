@@ -91,7 +91,6 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
             Debug.Log("돈부족함..");
             return;
         };
-        Debug.Log("강화 성공!");
         LootManager.Instance.DecreaseCoin(enhancePrice);
         _playerData.Level++;
         _ui_Enhance.SetPlayerLevelText(_playerData.Level);

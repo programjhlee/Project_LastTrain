@@ -9,8 +9,8 @@ public class RollingTutorialStep : TutorialStep
     [SerializeField] UI_HUDControlGuideStrategyData _rollGuide;
     Player _p;
     PlayerAction _pAction;
-    
-    UI_ControlGuide _uiControlGuide;
+
+    UI_HUDControlGuide _uiControlGuide;
     Action _onDodgeAction;
 
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
@@ -24,7 +24,7 @@ public class RollingTutorialStep : TutorialStep
     {
         int curCnt = 0;
         int jumpTutorialClearCnt = 3;
-        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(_p.transform);
+        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_HUDControlGuide>(_p.transform);
         _uiControlGuide.BindData(_rollGuide);
         Debug.Log("Shift키는 플레이어가 구릅니다! 구르는동안 무적이에요!");
         _onDodgeAction = () => { curCnt++; };

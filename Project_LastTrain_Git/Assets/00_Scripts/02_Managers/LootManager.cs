@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LootManager : SingletonManager<LootManager>
 {
+    [SerializeField] List<ItemData> _itemDatas;
+    [SerializeField] List<DropTable> _dropList;
+    Dictionary<Type, ItemData> _itemDataDics;
+    Dictionary<Type, List<Item>> _itemDics;
+    Dictionary<Type, int> _itemResourceCntDics;
 
-    int coinCnt;
-    public GameObject coinPrefab;
-    List<Coin> coinList = new List<Coin>();
+
+    List<Item> _activeItemList;
+    List<Item> _removeItemList;
     UI_Coin ui_Coin;
 
     void Awake()
@@ -17,86 +23,142 @@ public class LootManager : SingletonManager<LootManager>
 
     public void Init()
     {
-        coinCnt = 0;
-        GameObject coins = new GameObject("Coins");
-        for (int i = 0; i < 150; i++)
+        _itemResourceCntDics = new Dictionary<Type, int>();
+        _itemDataDics = new Dictionary<Type, ItemData>();
+        _itemDics = new Dictionary<Type, List<Item>>();
+
+        _activeItemList = new List<Item>();
+        _removeItemList = new List<Item>();
+        for(int i = 0; i < _itemDatas.Count; i++)
         {
-            GameObject coin = Instantiate(coinPrefab);
-            coin.transform.SetParent(coins.transform);
-            coinList.Add(coin.GetComponent<Coin>());
-            coinList[i].GetCoin += IncreaseCoin;
-            GameManager.Instance.OnStageClear += AllCoinUnActive;
-            coin.SetActive(false);
+            _itemDataDics[_itemDatas[i].GetItemType()] = _itemDatas[i];
         }
-        ui_Coin = UIManager.Instance.ShowUIAt<UI_Coin>(new Vector2(250,-125));
-        ui_Coin.SetCoinText(0);
 
-    }
-    public void OnDisable()
-    {
-        for (int i = 0; i < coinList.Count; i++)
+
+        for (int i = 0; i < _dropList.Count; i++)
         {
-            coinList[i].GetCoin -= IncreaseCoin;
-            Destroy(coinList[i].gameObject);
+            List<DropTable.DropEntry> currentDropEntry = _dropList[i].DropItems;
+            for(int j = 0; j < currentDropEntry.Count; j++)
+            {
+                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 0;
+                GameObject items = new GameObject(currentDropEntry[j].Item.gameObject.name);
+                for (int k = 0; k < 50; k++)
+                {
+                    GameObject item = Instantiate(currentDropEntry[j].Item.gameObject);
+
+                    Item itemScript = item.GetComponent<Item>();
+                    item.name = $"{itemScript.GetType()}_{k + 1}";
+                    item.transform.SetParent(items.transform);
+                    if (!_itemDics.ContainsKey(itemScript.GetType()))
+                    {
+                        _itemDics[itemScript.GetType()] = new List<Item>();
+                    }
+                    _itemDics[itemScript.GetType()].Add(itemScript);
+                    
+                    item.SetActive(false);
+                }
+            }
+            ui_Coin = UIManager.Instance.ShowUIAt<UI_Coin>(new Vector2(250, -125));
+            ui_Coin.SetCoinText(0);
         }
-        GameManager.Instance.OnStageClear -= AllCoinUnActive;
-
     }
-
-
     public void Update()
     {
-        for (int i = 0; i < coinList.Count; i++)
+        for(int i = 0; i < _activeItemList.Count; i++)
         {
-            if (!coinList[i].gameObject.activeSelf)
+            if (!_activeItemList[i].gameObject.activeSelf)
             {
+                _removeItemList.Add(_activeItemList[i]);
                 continue;
             }
-            coinList[i].OnUpdate();
+            _activeItemList[i].OnUpdate();
         }
-    }
-
-    public void DropCoinAt(Enemy enemyInfo)
-    {
-        for (int i = 0; i < enemyInfo.enemyData.coin; i++)
+        for(int i = 0; i < _removeItemList.Count; i++)
         {
-            for (int j = 0; j < coinList.Count; j++)
-            {
-                if (coinList[j].gameObject.activeSelf)
-                {
-                    continue;
-                }
-                coinList[j].transform.position = new Vector3(enemyInfo.transform.position.x + Random.Range(-2f, 2f), enemyInfo.transform.position.y, 0);
-                coinList[j].gameObject.SetActive(true);
-                GravityManager.Instance.AddGravityObj(coinList[j]);
-                break;
-            }
+            _activeItemList.Remove(_removeItemList[i]);
         }
-    }
-
-    public void IncreaseCoin()
-    {
-        coinCnt++;
-        ui_Coin.SetCoinText(coinCnt);
+        _removeItemList.Clear();
         
     }
 
-    public void DecreaseCoin(int useCoin)
+
+    public void DropItemAt<T>(T dropTarget) where T : IDroppedItem 
     {
-        coinCnt -= useCoin;
-        ui_Coin.SetCoinText(coinCnt);
+        int rndCnt;
+        float rndChance;
+        DropTable  currentDropTable = _dropList[0];
+
+        for(int i = 0; i < currentDropTable.DropItems.Count; i++)
+        {
+            rndCnt = UnityEngine.Random.Range(1, 3);
+            rndChance = UnityEngine.Random.Range(0f, 1f);
+            if (rndChance <= currentDropTable.DropItems[i].DropChance)
+            {
+                Type currentItemType = currentDropTable.DropItems[i].Item.GetType();
+                for (int j = 0; j < rndCnt; j++)
+                {
+                    for (int k = 0; k < _itemDics[currentItemType].Count; k++)
+                    {
+
+                        if (_itemDics[currentItemType][k].gameObject.activeSelf)
+                        {
+                            continue;
+                        }
+                        GameObject itemObject = _itemDics[currentItemType][k].gameObject;
+                        Item itemScript = _itemDics[currentItemType][k];
+                        itemObject.SetActive(true);
+                        itemScript.Init(_itemDataDics[currentItemType], dropTarget.DropPoint);
+                        _activeItemList.Add(_itemDics[currentItemType][k]);
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+
+    public void IncreaseResource<T>() where T : Item
+    {
+        _itemResourceCntDics[typeof(T)]++;       
+    }
+    public void IncreaseResource<T>(int amount) where T : Item
+    {
+        _itemResourceCntDics[typeof(T)] += amount;
+    }
+
+
+    public void IncreaseResource(Item item)
+    {
+        _itemResourceCntDics[item.GetType()]++;
+        Debug.Log(_itemResourceCntDics[item.GetType()]);
+    }
+    public void IncreaseResource(Item item, int amount)
+    {
+        _itemResourceCntDics[item.GetType()] += amount;
+    }
+
+
+    public void DecreaseResource<T>(int useAmount) where T : Item
+    {
+        _itemResourceCntDics[typeof(T)] -= useAmount;
+    }
+    public void DecreaseCoin(int useAmount)
+    {
+        _itemResourceCntDics[typeof(Coin)] -= useAmount;
     }
 
     public void AllCoinUnActive()
     {
-        for (int i = 0; i < coinList.Count; i++)
-        {
-            coinList[i].gameObject.SetActive(false);
-        }
+      
+    }
+
+    public int GetHasItem<T>() where T : Item
+    {
+        return _itemResourceCntDics[typeof(T)];
     }
 
     public int GetHasCoin()
     {
-        return coinCnt;
+        return GetHasItem<Coin>();
     }
 }

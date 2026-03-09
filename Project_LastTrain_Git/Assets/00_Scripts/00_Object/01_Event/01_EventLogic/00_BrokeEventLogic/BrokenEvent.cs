@@ -12,19 +12,19 @@ public class BrokenEvent : Event,ITrainDamageEvent
     public event Action<float> OnDamage;
     public override void Enter(EventData initEventData)
     {
-        base.Enter(initEventData);
+        EventData = initEventData;
         _evtHUDController = GetComponent<UIHUDController>();
         _evtHUDController.Init();
-        curFixAmount = eventData.fixAmount;
+        curFixAmount = EventData.FixAmount;
     }
     public override void Execute()
     {
         curTime += Time.deltaTime;
         _evtHUDController.UpdateUIHUDPos();
-        if(curTime > eventData.cyclePerTime)
+        if(curTime > EventData.CyclePerTime)
         {
             curTime = 0;
-            OnDamage?.Invoke(eventData.damageToTrain);
+            OnDamage?.Invoke(EventData.DamageToTrain);
         }
     }
     public override void Exit()
@@ -33,12 +33,12 @@ public class BrokenEvent : Event,ITrainDamageEvent
         ReleaseActionEvent();
         OnDamage = null;
         _evtHUDController.UIHUDListClear();
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     public override void TakeFix(float fixPower)
     {
         curFixAmount -= fixPower;
-        InvokeTakeFix(curFixAmount / eventData.fixAmount);
+        InvokeTakeFix(curFixAmount / EventData.FixAmount);
         if(curFixAmount <= 0)
         {
             Exit();

@@ -6,26 +6,29 @@ public class Player : MonoBehaviour
 {
     [SerializeField] PlayerData _playerData;
     CollideChecker _CollideChecker;
-    PlayerUIController _playerUIController;
     UIHUDController _HUDController;
+    PlayerUIController _playerUIController;
     PlayerAction playerAction;
     PlayerController playerController;
     PlayerAnim _playerAnim;
+    PlayerSoundController _playerSoundController;
     void Awake()
     {
         _CollideChecker = GetComponent<CollideChecker>();
         playerAction = GetComponent<PlayerAction>();
         playerController = GetComponent<PlayerController>();
-        _playerAnim = GetComponent<PlayerAnim>();
+        _playerAnim = GetComponentInChildren<PlayerAnim>();
         _playerUIController = GetComponent<PlayerUIController>();
-        _HUDController = GetComponentInChildren<UIHUDController>();
-
+        _playerSoundController = GetComponentInChildren<PlayerSoundController>();
+        _HUDController = GetComponent<UIHUDController>();
 
         playerAction.Init(_playerData);
         playerController.Init();
         _playerAnim.Init();
-        _HUDController.Init();
+        _playerSoundController.Init();
         _playerUIController.Init();
+        _HUDController.Init();
+
 
     }
 
@@ -34,14 +37,14 @@ public class Player : MonoBehaviour
         playerController.OnInputUpdate();
         _playerAnim.OnUpdate();
         _CollideChecker.LandCheck();
+     
+
     }
     void FixedUpdate()
     {
         if (GameManager.Instance.IsPaused()) return;
         playerAction.ProcessMovement();
-    }
-    public void LateUpdate()
-    {
         _playerUIController.UIUpdate();
+        
     }
 }

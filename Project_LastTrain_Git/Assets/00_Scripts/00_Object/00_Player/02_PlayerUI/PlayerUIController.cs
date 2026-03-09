@@ -15,18 +15,19 @@ public class PlayerUIController : MonoBehaviour
     [SerializeField] List<UI_HUDControlGuideStrategyData> _controlGuideList;
     Collider _col;
     Dictionary<string,UI_HUDControlGuideStrategyData> _controlGuideDics;
-    UI_ControlGuide _uiControlGuide;
+    UI_HUDControlGuide _uiControlGuide;
 
     public void Init()
     {
         _col = GetComponent<Collider>();
-        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_ControlGuide>(transform);
+        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_HUDControlGuide>(transform);
         _uiControlGuide.Hide();
         _controlGuideDics = new Dictionary<string, UI_HUDControlGuideStrategyData>();
         for (int i = 0; i < _controlGuideList.Count; i++)
         {
             _controlGuideDics[_controlGuideList[i].ControlGuideName] = _controlGuideList[i];
         }
+        Debug.Log(_uiControlGuide);
     }
     public void ShowControlGuide(ControlGuideType controlGuide)
     {
@@ -34,8 +35,12 @@ public class PlayerUIController : MonoBehaviour
         _uiControlGuide.BindData(_controlGuideDics[controlName]);
         _uiControlGuide.Show();
     }
-
-
+    public void ShowControlGuide(UI_HUDControlGuideStrategyData strategyData)
+    {
+        Debug.Log("strateData 업데이트");
+        _uiControlGuide.BindData(strategyData);
+        _uiControlGuide.Show();
+    }
     public void CheckInteraction()
     {
         RaycastHit hit;
@@ -49,7 +54,7 @@ public class PlayerUIController : MonoBehaviour
         }
         else
         {
-            HideControlGuide();
+            //HideControlGuide();
         }
     }
 
@@ -61,6 +66,7 @@ public class PlayerUIController : MonoBehaviour
 
     public void UIUpdate()
     {
+        Debug.Log("업데이트중!");
         _uiControlGuide.UpdatePos();
         CheckInteraction();
     }
