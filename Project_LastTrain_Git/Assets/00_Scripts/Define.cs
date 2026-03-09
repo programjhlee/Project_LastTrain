@@ -15,4 +15,5 @@ public static class Define
         TrainEventData,
         EnemyLevelData,
     }
+    static string test = "잘 들어갈까요?";
 }
