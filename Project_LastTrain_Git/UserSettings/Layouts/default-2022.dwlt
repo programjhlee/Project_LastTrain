@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Console
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 177
+  controlID: 187
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -432,14 +432,14 @@ MonoBehaviour:
     - {fileID: 5575314852942181807, guid: 040a79f57e9c28a4980aa82564349c30, type: 2}
     - {fileID: 1107880670173146032, guid: edecbeead299e5343ae03b3a2f7cb04c, type: 2}
     m_ValueSerializationHelper:
-    - e00: 0.7012087
+    - e00: 0.7232531
       e01: 0
       e02: 0
-      e03: -66.75534
+      e03: -61.322968
       e10: 0
-      e11: 0.7012087
+      e11: 0.7232531
       e12: 0
-      e13: -32.01502
+      e13: 166.34822
       e20: 0
       e21: 0
       e22: 1
@@ -448,14 +448,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 1.1321235
+    - e00: 1.1890669
       e01: 0
       e02: 0
-      e03: -304.01123
+      e03: -321.66635
       e10: 0
-      e11: 1.1321235
+      e11: 1.1890669
       e12: 0
-      e13: 39.830402
+      e13: 32.159283
       e20: 0
       e21: 0
       e22: 1
@@ -465,9 +465,9 @@ MonoBehaviour:
       e32: 0
       e33: 1
   m_PreviewAnimator: {fileID: 0}
-  m_AnimatorController: {fileID: 9100000, guid: edecbeead299e5343ae03b3a2f7cb04c, type: 2}
+  m_AnimatorController: {fileID: 9100000, guid: 040a79f57e9c28a4980aa82564349c30, type: 2}
   m_BreadCrumbs:
-  - m_Target: {fileID: 1107880670173146032, guid: edecbeead299e5343ae03b3a2f7cb04c, type: 2}
+  - m_Target: {fileID: 5575314852942181807, guid: 040a79f57e9c28a4980aa82564349c30, type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
   stateMachineGraphGUI: {fileID: 0}
@@ -551,9 +551,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 4e650000
+      m_SelectedIDs: 428b0000
       m_LastClickedID: 0
-      m_ExpandedIDs: 0efbffff
+      m_ExpandedIDs: 0efbffffdc610000e4610000e6610000f2610000f8610000066200002c6200002e6200003c6200004a6200005e62000068620000866200008a62000090620000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1169,7 +1169,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/00_Scripts/00_Object/02_Enemy/00_EnemyData/02_GroundEnemy/00_Zombie/02_Animation
+    - Assets/00_Scripts/00_Object/00_Player/04_PlayerView/02_PlayerSound
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1185,7 +1185,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 445b0000
     m_LastClickedID: 23364
-    m_ExpandedIDs: 0000000066650000686500006a6500006c6500006e65000070650000726500007465000076650000786500007a6500007c6500007e65000080650000826500008465000086650000886500008a6500008c6500008e65000090650000926500009465000096650000986500009a6500009c6500009e650000a0650000a2650000
+    m_ExpandedIDs: 0000000066650000686500006a6500006c6500006e65000070650000726500007465000076650000786500007a6500007c6500007e65000080650000826500008465000086650000886500008a6500008c6500008e65000090650000926500009465000096650000986500009a6500009c6500009e650000a0650000a2650000a4650000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1210,24 +1210,24 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_AssetTreeState:
-    scrollPos: {x: 0, y: 120}
+    scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff0000000066650000686500006a6500006c6500006e650000706500007265000074650000766500007a6500007c6500007e65000080650000826500008465000086650000886500008a6500008c6500008e650000906500009265000094650000986500009a6500009c6500009e650000a06500005666000064660000ec6600002e6c0000
+    m_ExpandedIDs: ffffffff0000000066650000686500006a6500006c6500006e65000070650000726500007465000076650000786500007a6500007c6500007e65000080650000826500008465000086650000886500008a6500008c6500008e65000090650000926500009465000096650000986500009a6500009c6500009e650000a0650000a2650000a4650000e66500009066000096660000aa670000ae670000b2670000b6670000b8670000ba670000bc670000c46700008a6a00009a6a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: 02_PlayerSound
+      m_OriginalName: 02_PlayerSound
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 35650
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 4
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 12}
     m_SearchString: 
