@@ -179,14 +179,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 224e5447b4c404e48b9b439da9c17535, type: 3}
   - {fileID: 8300000, guid: f1687c1dbc588564cbdce46350891670, type: 3}
   _chaseSounds:
-  - {fileID: 8300000, guid: 5ca52423924430a45afe06a4a70cbb0c, type: 3}
+  - {fileID: 8300000, guid: 6194b3c6aa1dbeb46a2f5c85c09feba7, type: 3}
   - {fileID: 8300000, guid: 12d89f66e28526d4da367d4526e744a3, type: 3}
   _damageSounds:
   - {fileID: 8300000, guid: 77096da868483f8409d467457f6aaa78, type: 3}
   - {fileID: 8300000, guid: a380ce1dd70d8eb498a386a0a91c86b3, type: 3}
   - {fileID: 8300000, guid: 8f35785a657ecd744bfed00b3b0e1bb1, type: 3}
   _deadSound: {fileID: 8300000, guid: 35b3db34693a2b1449beaebffc72cde3, type: 3}
-  _attackSound: {fileID: 8300000, guid: e514660d68dc626499d4bf3c5c1b14b9, type: 3}
 --- !u!1001 &726606641257258579
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -91,7 +91,6 @@ public class LootManager : SingletonManager<LootManager>
         for(int i = 0; i < currentDropTable.DropItems.Count; i++)
         {
             rndCnt = UnityEngine.Random.Range(1, 3);
-            Debug.Log(rndCnt);
             rndChance = UnityEngine.Random.Range(0f, 1f);
             if (rndChance <= currentDropTable.DropItems[i].DropChance)
             {
