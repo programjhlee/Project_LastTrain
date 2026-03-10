@@ -54,7 +54,7 @@ public class PlayerAnim : MonoBehaviour
     public void PlayAnimAttack()
     {
         _playerAnim.SetTrigger(ATTACK);
-        _playerAnim.SetFloat("AttackSpeed", 1f / attackSpeed);
+        _playerAnim.SetFloat("AttackSpeed", 1f / (attackSpeed + 0.1f));
     }
     public void PlayAnimHit()
     {
