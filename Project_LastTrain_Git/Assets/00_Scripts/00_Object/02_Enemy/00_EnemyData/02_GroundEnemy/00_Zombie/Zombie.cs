@@ -42,7 +42,6 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         _enemyUIController = GetComponent<EnemyUIController>();
         _anim = GetComponent<ZombieAnim>();
         _zombieSoundController = GetComponent<ZombieSoundController>();
-        Debug.Log(_zombieSoundController);
     }
     public override void Init(EnemyData enemydt)
     {

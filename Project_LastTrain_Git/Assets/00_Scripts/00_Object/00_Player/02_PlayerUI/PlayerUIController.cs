@@ -27,7 +27,6 @@ public class PlayerUIController : MonoBehaviour
         {
             _controlGuideDics[_controlGuideList[i].ControlGuideName] = _controlGuideList[i];
         }
-        Debug.Log(_uiControlGuide);
     }
     public void ShowControlGuide(ControlGuideType controlGuide)
     {

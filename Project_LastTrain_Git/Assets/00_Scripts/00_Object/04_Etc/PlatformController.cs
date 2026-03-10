@@ -14,7 +14,7 @@ public class PlatformController : MonoBehaviour
     float platformDistance;
     bool trainDestroy;
     float _railSizeX;
-    float _railStartPosX = -60f;
+    float _railStartPosX = -120f;
     public float TrainSpeed
     {
         get
@@ -32,14 +32,13 @@ public class PlatformController : MonoBehaviour
     void Awake()
     {
         _rails = new List<GameObject>();
-        Debug.Log(_railSizeX);
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 6; i++)
         {
             GameObject rail = Instantiate(_railPrefab);
             rail.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
             rail.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
             _railSizeX = rail.GetComponentInChildren<Renderer>().bounds.extents.x * 2;
-            rail.transform.position = new Vector3(_railStartPosX + i * _railSizeX, -10.1f, -0.5f);
+            rail.transform.position = new Vector3(_railStartPosX + i * _railSizeX, -10.1f,0);
             _rails.Add(rail);
         }
         platformDataTable = DataManager.Instance.GetData((int)Define.DataTables.PlatformData);
@@ -49,20 +48,20 @@ public class PlatformController : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.Instance.OnGameStart += SetPlatformData;
+        SetPlatformData();
+        GameManager.Instance.OnGameStart += OnGameStart;
         train.OnTrainDestroy += TrainDestroy;
         trainDestroy = false;
     }
     void OnDisable()
     {
-        GameManager.Instance.OnGameStart -= SetPlatformData;
+        GameManager.Instance.OnGameStart -= OnGameStart;
         train.OnTrainDestroy -= TrainDestroy;
     }
 
 
     public void SetPlatformData()
     {
-        ui_Distance.Show();
         for (int i = 0; i < platformDataTable.Count; i++)
         {
             if (int.Parse(platformDataTable[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
@@ -73,6 +72,13 @@ public class PlatformController : MonoBehaviour
             }
         }
     }
+
+    public void OnGameStart()
+    {
+        ui_Distance.Show();
+        SetPlatformData();
+    }
+
 
     void Update()
     {
@@ -85,7 +91,8 @@ public class PlatformController : MonoBehaviour
         {
             return;
         }
-        if (GameManager.Instance.IsGamePlaying())
+
+        if (!GameManager.Instance.IsPaused())
         {
             for (int i = 0; i < _rails.Count; i++)
             {
@@ -97,10 +104,11 @@ public class PlatformController : MonoBehaviour
 
                 }
                 _rails[i].transform.position += Vector3.left * trainSpeed * 50 * Time.deltaTime;
-
             }
+        }
 
-
+        if (GameManager.Instance.IsGamePlaying())
+        {
             platformDistance -= trainSpeed * Time.deltaTime;
             ui_Distance.SetDistanceText(platformDistance);
             if (platformDistance <= 0)

@@ -62,8 +62,6 @@ public class TrainEventSystem : MonoBehaviour
             }
             inactiveEventPools[eventID[i]] = eventPoolStack;
         }
-        Debug.Log(inactiveEventPools[eventID[0]].Pop());
-        Debug.Log(inactiveEventPools[eventID[1]].Pop());
     }
 
     void OnEnable()

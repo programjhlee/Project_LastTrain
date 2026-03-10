@@ -140,8 +140,6 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (int.Parse(_enemyLevelTable[j]["LEVEL"].ToString()) == LevelManager.Instance.Level)
                 {
-                    Debug.Log(LevelManager.Instance.Level);
-                    Debug.Log(float.Parse(_enemyLevelTable[j]["HP"].ToString()));
                     _enemyDataDics[_enemyID[i]].maxHp *= float.Parse(_enemyLevelTable[j]["HP"].ToString());
                     _enemyDataDics[_enemyID[i]].moveSpeed *= float.Parse(_enemyLevelTable[j]["MOVESPEED"].ToString());
                     _enemyDataDics[_enemyID[i]].chaseSpeed *= float.Parse(_enemyLevelTable[j]["CHASESPEED"].ToString());

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TrainAnim : MonoBehaviour
 {
+    Transform _trainParent;
     Train _train;
     [SerializeField] GameObject _trainFront;
     [SerializeField] GameObject _trainBack_1;
@@ -21,6 +22,7 @@ public class TrainAnim : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _trainParent = transform.parent;
         _train = GetComponent<Train>();
         _timerFront = Random.Range(_intervalMin, _intervalMax);
         _timerBack1 = Random.Range(_intervalMin, _intervalMax);
@@ -62,8 +64,29 @@ public class TrainAnim : MonoBehaviour
         }
 
         target.transform.rotation = Quaternion.Euler(originRot);
-        
 
+
+    }
+
+    public void StartTrain()
+    {
+        StartCoroutine(StartTrainAnim(new Vector3(0, -4, 0), 5f));
+    }
+
+    public IEnumerator StartTrainAnim(Vector3 targetPos,float speed)
+    { 
+        while(_trainParent.position.x < 0)
+        {
+            _trainParent.position = Vector3.Lerp(_trainParent.position, targetPos, speed * Time.deltaTime);
+            if(Vector3.Distance(_trainParent.position,targetPos) <= 0.01f)
+            {
+                _trainParent.position = targetPos;
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.3f);
+        CameraManager.Instance.SetStartCamPriority();
+        GameManager.Instance.TutorialStart();
     }
     public void OnTakeDamage(float damage)
     {

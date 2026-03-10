@@ -50,14 +50,12 @@ public class GravityManager : SingletonManager<GravityManager>
 
     public void AddGravityObj(IGravityAffected obj)
     {
-        Debug.Log(obj);
         AddList(gravityObjects, obj);
     }
 
 
     public void AffectGravity(IGravityAffected obj)
     {
-        Debug.Log($"{obj} : LandCheck : {obj.CollideChecker.IsLanding}");
         if (!obj.CollideChecker.IsLanding)
         {
             obj.YVel -= gravity * Time.fixedDeltaTime;

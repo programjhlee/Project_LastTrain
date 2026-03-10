@@ -9,6 +9,8 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] TutorialSystem _tutorialSystem;
     [SerializeField] PlatformController _platformController;
 
+    public event Action OnTutorialStart;
+    public event Action OnAnimComplete;
     public event Action OnGameStart;
     public event Action OnStageClear;
 
@@ -36,12 +38,15 @@ public class GameManager : SingletonManager<GameManager>
         _train.OnTrainDestroy -= GameOver;
         _platformController.OnArrived -= StageClear;
         OnGameStart = null;
+        OnTutorialStart = null;
+        OnStageClear = null;
     }
     public void TutorialStart()
     {
         State = GameState.Tutorial;
         UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
         _tutorialSystem.TutorialStart();
+        OnTutorialStart?.Invoke();
     }
     public void GameStart()
     {

@@ -12,6 +12,10 @@ public class LevelManager : SingletonManager<LevelManager>
         get;
         private set;
     } = 1;
+    public void Awake()
+    {
+        Level = 1;
+    }
     public void OnEnable()
     {
         platformController.OnArrived += LevelUp;
