@@ -15,9 +15,21 @@ public class PlayerAnim : MonoBehaviour
     readonly int ATTACK = Animator.StringToHash("Attack");
     readonly int HIT = Animator.StringToHash("Hit");
 
+    float attackSpeed = 0.3f;
+    float attackAnimClipLength;
+
     public void Init()
     {
         _collideChecker = GetComponentInParent<CollideChecker>();
+
+        foreach(var clip in _playerAnim.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == "Melee_1H_Attack_Jump_Chop")
+            {
+               attackAnimClipLength = clip.length;
+            }
+        }
+        
         _dodgeEffect.SetActive(false);
     }
 
@@ -42,6 +54,7 @@ public class PlayerAnim : MonoBehaviour
     public void PlayAnimAttack()
     {
         _playerAnim.SetTrigger(ATTACK);
+        _playerAnim.SetFloat("AttackSpeed", 1f / attackSpeed);
     }
     public void PlayAnimHit()
     {

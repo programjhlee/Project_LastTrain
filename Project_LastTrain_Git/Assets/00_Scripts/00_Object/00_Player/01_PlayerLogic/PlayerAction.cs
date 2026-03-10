@@ -95,6 +95,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         playerData.FixPower = 2;
     }
 
+
     public void SetMoveDirection(Vector3 moveDir)
     {
         if (_isHit)
@@ -110,6 +111,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         if (GameManager.Instance.IsPaused())
         {
             SetMoveDirection(Vector3.zero);
+            OnIdle?.Invoke();
             return;
         }
 
