@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TrainAnim : MonoBehaviour
 {
     Transform _trainParent;
     Train _train;
+    TrainSound _trainSound;
     [SerializeField] GameObject _trainFront;
     [SerializeField] GameObject _trainBack_1;
     [SerializeField] GameObject _trainBack_2;
@@ -18,16 +20,17 @@ public class TrainAnim : MonoBehaviour
 
     float _intervalMin = 8f;
     float _intervalMax = 15f;
-
     // Start is called before the first frame update
     void Start()
     {
         _trainParent = transform.parent;
+        _trainSound = GetComponent<TrainSound>();
         _train = GetComponent<Train>();
-        _timerFront = Random.Range(_intervalMin, _intervalMax);
-        _timerBack1 = Random.Range(_intervalMin, _intervalMax);
-        _timerBack2 = Random.Range(_intervalMin, _intervalMax);
-        _timerBack3 = Random.Range(_intervalMin, _intervalMax);
+        _timerFront = UnityEngine.Random.Range(_intervalMin, _intervalMax);
+        _timerBack1 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
+        _timerBack2 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
+        _timerBack3 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
+        _train.OnDamaged += OnTakeDamage;
     }
 
     // Update is called once per frame
@@ -48,7 +51,7 @@ public class TrainAnim : MonoBehaviour
         if(timer <= 0)
         {
             StartCoroutine(Shake(target, 40f, 0.5f, 0.3f));
-            timer = Random.Range(_intervalMin, _intervalMax);
+            timer = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         }
     }
     IEnumerator Shake(GameObject target, float speed, float shakeForce, float duration)
@@ -74,8 +77,10 @@ public class TrainAnim : MonoBehaviour
     }
 
     public IEnumerator StartTrainAnim(Vector3 targetPos,float speed)
-    { 
-        while(_trainParent.position.x < 0)
+    {
+        _trainSound.PlayTrainStartSound();
+        _trainSound.PlayTrainRunningSound();
+        while (_trainParent.position.x < 0)
         {
             _trainParent.position = Vector3.Lerp(_trainParent.position, targetPos, speed * Time.deltaTime);
             if(Vector3.Distance(_trainParent.position,targetPos) <= 0.01f)
@@ -84,7 +89,7 @@ public class TrainAnim : MonoBehaviour
             }
             yield return null;
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1.5f);
         CameraManager.Instance.SetStartCamPriority();
         GameManager.Instance.TutorialStart();
     }

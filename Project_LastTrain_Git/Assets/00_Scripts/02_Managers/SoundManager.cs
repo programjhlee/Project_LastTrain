@@ -14,6 +14,16 @@ public class SoundManager : SingletonManager<SoundManager>
     {
         _SFX.PlayOneShot(clip, volume);
     }
+    public void PlaySFXLoop(AudioClip clip, float volume = 1)
+    {
+        _SFX.clip = clip;
+        _SFX.loop = true;
+        _SFX.Play();
+    }
+    public void StopSFX()
+    {
+        _SFX.Stop();
+    }
     public void SetAudioVolume(AudioSource audio, float volume)
     {
         audio.volume = volume;

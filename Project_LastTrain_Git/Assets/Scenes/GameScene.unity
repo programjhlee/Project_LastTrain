@@ -383,6 +383,7 @@ GameObject:
   - component: {fileID: 190456706}
   - component: {fileID: 190456713}
   - component: {fileID: 190456714}
+  - component: {fileID: 190456715}
   m_Layer: 3
   m_Name: Train_Front
   m_TagString: Train
@@ -554,6 +555,20 @@ MonoBehaviour:
   _trainBack_1: {fileID: 320500357}
   _trainBack_2: {fileID: 1362425148}
   _trainBack_3: {fileID: 15426090}
+--- !u!114 &190456715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190456705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e145b7cfe29a394998e9552c7a7341e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trainStartSound: {fileID: 8300000, guid: 61b7459e4ec853944a1b583c42d096e9, type: 3}
+  _trainRunningSound: {fileID: 8300000, guid: dc6fa99b5006d764686c4c2ccae77f02, type: 3}
 --- !u!1 &272517831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2757,7 +2772,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

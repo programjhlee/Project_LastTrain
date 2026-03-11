@@ -16,18 +16,14 @@ public class UI_TrainHP : UI_Base
 
     public void OnEnable()
     {
-        GameManager.Instance.OnGameStart += SetTrainHp;
-        train.OnDamaged += SetTrainHp;
-        train.OnFixed += SetTrainHp;
+        train.OnHpChanged += SetTrainHp;
     }
     public void OnDisable()
     {
-        GameManager.Instance.OnGameStart -= SetTrainHp;
-        train.OnDamaged -= SetTrainHp;
-        train.OnFixed -= SetTrainHp;
+        train.OnHpChanged += SetTrainHp;
     }
-    public void SetTrainHp()
+    public void SetTrainHp(float ratio)
     {
-        trainHpSlider.value = train.CurHp / train.MaxHp;
+        trainHpSlider.value = ratio;
     }
 }

@@ -7,8 +7,8 @@ public class Train : MonoBehaviour
     float _maxHp;
     float _curHp;
 
-    public event Action OnDamaged;
-    public event Action OnFixed;
+    public event Action<float> OnDamaged;
+    public event Action<float> OnHpChanged;
     public event Action OnTrainDestroy;
     public float MaxHp
     {
@@ -37,12 +37,14 @@ public class Train : MonoBehaviour
     {
         _maxHp = 100;
         _curHp = _maxHp;
+        OnHpChanged?.Invoke(_curHp / _maxHp);
     }
 
     public void TakeDamage(float damage)
     {
         _curHp -= damage;
-        OnDamaged?.Invoke();
+        OnDamaged?.Invoke(damage);
+        OnHpChanged?.Invoke(_curHp/_maxHp);
         if (_curHp <= 0)
         {
             OnTrainDestroy?.Invoke();
@@ -52,7 +54,6 @@ public class Train : MonoBehaviour
     public void TakeFix(float fixAmount)
     {
         _curHp += fixAmount;
-    
-        OnFixed?.Invoke();
+        OnHpChanged?.Invoke(_curHp / _maxHp);
     }
 }
