@@ -141,7 +141,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             OnIdle?.Invoke();
         }
     }
-
     public void RotateToward(Vector3 dir)
     {
         if (_moveDir != Vector3.zero)
@@ -170,33 +169,23 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
         if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
         {
-            if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy))
+            if (hit.collider.TryGetComponent<IAttackable>(out IAttackable attackable))
             {
-                Attack(enemy, hit.collider.transform.position - transform.position);
+                attackable.TakeDamage(_playerData.AttackPower, hit.collider.transform.position - transform.position);
                 OnAttack?.Invoke();
             }
             if (hit.collider.TryGetComponent<IFixable>(out IFixable fixable))
             {
-                Fix(fixable);
+                fixable.TakeFix(_playerData.FixPower);
                 OnFix?.Invoke();
             }
             if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
-                DoInteraction(interactable);
+                interactable.Interact();
                 OnInteraction?.Invoke();
             }
         }
         StartCoroutine(InteractionCoolTimeProcess(0.3f));
-    }
-    void Attack(IAttackable _attackable, Vector3 attackDir)
-    {
-        _attackable.TakeDamage(_playerData.AttackPower, attackDir);
-    }
-    
-    void Fix(IFixable _fixable)
-    {
-        Debug.Log($"PlayerFix : {_playerData.FixPower}");
-        _fixable.TakeFix(_playerData.FixPower);
     }
 
     public void Dodge()
@@ -208,11 +197,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         OnDodge?.Invoke();
         StartCoroutine(RollingProcess());
     }
-    public void DoInteraction(IInteractable interactable)
-    {
-        interactable.Interact();
-    }
-
     public void TakeDamage(Vector3 dir)
     {
         if (!_canHit)
@@ -302,7 +286,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             yield return null;
         }
     }
-
     void ApplyYVel()
     {
         transform.position += Vector3.up * _yVel * Time.fixedDeltaTime;

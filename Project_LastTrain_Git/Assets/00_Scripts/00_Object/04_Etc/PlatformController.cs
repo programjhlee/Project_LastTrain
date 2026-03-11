@@ -5,16 +5,13 @@ using System;
 
 public class PlatformController : MonoBehaviour
 {
-    [SerializeField] Train train;
-    [SerializeField] List<GameObject> _rails;
-    [SerializeField] GameObject _railPrefab;
+    [SerializeField] Train _train;
+    BackGroundController _backGroundController;
     List<Dictionary<string, object>> platformDataTable;
     UI_Distance ui_Distance;
     float trainSpeed;
     float platformDistance;
     bool trainDestroy;
-    float _railSizeX;
-    float _railStartPosX = -120f;
     public float TrainSpeed
     {
         get
@@ -26,37 +23,32 @@ public class PlatformController : MonoBehaviour
             trainSpeed = value;
         }
     }
-
     public event Action OnArrived;
+    public event Action OnPlatformArrived;
 
     void Awake()
     {
-        _rails = new List<GameObject>();
-        for(int i = 0; i < 6; i++)
-        {
-            GameObject rail = Instantiate(_railPrefab);
-            rail.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
-            rail.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-            _railSizeX = rail.GetComponentInChildren<Renderer>().bounds.extents.x * 2;
-            rail.transform.position = new Vector3(_railStartPosX + i * _railSizeX, -10.1f,0);
-            _rails.Add(rail);
-        }
         platformDataTable = DataManager.Instance.GetData((int)Define.DataTables.PlatformData);
-        ui_Distance = UIManager.Instance.ShowUIAt<UI_Distance>(new Vector3(0,285));
+        
+        ui_Distance = UIManager.Instance.ShowUIAt<UI_Distance>(new Vector3(0, 285));
         ui_Distance.Hide();
+        
+        _backGroundController = GetComponent<BackGroundController>();
+        _backGroundController.Init();
     }
 
     void OnEnable()
     {
         SetPlatformData();
         GameManager.Instance.OnGameStart += OnGameStart;
-        train.OnTrainDestroy += TrainDestroy;
+        _train.OnTrainDestroy += TrainDestroy;
         trainDestroy = false;
     }
     void OnDisable()
     {
         GameManager.Instance.OnGameStart -= OnGameStart;
-        train.OnTrainDestroy -= TrainDestroy;
+        _train.OnTrainDestroy -= TrainDestroy;
+        OnArrived = null;
     }
 
 
@@ -71,6 +63,7 @@ public class PlatformController : MonoBehaviour
                 break;
             }
         }
+        _backGroundController.SpeedInit();
     }
 
     public void OnGameStart()
@@ -94,29 +87,25 @@ public class PlatformController : MonoBehaviour
 
         if (!GameManager.Instance.IsPaused())
         {
-            for (int i = 0; i < _rails.Count; i++)
-            {
-                if (_rails[i].transform.position.x < -_railSizeX * 3)
-                {
-                    _rails[i].transform.position = _rails[_rails.Count - 1].transform.position + new Vector3(_railSizeX, 0, 0);
-                    _rails.Add(_rails[i]);
-                    _rails.RemoveAt(i);
-
-                }
-                _rails[i].transform.position += Vector3.left * trainSpeed * 50 * Time.deltaTime;
-            }
+            _backGroundController.OnUpdate();
         }
 
         if (GameManager.Instance.IsGamePlaying())
         {
+            if(platformDistance == 0)
+            {
+                return;
+            }
+
             platformDistance -= trainSpeed * Time.deltaTime;
             ui_Distance.SetDistanceText(platformDistance);
             if (platformDistance <= 0)
             {
                 platformDistance = 0;
                 ui_Distance.Hide();
-                UIManager.Instance.ShowUI<UI_Enhance>();
                 OnArrived?.Invoke();
+                StartCoroutine(ArrivedProcess());
+                return;
             }
         }
     }
@@ -124,5 +113,13 @@ public class PlatformController : MonoBehaviour
     public void TrainDestroy()
     {
         trainDestroy = true;
+    }
+
+    public IEnumerator ArrivedProcess()
+    {
+        bool isDone = false;
+        StartCoroutine(_backGroundController.ArrivedAnimationProcess(() => isDone = true));
+        yield return new WaitUntil(()=>isDone);
+        OnPlatformArrived?.Invoke();
     }
 }

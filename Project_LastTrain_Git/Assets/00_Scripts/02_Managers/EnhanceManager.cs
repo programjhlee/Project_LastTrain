@@ -36,7 +36,7 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         enhancePriceData = DataManager.Instance.GetData((int)Define.DataTables.EnhancePriceData);
         enhanceValueData = DataManager.Instance.GetData((int)Define.DataTables.EnhanceValueData);
 
-        _platformController.OnArrived += OnArrived;
+        _platformController.OnPlatformArrived += OnArrived;
 
         for (int i = 0; i < enhancePriceData.Count; i++)
         {
