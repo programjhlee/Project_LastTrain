@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BigEventSystem : MonoBehaviour
 {
+    [SerializeField] AudioClip _warningSound;
     [SerializeField] GameObject _bigEventPrefab;
     [SerializeField] Switch _switch;
     [SerializeField] PlatformController _platformController;
@@ -55,6 +56,7 @@ public class BigEventSystem : MonoBehaviour
 
     public BigEvent SpawnBigEvent()
     {
+        SoundManager.Instance.PlaySFX(_warningSound);
         _switch.SwitchActive();
         bigEvent.Init(_platformController.TrainSpeed, train);
         bigEvent.OnTrainCrashed += train.TakeDamage;

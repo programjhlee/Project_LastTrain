@@ -5,45 +5,38 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] PlayerData _playerData;
-    CollideChecker _CollideChecker;
     UIHUDController _HUDController;
-    PlayerUIController _playerUIController;
-    PlayerAction playerAction;
-    PlayerController playerController;
-    PlayerAnim _playerAnim;
+    PlayerAction _playerAction;
+    PlayerAnimationController _playerAnimationController;
     PlayerSoundController _playerSoundController;
+    PlayerUIController _playerUIController;
+    PlayerController _playerController;
     void Awake()
     {
-        _CollideChecker = GetComponent<CollideChecker>();
-        playerAction = GetComponent<PlayerAction>();
-        playerController = GetComponent<PlayerController>();
-        _playerAnim = GetComponentInChildren<PlayerAnim>();
+        _playerAction = GetComponent<PlayerAction>();
+        _playerController = GetComponent<PlayerController>();
+        _playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
         _playerUIController = GetComponent<PlayerUIController>();
         _playerSoundController = GetComponentInChildren<PlayerSoundController>();
         _HUDController = GetComponent<UIHUDController>();
 
-        playerAction.Init(_playerData);
-        playerController.Init();
-        _playerAnim.Init();
+        _playerAction.Init(_playerData);
+        _playerController.Init();
+        _playerAnimationController.Init();
         _playerSoundController.Init();
         _playerUIController.Init();
         _HUDController.Init();
-
-
     }
 
     void Update()
     {
-        playerController.OnInputUpdate();
-        _playerAnim.OnUpdate();
-        _CollideChecker.LandCheck();
-     
-
+        _playerController.OnInputUpdate();
+        _playerAnimationController.OnAnimationUpdate();
     }
     void FixedUpdate()
     {
         if (GameManager.Instance.IsPaused()) return;
-        playerAction.ProcessMovement();
+        _playerAction.ProcessMovement();
         _playerUIController.UIUpdate();
         
     }

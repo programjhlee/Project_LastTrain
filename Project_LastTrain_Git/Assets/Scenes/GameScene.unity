@@ -334,6 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfed8d817e1fe14a88c66122e360f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _warningSound: {fileID: 8300000, guid: 5f6e81f6d3301194abfa32efb24286f9, type: 3}
   _bigEventPrefab: {fileID: 4802851969990365466, guid: ef2cc0564f3e56443961ac8dfd01770c, type: 3}
   _switch: {fileID: 832523910}
   _platformController: {fileID: 1800714547}

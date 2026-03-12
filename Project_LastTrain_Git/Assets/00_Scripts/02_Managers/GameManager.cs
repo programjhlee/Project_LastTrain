@@ -10,7 +10,6 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] PlatformController _platformController;
 
     public event Action OnTutorialStart;
-    public event Action OnAnimComplete;
     public event Action OnGameStart;
     public event Action OnStageClear;
 

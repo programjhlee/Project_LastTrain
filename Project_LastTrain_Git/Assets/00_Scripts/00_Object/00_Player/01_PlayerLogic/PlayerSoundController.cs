@@ -8,20 +8,26 @@ public class PlayerSoundController : MonoBehaviour
     [SerializeField] List<AudioClip> _attackSounds;
     [SerializeField] List<AudioClip> _walkSounds;
     [SerializeField] AudioClip _jumpSound;
-    PlayerAction _playerAction;
+    [SerializeField] PlayerAction _playerAction;
+    
     int walkIdx = 0;
+
 
     public void Init()
     {
         _playerAction = GetComponentInParent<PlayerAction>();
-        _playerAction.OnFix += PlayFixSoundEffect;
-        _playerAction.OnAttack += PlayAttackSoundEffect;
+
         _playerAction.OnJump += PlayJumpSoundEffect;
+        _playerAction.OnAttack += PlayAttackSoundEffect;
+        _playerAction.OnFix += PlayFixSoundEffect;
+
     }
 
-    public void InterActionSoundEffect()
+
+
+    public void SwingActionSoundEffect()
     {
-        //TO - DO 그냥 휘두를때 나는 소리
+        
     }
     public void PlayFixSoundEffect()
     {

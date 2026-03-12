@@ -14,8 +14,10 @@ public class LootManager : SingletonManager<LootManager>
 
     List<Item> _activeItemList;
     List<Item> _removeItemList;
-    UI_Coin ui_Coin;
 
+    UI_Coin _uiCoin;
+    public event Action<int> OnItemCountChanged;
+    
     void Awake()
     {
         Init();
@@ -58,9 +60,8 @@ public class LootManager : SingletonManager<LootManager>
                     item.SetActive(false);
                 }
             }
-            ui_Coin = UIManager.Instance.ShowUIAt<UI_Coin>(new Vector2(250, -125));
-            ui_Coin.SetCoinText(0);
         }
+        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(240,-140,0));
     }
     public void Update()
     {
@@ -78,9 +79,7 @@ public class LootManager : SingletonManager<LootManager>
             _activeItemList.Remove(_removeItemList[i]);
         }
         _removeItemList.Clear();
-        
     }
-
 
     public void DropItemAt<T>(T dropTarget) where T : IDroppedItem 
     {
@@ -119,20 +118,23 @@ public class LootManager : SingletonManager<LootManager>
 
     public void IncreaseResource<T>() where T : Item
     {
-        _itemResourceCntDics[typeof(T)]++;       
+        Debug.Log("æ∆¿Ã≈€ »πµÊ!");
+        _itemResourceCntDics[typeof(T)]++;
+        OnItemCountChanged?.Invoke(_itemResourceCntDics[typeof(T)]);
     }
     public void IncreaseResource<T>(int amount) where T : Item
     {
         _itemResourceCntDics[typeof(T)] += amount;
+        OnItemCountChanged?.Invoke(_itemResourceCntDics[typeof(T)]);
     }
 
 
     public void IncreaseResource(Item item)
     {
         _itemResourceCntDics[item.GetType()]++;
-        Debug.Log(_itemResourceCntDics[item.GetType()]);
+        OnItemCountChanged?.Invoke(_itemResourceCntDics[item.GetType()]);
     }
-    public void IncreaseResource(Item item, int amount)
+    public void IncreaseResourceByAmount(Item item, int amount)
     {
         _itemResourceCntDics[item.GetType()] += amount;
     }
@@ -145,6 +147,7 @@ public class LootManager : SingletonManager<LootManager>
     public void DecreaseCoin(int useAmount)
     {
         _itemResourceCntDics[typeof(Coin)] -= useAmount;
+        OnItemCountChanged?.Invoke(_itemResourceCntDics[typeof(Coin)]);
     }
 
     public void AllCoinUnActive()

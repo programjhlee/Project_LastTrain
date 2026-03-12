@@ -7,17 +7,15 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 {
     [SerializeField] List<Renderer> _playerRend;
     [SerializeField] Tool _tool;
+
     PlayerData _playerData;
-    PlayerAnim _playerAnim;
-    
     Collider _col;
     CollideChecker _collideChecker;
     
     WaitForSeconds _rollingCoolTime = new WaitForSeconds(1f);
 
-    public event Action OnMove;
-    public event Action OnIdle;
     public event Action OnJump;
+    public event Action OnLand;
     public event Action OnAttack;
     public event Action OnSwing;
     public event Action OnFix;
@@ -27,7 +25,12 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
 
     bool _isActive =false;
+    bool _isMoving = false;
+
     float _yVel;
+
+    public bool IsMoving => _isMoving;
+
     public bool IsActive { get { return _isActive; } set { _isActive = value; } }
     public float YVel { get { return _yVel; } set { _yVel = value; }}
 
@@ -55,7 +58,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         GravityManager.Instance.AddGravityObj(gameObject.GetComponent<IGravityAffected>());
 
         _collideChecker = GetComponent<CollideChecker>();
-        _playerAnim = GetComponentInChildren<PlayerAnim>();
         _col = GetComponent<Collider>();
 
         _tool.Init();
@@ -77,15 +79,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _canHit = true;
         _canInteraction = true;
         _canRolling = true;
-
-        OnMove += _playerAnim.PlayAnimMove;
-        OnIdle += _playerAnim.StopAnimMove;
-        OnJump += _playerAnim.PlayAnimJump;
-        OnJump += _playerAnim.PlayAnimJump;
-        OnSwing += _playerAnim.PlayAnimAttack;
-        OnDodge += _playerAnim.PlayAnimDodge;
-        OnAttack += _playerAnim.PlayAnimAttack;
-        OnHit += _playerAnim.PlayAnimHit;
     }
 
     public void PlayerDataInit(PlayerData playerData)
@@ -98,11 +91,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public void SetMoveDirection(Vector3 moveDir)
     {
-        if (_isHit)
-        {
-            _moveDir = Vector3.zero;
-            return;
-        }
         _moveDir = moveDir;
     }
 
@@ -110,8 +98,17 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     {
         if (GameManager.Instance.IsPaused())
         {
+            _isMoving = false;
             SetMoveDirection(Vector3.zero);
-            OnIdle?.Invoke();
+            return;
+        }
+        _collideChecker.LandCheck();
+        ApplyYVel();
+
+        if (_isHit)
+        {
+            _isMoving = false;
+            SetMoveDirection(Vector3.zero);
             return;
         }
 
@@ -119,28 +116,21 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
         if (_collideChecker.IsFrontBlockedBy(_enemyLayer) || _collideChecker.IsFrontBlockedBy(_obstacleLayer))
         {
+            _isMoving = false;
             SetMoveDirection(Vector3.zero);
-            OnIdle?.Invoke();
+            return;
         }
-        else
-        {
-            Move(_moveDir);
-        }
-        ApplyYVel();
-    }
-
-    public void Move(Vector3 moveDir)
-    {
         if (_moveDir != Vector3.zero)
         {
+            _isMoving = true;
             transform.position += _moveDir * _playerData.MoveSpeed * Time.fixedDeltaTime;
-            OnMove?.Invoke();
         }
         else
         {
-            OnIdle?.Invoke();
+            _isMoving = false;
         }
     }
+
     public void RotateToward(Vector3 dir)
     {
         if (_moveDir != Vector3.zero)
@@ -288,6 +278,11 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     }
     void ApplyYVel()
     {
+        if (_collideChecker.IsLanding)
+        {
+            OnLand?.Invoke();
+        }
+
         transform.position += Vector3.up * _yVel * Time.fixedDeltaTime;
         if (transform.position.y < -20f)
         {
@@ -295,19 +290,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             StartCoroutine(GetDamageSequence(Vector3.zero));
         }
     }
-    public void OnDisable()
-    {
-        OnMove = null;
-        OnIdle = null;
-        OnJump = null;
-        OnAttack = null;
-        OnFix = null;
-        OnInteraction = null;
-        OnHit = null;
-        OnDodge = null;
-
-}
-
 public void OnDrawGizmos()
     {
         if (_col == null) return;
