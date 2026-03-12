@@ -8,8 +8,10 @@ public class BackGroundController : MonoBehaviour
     PlatformController _platformController;
     [SerializeField] GameObject _railPrefab;
     [SerializeField] GameObject _backGroundPrefab;
+    [SerializeField] RepairShop _repairShop;
     List<GameObject> _backGrounds;
     List<GameObject> _rails;
+
     float _railSizeX;
     float _railStartPosX = -120f;
 
@@ -18,6 +20,7 @@ public class BackGroundController : MonoBehaviour
     public void Init()
     {
         _platformController = GetComponent<PlatformController>();
+        _repairShop.RepairShopInit();
         _rails = new List<GameObject>();
         _backGrounds = new List<GameObject>();
         for (int i = 0; i < 6; i++)
@@ -82,6 +85,8 @@ public class BackGroundController : MonoBehaviour
 
     public IEnumerator ArrivedAnimationProcess(Action OnComplete)
     {
+        _repairShop.RepairShopArrived();
+        CameraManager.Instance.SetStageClearCamPriority();
         while (_backGroundSpeed > 0 || _railSpeed > 0)
         {
             OnUpdate();
@@ -93,12 +98,9 @@ public class BackGroundController : MonoBehaviour
             {
                 _railSpeed = 0;
             }
-
+            _repairShop.transform.position = Vector3.Lerp(_repairShop.transform.position, new Vector3(36f, -6.7f, 8.3f),2f * Time.deltaTime);
             _backGroundSpeed = Mathf.Lerp(_backGroundSpeed, 0, 2f * Time.deltaTime);
             _railSpeed = Mathf.Lerp(_railSpeed, 0, 2f * Time.deltaTime);
-
-            Debug.Log(_backGroundSpeed);
-            Debug.Log(_railSpeed);
             yield return null;
         }
         OnComplete?.Invoke();

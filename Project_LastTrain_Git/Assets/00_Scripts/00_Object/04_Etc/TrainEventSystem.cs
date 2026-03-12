@@ -172,6 +172,7 @@ public class TrainEventSystem : MonoBehaviour
     {
         for(int i = 0; i < endEvents.Count; i++)
         {
+            eventSightChecker.CheckEventSight(endEvents[i]);
             executeEvents.Remove(endEvents[i]);
         }
         endEvents.Clear();
@@ -187,12 +188,11 @@ public class TrainEventSystem : MonoBehaviour
                 {
                     trainDamageEvent.OnDamage -= train.TakeDamage;
                 }
-                executeEvents[i].gameObject.SetActive(false);
+                executeEvents[i].Exit();
                 endEvents.Add(executeEvents[i]);
             }
         }
         EventClear();
-        executeEvents.Clear();
         eventSightChecker.SightCheckerClear();
         curTime = 0;
     }

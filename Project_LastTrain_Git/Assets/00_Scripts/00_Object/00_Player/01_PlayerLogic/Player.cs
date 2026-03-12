@@ -35,9 +35,7 @@ public class Player : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (GameManager.Instance.IsPaused()) return;
         _playerAction.ProcessMovement();
         _playerUIController.UIUpdate();
-        
     }
 }

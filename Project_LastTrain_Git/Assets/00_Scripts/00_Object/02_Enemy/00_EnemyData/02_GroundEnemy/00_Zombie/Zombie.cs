@@ -171,6 +171,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     {
         IsActive = false;
         transform.position = Vector3.zero;
+        _enemyUIController.HideUIHUD();
         _enemyState = EnemyState.None;
         _zombieSoundController.ResetSoundController();
         OnChase = null;

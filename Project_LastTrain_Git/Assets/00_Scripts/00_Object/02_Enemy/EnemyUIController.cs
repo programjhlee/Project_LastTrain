@@ -37,5 +37,4 @@ public class EnemyUIController : MonoBehaviour
         _enemyHUDValueBar.Hide();
     }
 
-
 }

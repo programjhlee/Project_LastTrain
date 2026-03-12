@@ -5,6 +5,8 @@ using System;
 
 public class BrokenEvent : Event,ITrainDamageEvent
 {
+    ParticleSystem _effect;
+
     float curTime = 0;
     float curFixAmount = 0;
     UIHUDController _evtHUDController;
@@ -13,6 +15,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
 
     public void Awake()
     {
+        _effect = GetComponentInChildren<ParticleSystem>();
         _brokenEventSound = GetComponent<BrokenEventSound>();
         _evtHUDController = GetComponent<UIHUDController>();
         _brokenEventSound.OnAwake();
@@ -20,6 +23,9 @@ public class BrokenEvent : Event,ITrainDamageEvent
 
     public override void Enter(EventData initEventData)
     {
+        gameObject.SetActive(true);
+        var main = _effect.main;
+        main.loop = true;
         curTime = 0;
         EventData = initEventData;
         _evtHUDController.Init();
@@ -38,13 +44,18 @@ public class BrokenEvent : Event,ITrainDamageEvent
     }
     public override void Exit()
     {
-        InvokeOnFix();
+        StartCoroutine(ExitProcess());
+
+    }
+    IEnumerator ExitProcess()
+    {
+        var main = _effect.main;
+        main.loop = false;
         ReleaseActionEvent();
         OnDamage = null;
         _evtHUDController.UIHUDListClear();
-        _brokenEventSound.PlayExitSound();
+        yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
-
     }
     public override void TakeFix(float fixPower)
     {
@@ -52,6 +63,8 @@ public class BrokenEvent : Event,ITrainDamageEvent
         InvokeTakeFix(curFixAmount / EventData.FixAmount);
         if(curFixAmount <= 0)
         {
+            InvokeOnFix();
+            _brokenEventSound.PlayExitSound();
             Exit();
         }
     }

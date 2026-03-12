@@ -5,9 +5,9 @@ using System;
 
 public class BombEvent : Event,ITrainDamageEvent
 {
-    Player player;
-    Renderer rend;
-    BoxCollider col;
+    Player _player;
+    [SerializeField] Renderer _rend;
+    BoxCollider _col;
     UIHUDController _evtHUDController;
 
 
@@ -20,9 +20,8 @@ public class BombEvent : Event,ITrainDamageEvent
         EventData = initEventData;
         _evtHUDController = GetComponent<UIHUDController>();
         _evtHUDController.Init();
-        rend = GetComponent<Renderer>();
         curFixAmount = EventData.FixAmount;
-        col = GetComponent<BoxCollider>();
+        _col = GetComponent<BoxCollider>();
     }
 
     public override void Execute()
@@ -39,29 +38,22 @@ public class BombEvent : Event,ITrainDamageEvent
 
     IEnumerator ExplosiveProcess()
     {
-        col.size = new Vector3(2, 2, 2);
-        Color original = rend.material.color;
+        _col.size = new Vector3(2, 2, 2);
         float warningTime = 0.125f;
         while (curTime <= 1f)
         {
-            rend.material.color = Color.red;
+            _rend.material.color = Color.red;
             yield return new WaitForSeconds(warningTime);
             curTime += warningTime;
-            rend.material.color = original;
+            _rend.material.color = Color.black;
             yield return new WaitForSeconds(warningTime);
             curTime += warningTime;
         }
-        if(player != null)
-        {
-            player.GetComponent<PlayerAction>().TakeDamage(player.transform.position - transform.position);
-        }
-        OnDamage?.Invoke(EventData.DamageToTrain);
         Explosive();
     }
 
     public override void Exit()
     {
-        InvokeOnFix();
         ReleaseActionEvent();
         _evtHUDController.UIHUDListClear();
         gameObject.SetActive(false);
@@ -74,7 +66,7 @@ public class BombEvent : Event,ITrainDamageEvent
         if (curFixAmount <= 0)
         {
             InvokeOnFix();
-            Fixed();
+            Exit();
         }
     }
 
@@ -82,7 +74,7 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         if (coll.gameObject.TryGetComponent<Player>(out Player p))
         {
-            player = p;
+            _player = p;
         }
 
     }
@@ -90,18 +82,16 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         if (coll.gameObject.TryGetComponent<Player>(out Player p))
         {
-            player = null;
+            _player = null;
         }
-    }
-    public void Fixed()
-    {
-        ReleaseActionEvent();
-        OnDamage = null;
-        Exit();
     }
     public void Explosive()
     {
-        ReleaseActionEvent();
+        if (_player != null)
+        {
+            _player.GetComponent<PlayerAction>().TakeDamage(_player.transform.position - transform.position);
+        }
+        OnDamage?.Invoke(EventData.DamageToTrain);
         Exit();
     }
 }

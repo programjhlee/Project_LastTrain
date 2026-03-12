@@ -7,14 +7,30 @@ public class CameraManager : SingletonManager<CameraManager>
 {
     [SerializeField] CinemachineVirtualCamera _playerCam;
     [SerializeField] CinemachineVirtualCamera _startCam;
-
+    [SerializeField] CinemachineVirtualCamera _stageClearCam;
+    CinemachineVirtualCamera _currentCam;
     public void Awake()
     {
-        _startCam.Priority = 20;
+        _currentCam = _startCam;
+        _currentCam.Priority = 20;
+        GameManager.Instance.OnTutorialStart += SetPlayerCamPriority;
+        GameManager.Instance.OnGameStart += SetPlayerCamPriority;
     }
 
-    public void SetStartCamPriority()
+    public void SetPlayerCamPriority()
     {
-        _startCam.Priority = 0;
+        SetCamPriority(_playerCam);
+    }
+
+    public void SetStageClearCamPriority()
+    {
+        SetCamPriority(_stageClearCam);
+    }
+
+    public void SetCamPriority(CinemachineVirtualCamera _virtualCam)
+    {
+        _currentCam.Priority = 0;
+        _currentCam = _virtualCam;
+        _currentCam.Priority = 20;
     }
 }

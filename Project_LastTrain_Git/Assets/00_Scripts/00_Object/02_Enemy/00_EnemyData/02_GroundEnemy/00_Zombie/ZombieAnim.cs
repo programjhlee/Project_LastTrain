@@ -23,13 +23,11 @@ public class ZombieAnim : MonoBehaviour
         _zombie.OnAttack += PlayZombieAttack;
         foreach(var clip in _animator.runtimeAnimatorController.animationClips)
         {
-            Debug.Log(clip.name);
             if(clip.name == "zombie_attackshorts")
             {
                 attackClipLength = clip.length;
             }
         }
-        Debug.Log(attackClipLength);
     }
 
     public void PlayZombieAttack()

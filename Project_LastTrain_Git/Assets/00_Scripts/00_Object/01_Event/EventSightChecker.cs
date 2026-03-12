@@ -34,7 +34,6 @@ public class EventSightChecker : MonoBehaviour
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
         Plane[] leftBound = new Plane[] { planes[0], planes[4], planes[5] };
         Plane[] rightBound = new Plane[] { planes[1], planes[4], planes[5] };
-     
 
         StartCoroutine(CheckOutBoundProcess(leftBound, rightBound, curEvent));
     }

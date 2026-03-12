@@ -90,7 +90,6 @@ public class TrainAnim : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(1.5f);
-        CameraManager.Instance.SetStartCamPriority();
         GameManager.Instance.TutorialStart();
     }
     public void OnTakeDamage(float damage)
