@@ -253,6 +253,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4929085321213577671}
     m_Modifications:
+    - target: {fileID: 762352654476923557, guid: 0d3489dca95529446b64390f63a533b6, type: 3}
+      propertyPath: clearBehavior
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1741693452841693106, guid: 0d3489dca95529446b64390f63a533b6, type: 3}
       propertyPath: m_Intensity
       value: 0
@@ -359,7 +363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8891797935737724255, guid: 0d3489dca95529446b64390f63a533b6, type: 3}
       propertyPath: looping
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891797935737724255, guid: 0d3489dca95529446b64390f63a533b6, type: 3}
       propertyPath: stopAction
@@ -390,6 +394,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 309908454665629572, guid: 8941c722701db214aafa2992069d63e6, type: 3}
       propertyPath: m_Intensity
+      value: 6.39094
+      objectReference: {fileID: 0}
+    - target: {fileID: 6747932735989160330, guid: 8941c722701db214aafa2992069d63e6, type: 3}
+      propertyPath: clearBehavior
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9027514048236820042, guid: 8941c722701db214aafa2992069d63e6, type: 3}

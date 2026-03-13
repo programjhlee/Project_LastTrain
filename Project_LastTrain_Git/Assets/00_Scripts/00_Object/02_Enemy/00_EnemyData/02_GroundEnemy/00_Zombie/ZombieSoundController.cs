@@ -35,7 +35,7 @@ public class ZombieSoundController : MonoBehaviour
         _curTime += Time.deltaTime;
         if(_curTime >= _playSoundTimer)
         {
-            int rnd =Random.Range(0, _currentAudioList.Count);
+            int rnd = Random.Range(0, _currentAudioList.Count);
             _curTime = 0;
             SoundManager.Instance.PlaySFX(_currentAudioList[rnd]);
         }
@@ -43,7 +43,6 @@ public class ZombieSoundController : MonoBehaviour
 
     public void PlayAttackSound()
     {
-        Debug.Log("sound Àç»ý");
         SoundManager.Instance.PlaySFX(_attackSound);
     }
     public void PlayChaseSound()

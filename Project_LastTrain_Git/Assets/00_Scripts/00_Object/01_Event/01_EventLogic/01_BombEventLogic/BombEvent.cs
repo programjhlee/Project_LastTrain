@@ -18,6 +18,7 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         curTime = 0;
         EventData = initEventData;
+        _rend.material.color = Color.white;
         _evtHUDController = GetComponent<UIHUDController>();
         _evtHUDController.Init();
         curFixAmount = EventData.FixAmount;
@@ -55,6 +56,7 @@ public class BombEvent : Event,ITrainDamageEvent
     public override void Exit()
     {
         ReleaseActionEvent();
+        OnDamage = null;
         _evtHUDController.UIHUDListClear();
         gameObject.SetActive(false);
     }

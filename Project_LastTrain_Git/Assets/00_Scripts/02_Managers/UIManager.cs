@@ -26,6 +26,7 @@ public class UIManager : SingletonManager<UIManager>
     {
         for (int i = 0; i < _uiPrefabs.Count; i++)
         {
+            Debug.Log(_uiPrefabs[i]);
             Type type = _uiPrefabs[i].GetType();
             if (!_uiDics.ContainsKey(type))
             {

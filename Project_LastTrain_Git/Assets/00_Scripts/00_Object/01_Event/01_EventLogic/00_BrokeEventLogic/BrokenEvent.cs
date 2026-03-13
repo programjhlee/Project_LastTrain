@@ -5,7 +5,7 @@ using System;
 
 public class BrokenEvent : Event,ITrainDamageEvent
 {
-    ParticleSystem _effect;
+    ParticleSystem[] _effects;
 
     float curTime = 0;
     float curFixAmount = 0;
@@ -15,7 +15,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
 
     public void Awake()
     {
-        _effect = GetComponentInChildren<ParticleSystem>();
+        _effects = GetComponentsInChildren<ParticleSystem>();
         _brokenEventSound = GetComponent<BrokenEventSound>();
         _evtHUDController = GetComponent<UIHUDController>();
         _brokenEventSound.OnAwake();
@@ -23,9 +23,11 @@ public class BrokenEvent : Event,ITrainDamageEvent
 
     public override void Enter(EventData initEventData)
     {
-        gameObject.SetActive(true);
-        var main = _effect.main;
-        main.loop = true;
+        for(int i = 0; i < _effects.Length; i++)
+        {
+            var main = _effects[i].main;
+            main.loop = true;
+        }
         curTime = 0;
         EventData = initEventData;
         _evtHUDController.Init();
@@ -49,8 +51,11 @@ public class BrokenEvent : Event,ITrainDamageEvent
     }
     IEnumerator ExitProcess()
     {
-        var main = _effect.main;
-        main.loop = false;
+        for (int i = 0; i < _effects.Length; i++)
+        {
+            var main = _effects[i].main;
+            main.loop = false;
+        }
         ReleaseActionEvent();
         OnDamage = null;
         _evtHUDController.UIHUDListClear();

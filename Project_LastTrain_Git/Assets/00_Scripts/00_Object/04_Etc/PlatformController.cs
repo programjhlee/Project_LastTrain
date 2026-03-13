@@ -12,6 +12,18 @@ public class PlatformController : MonoBehaviour
     float trainSpeed;
     float platformDistance;
     bool trainDestroy;
+    
+    public float PlatformDistance
+    {
+        get
+        {
+            return platformDistance;
+        }
+        private set
+        {
+            platformDistance = value;
+        }
+    }
     public float TrainSpeed
     {
         get

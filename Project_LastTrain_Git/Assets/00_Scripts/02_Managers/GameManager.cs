@@ -9,6 +9,7 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] TutorialSystem _tutorialSystem;
     [SerializeField] PlatformController _platformController;
 
+
     public event Action OnTutorialStart;
     public event Action OnGameStart;
     public event Action OnStageClear;
@@ -53,9 +54,22 @@ public class GameManager : SingletonManager<GameManager>
         {
             Debug.Log("올클리어! 더이상 진행할 수 없습니다!");
         }
-        State = GameState.GamePlaying;
-        OnGameStart?.Invoke();
+        StartCoroutine(GameStartProcess(() => 
+        {
+            State = GameState.GamePlaying;
+            OnGameStart?.Invoke();
+        }  
+        ));
     }
+
+    public IEnumerator GameStartProcess(Action OnComplete)
+    {
+        UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0,250));
+        yield return new WaitForSeconds(4f);
+        OnComplete?.Invoke();
+    }
+
+
     public bool IsGamePlaying()
     {
         return State == GameState.GamePlaying;

@@ -555,6 +555,7 @@ MonoBehaviour:
   - {fileID: 8824366621480357148, guid: 72e9cfc5cf32e0d46951aeea2185ed1d, type: 3}
   - {fileID: 7614756725415719256, guid: 9b8a2b1fd92691249a415be5d0bfd45f, type: 3}
   - {fileID: 1827345813648396929, guid: 83cbac2d8913dc74eae0559d219ae3bd, type: 3}
+  - {fileID: 2709550865729193734, guid: 3c5f594d81b981e4bb96ddafa21c7a80, type: 3}
   _uiHUDPrefabs:
   - {fileID: 1542829374036380565, guid: c2bc2d56fa9852344b1c0195e058cb3a, type: 3}
   - {fileID: -6015060180637204972, guid: 2e255c7a95e949141970299cfa9cd81a, type: 3}
