@@ -181,7 +181,9 @@ public class TrainEventSystem : MonoBehaviour
 
     public void ResetTrainEventSystem()
     {
-        for(int i = 0; i< executeEvents.Count; i++)
+        curTime = 0;
+
+        for (int i = 0; i< executeEvents.Count; i++)
         {
             if (executeEvents[i] != null)
             {
@@ -195,7 +197,6 @@ public class TrainEventSystem : MonoBehaviour
         }
         EventClear();
         eventSightChecker.SightCheckerClear();
-        curTime = 0;
     }
     public void SetEventLevelData()
     {

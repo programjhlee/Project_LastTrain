@@ -13,6 +13,12 @@ public class TrainAnim : MonoBehaviour
     [SerializeField] GameObject _trainBack_2;
     [SerializeField] GameObject _trainBack_3;
 
+    Vector3 _trainFront_OriginPos;
+    Vector3 _trainBack_1_OriginPos;
+    Vector3 _trainBack_2_OriginPos;
+    Vector3 _trainBack_3_OriginPos;
+
+
     float _timerFront;
     float _timerBack1;
     float _timerBack2;
@@ -40,6 +46,7 @@ public class TrainAnim : MonoBehaviour
         {
             return;
         }
+        Trumbling();
         TickTimer(_trainFront,ref _timerFront);
         TickTimer(_trainBack_1,ref _timerBack1);
         TickTimer(_trainBack_2,ref _timerBack2);
@@ -54,6 +61,23 @@ public class TrainAnim : MonoBehaviour
             timer = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         }
     }
+
+    public void Trumbling(float strength = 0.015f)
+    {
+
+        float rndFloatX = UnityEngine.Random.Range(-strength, strength);
+        float rndFloatY = UnityEngine.Random.Range(-strength, strength);
+        
+        _trainFront.transform.position = _trainFront_OriginPos + new Vector3(rndFloatX, rndFloatY, 0);
+        _trainBack_1.transform.position = _trainBack_1_OriginPos +  new Vector3(rndFloatX, rndFloatY, 0);
+        _trainBack_2.transform.position = _trainBack_2_OriginPos + new Vector3(rndFloatX, rndFloatY, 0);
+        _trainBack_3.transform.position = _trainBack_3_OriginPos + new Vector3(rndFloatX, rndFloatY, 0);
+    }
+
+    
+
+
+
     IEnumerator Shake(GameObject target, float speed, float shakeForce, float duration)
     {
         Vector3 originRot = target.transform.rotation.eulerAngles;
@@ -90,6 +114,10 @@ public class TrainAnim : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(1.5f);
+        _trainFront_OriginPos = _trainFront.transform.position;
+        _trainBack_1_OriginPos = _trainBack_1.transform.position;
+        _trainBack_2_OriginPos = _trainBack_2.transform.position;
+        _trainBack_3_OriginPos = _trainBack_3.transform.position;
         GameManager.Instance.TutorialStart();
     }
     public void OnTakeDamage(float damage)

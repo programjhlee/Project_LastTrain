@@ -71,6 +71,7 @@ public class BigEventSystem : MonoBehaviour
     
     public void TurnOffBigEvent()
     {
+        curTime = 0;
         if (bigEvent.gameObject.activeSelf)
         {
             _switch.SwitchUnActive();

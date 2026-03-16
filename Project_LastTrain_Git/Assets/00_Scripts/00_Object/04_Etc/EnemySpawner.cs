@@ -177,6 +177,8 @@ public class EnemySpawner : MonoBehaviour
     }
     public void AllEnemyClear()
     {
+        curTime = 0;
+
         for(int i = 0; i<_activeEnemies.Count; i++)
         {
             _activeEnemies[i].OnDespawn();

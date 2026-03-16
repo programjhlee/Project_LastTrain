@@ -36,7 +36,6 @@ public class PlatformController : MonoBehaviour
             trainSpeed = value;
         }
     }
-    public event Action OnTrainRun;
     public event Action OnDistanceZero;
     public event Action OnPlatformArrived;
 
@@ -111,7 +110,6 @@ public class PlatformController : MonoBehaviour
 
         if (!GameManager.Instance.IsPaused() && _train.IsRunning)
         {
-            Debug.Log("Ω««‡¡ﬂ!");
             _backGroundController.OnUpdate();
         }
 
