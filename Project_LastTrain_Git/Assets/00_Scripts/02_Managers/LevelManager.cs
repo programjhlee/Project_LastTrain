@@ -1,39 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LevelManager : SingletonManager<LevelManager>
 {
     int maxLevel = 10;
     [SerializeField] PlatformController platformController;
-    
+
+    public event Action OnLevelChanged;
+    public event Action OnAllLevelClear;
+
+
     public int Level
     {
         get;
         private set;
     } = 1;
-    public void Awake()
-    {
-        Level = 1;
-    }
     public void OnEnable()
     {
-        platformController.OnArrived += LevelUp;
+        GameManager.Instance.OnStageClear += LevelUp;
     }
     public void OnDisable()
     {
-        platformController.OnArrived -= LevelUp;
+        GameManager.Instance.OnStageClear -= LevelUp;
     }
     public void LevelUp()
     {
-        Debug.Log("레벨업!!");
-
         if(Level >= maxLevel)
         {
-            Debug.Log("퍼펙트 클리어!");
+            OnAllLevelClear?.Invoke();
             return;
         }
         Level++;
+        OnLevelChanged?.Invoke();
     }
     public bool IsMaxLevel()
     {

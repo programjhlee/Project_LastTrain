@@ -54,18 +54,19 @@ public class EnemySpawner : MonoBehaviour
                 enemy.gameObject.SetActive(false);
             }
         }
+        SetEnemiesData();
         GameManager.Instance.OnStageClear += AllEnemyClear;
-        GameManager.Instance.OnGameStart += StartEnemySpawn;
+        LevelManager.Instance.OnLevelChanged += SetEnemiesData;
     }
     public void OnDisable()
     {
         GameManager.Instance.OnStageClear -= AllEnemyClear;
-        GameManager.Instance.OnGameStart -= StartEnemySpawn;
+        LevelManager.Instance.OnLevelChanged -= SetEnemiesData;
     }
 
     public void Update()
     {
-        if (GameManager.Instance.IsPaused() || GameManager.Instance.IsTutorial())
+        if (!GameManager.Instance.IsGamePlaying())
         {
             return;
         }
@@ -183,11 +184,5 @@ public class EnemySpawner : MonoBehaviour
 
         _activeEnemies.Clear();
         _removeEnemies.Clear();
-    }
-    public void StartEnemySpawn()
-    {
-        curTime = 0;
-        SetEnemiesData();
-        AllEnemyClear();
     }
 }

@@ -119,6 +119,8 @@ public class EventSightChecker : MonoBehaviour
         {
             bool curEventBoundLeft = CheckOutBound(leftBound, curEvent.transform);
             bool curEventBoundRight = CheckOutBound(rightBound, curEvent.transform);
+            Debug.Log($"{curEvent} : left : {curEventBoundLeft} , right {curEventBoundRight}");
+
 
             if (wasOutLeftEvent[curEvent] != curEventBoundLeft)
             {

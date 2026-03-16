@@ -9,16 +9,19 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] TutorialSystem _tutorialSystem;
     [SerializeField] PlatformController _platformController;
 
-
     public event Action OnTutorialStart;
     public event Action OnGameStart;
+    public event Action OnStageStart;
     public event Action OnStageClear;
+    public event Action OnAllStageClear;
 
     public enum GameState
     {
-        GameReady,
+        GameStart,
         Tutorial,
         GamePlaying,
+        StageStart,
+        StageClear,
         GamePaused
     }
 
@@ -31,12 +34,12 @@ public class GameManager : SingletonManager<GameManager>
     {
         State = GameState.GamePaused;
         _train.OnTrainDestroy += GameOver;
-        _platformController.OnArrived += StageClear;
+        _platformController.OnDistanceZero += StageClear;
     }
     void OnDisable()
     {
         _train.OnTrainDestroy -= GameOver;
-        _platformController.OnArrived -= StageClear;
+        _platformController.OnDistanceZero -= StageClear;
         OnGameStart = null;
         OnTutorialStart = null;
         OnStageClear = null;
@@ -50,16 +53,34 @@ public class GameManager : SingletonManager<GameManager>
     }
     public void GameStart()
     {
-        if (LevelManager.Instance.IsMaxLevel())
-        {
-            Debug.Log("올클리어! 더이상 진행할 수 없습니다!");
-        }
-        StartCoroutine(GameStartProcess(() => 
+        StartCoroutine(GameStartProcess(() =>
         {
             State = GameState.GamePlaying;
             OnGameStart?.Invoke();
-        }  
-        ));
+        }
+       ));
+    }
+
+    public void StageStart()
+    {
+		if (LevelManager.Instance.IsMaxLevel())
+		{
+			Debug.Log("올클리어! 더이상 진행할 수 없습니다!");
+		}
+		StartCoroutine(StageStartProcess(() =>
+		{
+			State = GameState.GamePlaying;
+			OnGameStart?.Invoke();
+		}
+	   ));
+	}
+
+    public IEnumerator StageStartProcess(Action OnComplete)
+    {
+        State = GameState.StageStart;
+        OnStageStart?.Invoke();
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(GameStartProcess(OnComplete));
     }
 
     public IEnumerator GameStartProcess(Action OnComplete)
@@ -92,8 +113,13 @@ public class GameManager : SingletonManager<GameManager>
     }
     public void StageClear()
     {
+        if (LevelManager.Instance.IsMaxLevel())
+        {
+            OnAllStageClear?.Invoke();
+            return;
+        }
         OnStageClear?.Invoke();
-        State = GameState.GamePaused;
+        State = GameState.StageClear;
     }
     public void GameOver()
     {

@@ -20,10 +20,13 @@ public class RepairShop : MonoBehaviour
     public void RepairShopArrived()
     {
         gameObject.SetActive(true);
-        GameManager.Instance.OnGameStart += TrainStart;
+        GameManager.Instance.OnStageStart += TrainStart;
         StartCoroutine(MoveProcess(new Vector3(36f, transform.position.y, transform.position.z)));
     }
-
+    public void OnDisable()
+    {
+        GameManager.Instance.OnStageStart -= TrainStart;
+    }
     public void TrainStart()
     {
         StartCoroutine(MoveProcess(new Vector3(-70f, transform.position.y, transform.position.z),() =>

@@ -36,7 +36,7 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         enhancePriceData = DataManager.Instance.GetData((int)Define.DataTables.EnhancePriceData);
         enhanceValueData = DataManager.Instance.GetData((int)Define.DataTables.EnhanceValueData);
 
-        _platformController.OnPlatformArrived += OnArrived;
+        _platformController.OnPlatformArrived += ShowEnhanceUI;
 
         for (int i = 0; i < enhancePriceData.Count; i++)
         {
@@ -51,7 +51,7 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         }
     }
 
-    public void OnArrived()
+    public void ShowEnhanceUI()
     {
         _ui_Enhance = UIManager.Instance.ShowUI<UI_Enhance>();
         _ui_Enhance.SetPlayerLevelText(_playerData.Level);

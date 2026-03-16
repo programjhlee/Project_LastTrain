@@ -62,21 +62,22 @@ public class TrainEventSystem : MonoBehaviour
             }
             inactiveEventPools[eventID[i]] = eventPoolStack;
         }
+        SetEventLevelData();
     }
 
     void OnEnable()
     {
-        GameManager.Instance.OnGameStart += SetEventLevelData;
-        platformController.OnArrived += ResetTrainEventSystem;
+        GameManager.Instance.OnStageClear += ResetTrainEventSystem;
+        LevelManager.Instance.OnLevelChanged += SetEventLevelData;
     }
     void OnDisable()
     {
-        GameManager.Instance.OnGameStart -= SetEventLevelData;
-        platformController.OnArrived -= ResetTrainEventSystem;
+        GameManager.Instance.OnStageClear -= ResetTrainEventSystem;
+        LevelManager.Instance.OnLevelChanged -= SetEventLevelData;
     }
     public void Update()
     {
-        if (GameManager.Instance.IsPaused() || GameManager.Instance.IsTutorial())
+        if (!GameManager.Instance.IsGamePlaying())
         {
             return;
         }

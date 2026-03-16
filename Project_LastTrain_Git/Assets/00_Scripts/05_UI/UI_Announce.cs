@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class UI_Announce : UI_Base
 {
-    [SerializeField] Text _levelText;
-    [SerializeField] Text _remainDistanceText;
-    [SerializeField] Text _goText;
+    [SerializeField] TextMeshProUGUI _levelText;
+    [SerializeField] TextMeshProUGUI _remainDistanceText;
+    [SerializeField] TextMeshProUGUI _goText;
     [SerializeField] Vector3 _levelTextRectInitPos;
     [SerializeField] Vector3 _remainDistanceTextRectInitPos;
     [SerializeField] Vector3 _goTextRectInitPos;
+
+    [SerializeField] AudioClip _showTextClip;
+    [SerializeField] AudioClip _goTextClip;
+
     PlatformController _platformController;
     
     RectTransform _levelTextRect;
@@ -37,21 +42,24 @@ public class UI_Announce : UI_Base
         _remainDistanceTextRect.anchoredPosition = _remainDistanceTextRectInitPos;
         _goTextRect.anchoredPosition = _goTextRectInitPos;
 
-        SetText(_levelText, $"Level : {LevelManager.Instance.Level}");
-        SetText(_remainDistanceText, $"Remain : {_platformController.PlatformDistance:F2}M");
+        SetText(_levelText, $"Level {LevelManager.Instance.Level}");
+        SetText(_remainDistanceText, $"Remain {_platformController.PlatformDistance:F2}M");
 
         _levelTextRect.DOAnchorPosX(-300, 0.8f).SetEase(Ease.OutExpo);
+        SoundManager.Instance.PlaySFX(_showTextClip);
         yield return new WaitForSeconds(1f);
         _remainDistanceTextRect.DOAnchorPosX(300, 0.8f).SetEase(Ease.OutExpo);
+        SoundManager.Instance.PlaySFX(_showTextClip);
         yield return new WaitForSeconds(1f);
         _goTextRect.gameObject.SetActive(true);
         _goTextRect.DOShakePosition(1f,20,150);
+        SoundManager.Instance.PlaySFX(_goTextClip);
         yield return new WaitForSeconds(1.5f);
         gameObject.SetActive(false);
         _goText.gameObject.SetActive(false);
     }
 
-    public void SetText(Text _uiText, string text)
+    public void SetText(TextMeshProUGUI _uiText, string text)
     {
         _uiText.text = text;
     }

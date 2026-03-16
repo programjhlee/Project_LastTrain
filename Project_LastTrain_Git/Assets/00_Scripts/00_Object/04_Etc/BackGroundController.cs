@@ -38,7 +38,9 @@ public class BackGroundController : MonoBehaviour
             backGround.transform.position = new Vector3(770f * i, 0, 0);
             _backGrounds.Add(backGround);
         }
+        SpeedInit();
     }
+
 
     public void SpeedInit()
     {
@@ -48,11 +50,10 @@ public class BackGroundController : MonoBehaviour
 
     public void OnUpdate()
     {
-        BackGroundControl();
-        RailControl();
+        BackGroundControl(_backGroundSpeed);
+        RailControl(_railSpeed);
     }
-
-    public void RailControl()
+    public void RailControl(float speed)
     {
         for (int i = 0; i < _rails.Count; i++)
         {
@@ -63,12 +64,11 @@ public class BackGroundController : MonoBehaviour
                 _rails.RemoveAt(i);
             }
 
-            _rails[i].transform.position += Vector3.left * _railSpeed * Time.deltaTime;
-
+            _rails[i].transform.position += Vector3.left * speed * Time.deltaTime;
         }
     }
 
-    public void BackGroundControl()
+    public void BackGroundControl(float speed )
     {
         for (int i = 0; i < _backGrounds.Count; i++)
         {
@@ -79,28 +79,32 @@ public class BackGroundController : MonoBehaviour
                 _backGrounds.RemoveAt(i);
             }
 
-            _backGrounds[i].transform.position += Vector3.left * _backGroundSpeed * Time.deltaTime;
+            _backGrounds[i].transform.position += Vector3.left * speed * Time.deltaTime;
         }
     }
 
     public IEnumerator ArrivedAnimationProcess(Action OnComplete)
     {
+        float tempBackGroundSpeed = _backGroundSpeed;
+        float tempRailSpeed = _railSpeed;
         _repairShop.RepairShopArrived();
         CameraManager.Instance.SetStageClearCamPriority();
-        while (_backGroundSpeed > 0 || _railSpeed > 0)
+        while (tempBackGroundSpeed > 0 || tempRailSpeed > 0)
         {
-            OnUpdate();
-            if(_backGroundSpeed <= 0.01f)
+
+            BackGroundControl(tempBackGroundSpeed);
+            RailControl(tempRailSpeed);
+            if (tempBackGroundSpeed <= 0.01f)
             {
-                _backGroundSpeed = 0;
+                tempBackGroundSpeed = 0;
             }
-            if(_railSpeed <= 0.01f)
+            if(tempRailSpeed <= 0.01f)
             {
-                _railSpeed = 0;
+                tempRailSpeed = 0;
             }
             _repairShop.transform.position = Vector3.Lerp(_repairShop.transform.position, new Vector3(36f, -6.7f, 8.3f),2f * Time.deltaTime);
-            _backGroundSpeed = Mathf.Lerp(_backGroundSpeed, 0, 2f * Time.deltaTime);
-            _railSpeed = Mathf.Lerp(_railSpeed, 0, 2f * Time.deltaTime);
+            tempBackGroundSpeed = Mathf.Lerp(tempBackGroundSpeed, 0, 2f * Time.deltaTime);
+            tempRailSpeed = Mathf.Lerp(tempRailSpeed, 0, 2f * Time.deltaTime);
             yield return null;
         }
         OnComplete?.Invoke();

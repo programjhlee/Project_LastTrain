@@ -14,7 +14,13 @@ public class CameraManager : SingletonManager<CameraManager>
         _currentCam = _startCam;
         _currentCam.Priority = 20;
         GameManager.Instance.OnTutorialStart += SetPlayerCamPriority;
-        GameManager.Instance.OnGameStart += SetPlayerCamPriority;
+        GameManager.Instance.OnStageStart += SetPlayerCamPriority;
+    }
+
+    public void Disable()
+    {
+        GameManager.Instance.OnTutorialStart -= SetPlayerCamPriority;
+        GameManager.Instance.OnStageStart -= SetPlayerCamPriority;
     }
 
     public void SetPlayerCamPriority()

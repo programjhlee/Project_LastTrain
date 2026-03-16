@@ -21,7 +21,10 @@ public class BigEventSystem : MonoBehaviour
         bigEventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.BigEventSpawnData);
         bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
         bigEvent.gameObject.SetActive(false);
-        GameManager.Instance.OnGameStart += SetBigEventSystem;
+        
+        SetBigEventSystem();
+        
+        LevelManager.Instance.OnLevelChanged += SetBigEventSystem;
         GameManager.Instance.OnStageClear += TurnOffBigEvent;
     }
 

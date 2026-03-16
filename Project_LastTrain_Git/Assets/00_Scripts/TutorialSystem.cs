@@ -49,6 +49,7 @@ public class TutorialSystem : MonoBehaviour
 
     public void TutorialStart()
     {
+        Debug.Log("튜토리얼 시작!");
         _skipBtn.gameObject.SetActive(true);
         StartCoroutine(AllTutorialProcess());
     }
@@ -62,11 +63,12 @@ public class TutorialSystem : MonoBehaviour
             _steps[i].Release();
         }
         GameManager.Instance.GameStart();
-        _skipBtn.gameObject.SetActive(true);
+        _skipBtn.gameObject.SetActive(false);
     }
 
     public void SkipTutorial()
     {
+        Debug.Log("Tutorial Skip");
         StopAllCoroutines();
 
         for (int i = 0; i < _steps.Count; i++)

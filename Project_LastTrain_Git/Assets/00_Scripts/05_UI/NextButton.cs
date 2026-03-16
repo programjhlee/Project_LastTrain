@@ -25,7 +25,7 @@ public class NextButton : MonoBehaviour
 
     public void NextLevel()
     {
-        GameManager.Instance.GameStart();
+        GameManager.Instance.StageStart();
         UIManager.Instance.HideUI<UI_Enhance>();        
     }
 }
