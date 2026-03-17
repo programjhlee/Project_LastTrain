@@ -13,8 +13,7 @@ public class TutorialSystem : MonoBehaviour
     [SerializeField] EnemySpawner _enemySpawner;
     [SerializeField] Train _train;
     [SerializeField] Switch _switch;
-
-
+    
     TrainEventSystem _trainEventSystem;
     BigEventSystem _bigEventSystem;
     PlayerAction _playerAction;
@@ -60,6 +59,7 @@ public class TutorialSystem : MonoBehaviour
         {
             _steps[i].Bind(this);
             yield return StartCoroutine(_steps[i].Run());
+            yield return new WaitForSeconds(2f);
             _steps[i].Release();
         }
         GameManager.Instance.GameStart();

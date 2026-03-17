@@ -47,7 +47,7 @@ public class BigEvent : MonoBehaviour
         float arrivedTime = trainRend.bounds.center.x + trainRend.bounds.extents.x + Mathf.Max(speed * 6 - LevelManager.Instance.Level, 3f); 
         transform.position = new Vector3(arrivedTime, trainRend.bounds.center.y, trainRend.bounds.center.z);
         _trainFrontPos = new Vector3(trainRend.bounds.center.x + trainRend.bounds.extents.x, trainRend.bounds.center.y, trainRend.bounds.center.z);
-        _ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(750, 250));
+        _ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(765, 350));
     }
 
     public void OnDisable()

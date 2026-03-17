@@ -85,7 +85,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public IEnumerator GameStartProcess(Action OnComplete)
     {
-        UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0,250));
+        UIManager.Instance.ShowUIAt<UI_StageAnnounce>(new Vector2(0,250));
         yield return new WaitForSeconds(4f);
         OnComplete?.Invoke();
     }

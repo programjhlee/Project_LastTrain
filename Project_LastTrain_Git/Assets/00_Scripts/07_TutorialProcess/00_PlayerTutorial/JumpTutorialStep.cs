@@ -6,12 +6,9 @@ using System;
 [CreateAssetMenu(fileName = "JumpTutorialStep", menuName = "Create Tutorial File / JumpTutorial")]
 public class JumpTutorialStep : TutorialStep
 {
-    [SerializeField] UI_HUDControlGuideStrategyData _jumpGuide;
-    
+    UI_Announce _uiAnnounce;
     Player _p;
     PlayerAction _pAction;
-    PlayerUIController _uiController;
-    
     Action _onJumpAction;
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
@@ -19,17 +16,16 @@ public class JumpTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
+        _uiAnnounce = UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0, 300f));
+        _uiAnnounce.Init();
     }
 
 
     public override IEnumerator Run()
     {
-        _uiController = _p.GetComponent<PlayerUIController>();
-        _uiController.ShowControlGuide(_jumpGuide);
-        _pAction = _p.GetComponent<PlayerAction>();
         int curCnt = 0;
         int jumpTutorialClearCnt = 3;
-        Debug.Log("Alt키는 플레이어가 점프합니다! 점프해보세요!");
+        _uiAnnounce.SetQuestText("점프하기");
         _onJumpAction = () => { curCnt++; };
         _pAction.OnJump += _onJumpAction;
         while (curCnt < jumpTutorialClearCnt)
