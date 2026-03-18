@@ -26,14 +26,14 @@ public class UI_Enhance : UI_Base
     {
         Debug.Log(level);
         Debug.Log("플레이어 텍스트 조정 완료!");
-        _playerLevelText.text = $"Level : {level}";
+        //_playerLevelText.text = $"Level : {level}";
     }
 
     public void SetTrainHpText(float hp)
     {
         Debug.Log(hp);
         Debug.Log("플레이어 텍스트 조정 완료!");
-        _trainHpText.text = $"Hp : {hp}";
+        //_trainHpText.text = $"Hp : {hp}";
     }
 
 }
