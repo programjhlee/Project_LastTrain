@@ -25,8 +25,8 @@ public class EventSightChecker : MonoBehaviour
 
         ui_eventCautionLeft = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(-800, 0),"UI_EventCautionLeft");
         ui_eventCautionRight = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(800, 0), "UI_EventCautionRight");
-        //ui_eventCautionLeft.Hide();
-        //ui_eventCautionRight.Hide();
+        ui_eventCautionLeft.Hide();
+        ui_eventCautionRight.Hide();
 
     }
     public void CheckEventSight(Event curEvent)

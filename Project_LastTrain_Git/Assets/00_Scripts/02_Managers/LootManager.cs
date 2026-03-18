@@ -61,7 +61,7 @@ public class LootManager : SingletonManager<LootManager>
                 }
             }
         }
-        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(240,-140,0));
+        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(300,-140,0));
     }
     public void Update()
     {

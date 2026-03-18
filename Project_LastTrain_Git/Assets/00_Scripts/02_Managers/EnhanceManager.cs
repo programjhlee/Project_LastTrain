@@ -16,6 +16,7 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
     [SerializeField] PlayerData _playerData;
     [SerializeField] Train _train;
     [SerializeField] PlatformController _platformController;
+    [SerializeField] AudioClip _fixSound;
     UI_Enhance _ui_Enhance;
 
     List<Dictionary<string, object>> enhancePriceData;
@@ -73,6 +74,7 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         }
         Debug.Log("열차 수리 완료!");
         LootManager.Instance.DecreaseCoin(fixPrice);
+        SoundManager.Instance.PlaySFX(_fixSound);
         for (int i = 0; i < enhanceValueData.Count; i++)
         {
             if (enhanceValueData[i]["ENHANCETYPE"].ToString() == "FIXTRAIN")
