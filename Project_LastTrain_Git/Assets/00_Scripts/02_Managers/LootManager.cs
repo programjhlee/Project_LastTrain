@@ -42,7 +42,7 @@ public class LootManager : SingletonManager<LootManager>
             List<DropTable.DropEntry> currentDropEntry = _dropList[i].DropItems;
             for(int j = 0; j < currentDropEntry.Count; j++)
             {
-                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 0;
+                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 12;
                 GameObject items = new GameObject(currentDropEntry[j].Item.gameObject.name);
                 for (int k = 0; k < 50; k++)
                 {
@@ -149,12 +149,6 @@ public class LootManager : SingletonManager<LootManager>
         _itemResourceCntDics[typeof(Coin)] -= useAmount;
         OnItemCountChanged?.Invoke(_itemResourceCntDics[typeof(Coin)]);
     }
-
-    public void AllCoinUnActive()
-    {
-      
-    }
-
     public int GetHasItem<T>() where T : Item
     {
         return _itemResourceCntDics[typeof(T)];

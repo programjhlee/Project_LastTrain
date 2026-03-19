@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UI_Enhance : UI_Base
 {
@@ -9,31 +10,46 @@ public class UI_Enhance : UI_Base
     [SerializeField] Text _trainHpText;
     [SerializeField] Button _enhanceButton;
     [SerializeField] Button _fixButton;
-    
+
+    RectTransform _enhanceButtonRect;
+    RectTransform _fixButtonRect;
+
+    void Awake()
+    {
+        _enhanceButtonRect = _enhanceButton.GetComponent<RectTransform>();
+        _fixButtonRect = _fixButton.GetComponent<RectTransform>();
+    }
+
     public void OnEnable()
     {
-        _enhanceButton.onClick.AddListener(EnhanceManager.Instance.Enhance);
+        EnhanceManager.Instance.OnPlayerEnhance += SetPlayerDataText;
+        _enhanceButton.onClick.AddListener(Enhance);
         _fixButton.onClick.AddListener(EnhanceManager.Instance.FixTrain);
+        
     }
 
     public void OnDisable()
     {
-        _enhanceButton.onClick.RemoveListener(EnhanceManager.Instance.Enhance);
+        EnhanceManager.Instance.OnPlayerEnhance -= SetPlayerDataText;
+        _enhanceButton.onClick.RemoveListener(Enhance);
         _fixButton.onClick.RemoveListener(EnhanceManager.Instance.FixTrain);
     }
 
-    public void SetPlayerLevelText(int level)
+    public void SetPlayerDataText(PlayerData playerData)
     {
-        Debug.Log(level);
-        Debug.Log("플레이어 텍스트 조정 완료!");
-        //_playerLevelText.text = $"Level : {level}";
+        Debug.Log(playerData.Level);
+        ButtonShake(_enhanceButtonRect);
     }
 
-    public void SetTrainHpText(float hp)
+    public void Enhance()
     {
-        Debug.Log(hp);
-        Debug.Log("플레이어 텍스트 조정 완료!");
-        //_trainHpText.text = $"Hp : {hp}";
+        EnhanceManager.Instance.Enhance();
+        ButtonShake(_enhanceButtonRect);
+    }
+
+    public void ButtonShake(RectTransform button)
+    {
+        button.DOShakePosition(0.3f,5f,20);
     }
 
 }
