@@ -7,7 +7,15 @@ using DG.Tweening;
 
 public class UI_Distance : UI_Base
 {
+    [SerializeField] PlatformController _platformController;
     [SerializeField] TextMeshProUGUI ui_distanceText;
+
+    public void Awake()
+    {
+        _platformController = GameObject.FindAnyObjectByType<PlatformController>();
+        _platformController.OnDistanceChanged += SetDistanceText;
+        Hide();
+    }
 
     public void SetDistanceText(float distance)
     { 

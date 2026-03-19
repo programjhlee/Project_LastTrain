@@ -17,9 +17,6 @@ public class TutorialSystem : MonoBehaviour
     TrainEventSystem _trainEventSystem;
     BigEventSystem _bigEventSystem;
     PlayerAction _playerAction;
-
-    TutorialContext _tutorialContext;
-
     public Player player
     {
         get { return _player; }
@@ -29,22 +26,16 @@ public class TutorialSystem : MonoBehaviour
     {
         get { return _train; }
     }
-
-    void Start()
+    public void Init()
     {
-        _tutorialContext = new TutorialContext
-        {
-            train = _train,
-            player = _player
-        };
-
+        gameObject.SetActive(true);
         _trainEventSystem = _train.GetComponent<TrainEventSystem>();
         _bigEventSystem = _train.GetComponent<BigEventSystem>();
         _playerAction = _player.GetComponent<PlayerAction>();
         _skipBtn.onClick.AddListener(SkipTutorial);
         _skipBtn.gameObject.SetActive(false);
-
     }
+
 
     public void TutorialStart()
     {

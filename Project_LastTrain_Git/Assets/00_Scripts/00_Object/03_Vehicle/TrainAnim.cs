@@ -26,20 +26,36 @@ public class TrainAnim : MonoBehaviour
 
     float _intervalMin = 8f;
     float _intervalMax = 15f;
-    // Start is called before the first frame update
-    void Start()
+        
+    public void Init()
     {
+        if(_trainSound == null)
+        {
+            _trainSound = GetComponent<TrainSound>();
+        }
+
+        if(_train == null)
+        {
+            _train = GetComponent<Train>();
+        }
+
         _trainParent = transform.parent;
-        _trainSound = GetComponent<TrainSound>();
-        _train = GetComponent<Train>();
+        _trainParent.position = new Vector3(-150f, -4f, 0);
+        
         _timerFront = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         _timerBack1 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         _timerBack2 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         _timerBack3 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
+    }
+    public void OnEnable()
+    {
         _train.OnDamaged += OnTakeDamage;
     }
 
-    // Update is called once per frame
+    public void OnDisable()
+    {
+        _train.OnDamaged -= OnTakeDamage;
+    }
     void Update()
     {
         if (GameManager.Instance.IsPaused() || !_train.IsRunning)
@@ -73,11 +89,6 @@ public class TrainAnim : MonoBehaviour
         _trainBack_2.transform.position = _trainBack_2_OriginPos + new Vector3(rndFloatX, rndFloatY, 0);
         _trainBack_3.transform.position = _trainBack_3_OriginPos + new Vector3(rndFloatX, rndFloatY, 0);
     }
-
-    
-
-
-
     IEnumerator Shake(GameObject target, float speed, float shakeForce, float duration)
     {
         Vector3 originRot = target.transform.rotation.eulerAngles;
@@ -94,12 +105,6 @@ public class TrainAnim : MonoBehaviour
 
 
     }
-
-    public void StartTrain()
-    {
-        StartCoroutine(StartTrainAnim(new Vector3(0, -4, 0), 5f));
-    }
-
     public IEnumerator StartTrainAnim(Vector3 targetPos,float speed)
     {
         _trainSound.PlayTrainStartSound();
@@ -118,7 +123,6 @@ public class TrainAnim : MonoBehaviour
         _trainBack_1_OriginPos = _trainBack_1.transform.position;
         _trainBack_2_OriginPos = _trainBack_2.transform.position;
         _trainBack_3_OriginPos = _trainBack_3.transform.position;
-        GameManager.Instance.TutorialStart();
     }
     public void OnTakeDamage(float damage)
     {

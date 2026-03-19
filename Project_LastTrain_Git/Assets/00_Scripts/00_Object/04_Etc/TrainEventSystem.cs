@@ -31,7 +31,7 @@ public class TrainEventSystem : MonoBehaviour
 
     float eventSpawnTime;
     float curTime;
-    void Start()
+    public void Init()
     {
         eventLevelSpawnTimeData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
         trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
@@ -65,12 +65,13 @@ public class TrainEventSystem : MonoBehaviour
         SetEventLevelData();
     }
 
-    void OnEnable()
+
+    public void BindEvents()
     {
         GameManager.Instance.OnStageClear += ResetTrainEventSystem;
         LevelManager.Instance.OnLevelChanged += SetEventLevelData;
     }
-    void OnDisable()
+    public void ReleaseEvents()
     {
         GameManager.Instance.OnStageClear -= ResetTrainEventSystem;
         LevelManager.Instance.OnLevelChanged -= SetEventLevelData;
@@ -110,12 +111,11 @@ public class TrainEventSystem : MonoBehaviour
         evt = inactiveEventPools[eventID[selectIdx]].Pop();
         evt.gameObject.SetActive(true);
         evt.Enter(eventDataDics[eventID[selectIdx]]);
-        BindEvent(evt);
+        BindTrainEvent(evt);
         executeEvents.Add(evt);
 
         return evt;
     }
-
     public Event SpawnEventAt(float normalizeXPos, int? eventIdx = null)
     {
         Event evt;
@@ -131,7 +131,7 @@ public class TrainEventSystem : MonoBehaviour
         return evt;
     }
 
-    public void BindEvent(Event evt)
+    public void BindTrainEvent(Event evt)
     {
         UIHUDController _evtUIHUDStack = evt.GetComponent<UIHUDController>();
         UI_HUDValueBar _uiEventFixValueBar = UIManager.Instance.ShowUIHUD<UI_HUDValueBar>(evt.transform);
@@ -168,7 +168,6 @@ public class TrainEventSystem : MonoBehaviour
             
         }
     }
-
     public void EventClear()
     {
         for(int i = 0; i < endEvents.Count; i++)
@@ -178,7 +177,6 @@ public class TrainEventSystem : MonoBehaviour
         }
         endEvents.Clear();
     }
-
     public void ResetTrainEventSystem()
     {
         curTime = 0;

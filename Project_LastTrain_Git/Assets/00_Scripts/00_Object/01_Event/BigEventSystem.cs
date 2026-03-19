@@ -16,16 +16,26 @@ public class BigEventSystem : MonoBehaviour
     float rndTime;
     float curTime;
     int currentIdx;
-    void Start()
+    public void Init()
     {
         bigEventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.BigEventSpawnData);
         bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
         bigEvent.gameObject.SetActive(false);
-        
+
         SetBigEventSystem();
-        
+
+    }
+
+    public void BindEvents()
+    {
         LevelManager.Instance.OnLevelChanged += SetBigEventSystem;
         GameManager.Instance.OnStageClear += TurnOffBigEvent;
+    }
+
+    public void ReleaseEvents()
+    {
+        LevelManager.Instance.OnLevelChanged -= SetBigEventSystem;
+        GameManager.Instance.OnStageClear -= TurnOffBigEvent;
     }
 
     public void SetBigEventSystem()
@@ -68,7 +78,6 @@ public class BigEventSystem : MonoBehaviour
         rndTime = Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
         return bigEvent;
     }
-    
     public void TurnOffBigEvent()
     {
         curTime = 0;
@@ -77,5 +86,11 @@ public class BigEventSystem : MonoBehaviour
             _switch.SwitchUnActive();
             bigEvent.gameObject.SetActive(false);
         }
+    }
+
+    public void ResetBigEventSystem()
+    {
+        TurnOffBigEvent();
+        ReleaseEvents();
     }
 }

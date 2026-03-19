@@ -10,74 +10,74 @@ public class PlatformController : MonoBehaviour
     BackGroundController _backGroundController;
     List<Dictionary<string, object>> platformDataTable;
     UI_Distance ui_Distance;
-    float trainSpeed;
-    float platformDistance;
-    bool trainDestroy;
+    float _trainSpeed;
+    float _platformDistance;
+    bool _trainDestroy;
+
+    public event Action OnPlatformRunning;
 
     public float PlatformDistance
     {
         get
         {
-            return platformDistance;
+            return _platformDistance;
         }
         private set
         {
-            platformDistance = value;
+            _platformDistance = value;
         }
     }
     public float TrainSpeed
     {
         get
         {
-            return trainSpeed;
+            return _trainSpeed;
         }
         private set
         {
-            trainSpeed = value;
+            _trainSpeed = value;
         }
     }
+    public event Action<float> OnDistanceChanged;
+    public event Action OnReset;
     public event Action OnDistanceZero;
     public event Action OnPlatformArrived;
-
-    void Awake()
+    public void Init()
     {
         platformDataTable = DataManager.Instance.GetData((int)Define.DataTables.PlatformData);
-        _trainSound = _train.GetComponent<TrainSound>();
-        ui_Distance = UIManager.Instance.ShowUIAt<UI_Distance>(new Vector3(0, 285));
-        ui_Distance.Hide();
-
+        
         _backGroundController = GetComponent<BackGroundController>();
         _trainSound = GetComponent<TrainSound>();
+        
         _backGroundController.Init();
+        _trainDestroy = false;
+        BindEvents();
+        SetPlatformData();
     }
 
-    void OnEnable()
+    public void BindEvents()
     {
-        SetPlatformData();
         GameManager.Instance.OnGameStart += OnGameStart;
         GameManager.Instance.OnStageClear += Arrived;
         LevelManager.Instance.OnLevelChanged += SetPlatformData;
         _train.OnTrainDestroy += TrainDestroy;
-        trainDestroy = false;
     }
-    void OnDisable()
+    public void ReleaseEvents()
     {
         GameManager.Instance.OnGameStart -= OnGameStart;
         GameManager.Instance.OnStageClear -= Arrived;
         LevelManager.Instance.OnLevelChanged -= SetPlatformData;
         _train.OnTrainDestroy -= TrainDestroy;
-        OnDistanceZero = null;
+
     }
-
-
     public void SetPlatformData()
     {
         for (int i = 0; i < platformDataTable.Count; i++)
         {
             if (int.Parse(platformDataTable[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
             {
-                trainSpeed = float.Parse(platformDataTable[i]["TRAINSPEED"].ToString());
-                platformDistance = float.Parse(platformDataTable[i]["PLATFORMDISTANCE"].ToString());
+                _trainSpeed = float.Parse(platformDataTable[i]["TRAINSPEED"].ToString());
+                _platformDistance = float.Parse(platformDataTable[i]["PLATFORMDISTANCE"].ToString());
                 break;
             }
         }
@@ -86,7 +86,7 @@ public class PlatformController : MonoBehaviour
 
     public void OnGameStart()
     {
-        ui_Distance.Show();
+        OnPlatformRunning?.Invoke();
     }
 
     public void OnStageStart()
@@ -98,12 +98,11 @@ public class PlatformController : MonoBehaviour
 
     void Update()
     {
-        
         if (GameManager.Instance.IsPaused())
         {
             return;
         }
-        if (trainDestroy)
+        if (_trainDestroy)
         {
             return;
         }
@@ -115,27 +114,24 @@ public class PlatformController : MonoBehaviour
 
         if (GameManager.Instance.IsGamePlaying() && _train.IsRunning)
         {
-            if(platformDistance == 0)
+            if(_platformDistance == 0)
             {
                 return;
             }
 
-            platformDistance -= trainSpeed * Time.deltaTime;
-            ui_Distance.SetDistanceText(platformDistance);
-            if (platformDistance <= 0)
+            _platformDistance -= _trainSpeed * Time.deltaTime;
+            OnDistanceChanged?.Invoke(_platformDistance);
+            if (_platformDistance <= 0)
             {
-                platformDistance = 0;
-                ui_Distance.Hide();
+                _platformDistance = 0;
                 OnDistanceZero?.Invoke();
                 return;
             }
         }
     }
-
-
     public void TrainDestroy()
     {
-        trainDestroy = true;
+        _trainDestroy = true;
     }
     public void Arrived()
     {
@@ -150,5 +146,11 @@ public class PlatformController : MonoBehaviour
         StartCoroutine(_backGroundController.ArrivedAnimationProcess(() => isDone = true));
         yield return new WaitUntil(()=>isDone);
         OnPlatformArrived?.Invoke();
+    }
+
+    public void ResetPlatform()
+    {
+        ReleaseEvents();
+        OnReset?.Invoke();
     }
 }

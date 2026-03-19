@@ -4,18 +4,15 @@ using UnityEngine;
 using System;
 public class Train : MonoBehaviour
 {
-    TrainSound _trainSound;
-
     float _maxHp;
     float _curHp;
     bool _isRunning = false;
 
-
+    TrainAnim _trainAnim;
+    public event Action OnReset;
     public event Action<float> OnDamaged;
     public event Action<float> OnHpChanged;
     public event Action OnTrainDestroy;
-
-
     public bool IsRunning
     {
         get
@@ -49,30 +46,18 @@ public class Train : MonoBehaviour
             _curHp = value;
         }
     }
-    void Awake()
-    {
-        _trainSound = GetComponent<TrainSound>();
-    }
-
-
-    void Start()
+    public void Init()
     {
         _maxHp = 100;
         _curHp = _maxHp;
+        if (_trainAnim == null)
+        {
+            _trainAnim = GetComponent<TrainAnim>();
+        }
+        _trainAnim.Init();
+        BindEvents();
         OnHpChanged?.Invoke(_curHp / _maxHp);
-        GameManager.Instance.OnTutorialStart += StartRunning;
-        GameManager.Instance.OnStageClear += StopRunning;
-        GameManager.Instance.OnStageStart += StartRunning;
     }
-
-    public void OnDisable()
-    {
-        GameManager.Instance.OnTutorialStart -= StartRunning;
-        GameManager.Instance.OnStageClear -= StopRunning;
-        GameManager.Instance.OnStageStart -= StartRunning;
-    }
-
-
     public void TakeDamage(float damage)
     {
         _curHp -= damage;
@@ -99,4 +84,21 @@ public class Train : MonoBehaviour
         _isRunning = false;        
     }
 
+    public void ResetTrain()
+    {
+        StopRunning();
+        ReleaseEvents();
+    }
+    public void BindEvents()
+    {
+        GameManager.Instance.OnTutorialStart += StartRunning;
+        GameManager.Instance.OnStageClear += StopRunning;
+        GameManager.Instance.OnStageStart += StartRunning;
+    }
+    public void ReleaseEvents()
+    {
+        GameManager.Instance.OnTutorialStart -= StartRunning;
+        GameManager.Instance.OnStageClear -= StopRunning;
+        GameManager.Instance.OnStageStart -= StartRunning;
+    }
 }

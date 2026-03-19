@@ -68,4 +68,9 @@ public class UI_StageAnnounce : UI_Base
         base.Show();
         StartCoroutine(AnnounceProcess());
     }
+    public void KillAnnounce()
+    {
+        StopCoroutine(AnnounceProcess());
+        base.Hide();
+    }
 }

@@ -31,7 +31,6 @@ public class UIManager : SingletonManager<UIManager>
             if (!_uiDics.ContainsKey(type))
             {
                 _uiDics[type] = new List<UI_Base>();
-                _uiDics[type].Add(_uiPrefabs[i]);
             }
             _uiDics[type].Add(_uiPrefabs[i]);
         }

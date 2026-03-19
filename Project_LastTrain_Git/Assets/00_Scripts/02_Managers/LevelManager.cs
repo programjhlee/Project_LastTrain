@@ -25,6 +25,13 @@ public class LevelManager : SingletonManager<LevelManager>
     {
         GameManager.Instance.OnStageClear -= LevelUp;
     }
+
+
+    public void Init()
+    {
+        Level = 1;
+    }
+
     public void LevelUp()
     {
         if(Level >= maxLevel)

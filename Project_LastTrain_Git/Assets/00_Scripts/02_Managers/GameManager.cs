@@ -8,6 +8,7 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] Train _train;
     [SerializeField] TutorialSystem _tutorialSystem;
     [SerializeField] PlatformController _platformController;
+    [SerializeField] TrainAnim _trainAnim;
 
     public event Action OnTutorialStart;
     public event Action OnGameStart;
@@ -17,6 +18,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public enum GameState
     {
+        Title,
         GameStart,
         Tutorial,
         GamePlaying,
@@ -44,13 +46,22 @@ public class GameManager : SingletonManager<GameManager>
         OnTutorialStart = null;
         OnStageClear = null;
     }
+    
+
     public void TutorialStart()
     {
+        StartCoroutine(TutorialStartProcess());
+    }
+
+    IEnumerator TutorialStartProcess()
+    {
+        yield return StartCoroutine(_trainAnim.StartTrainAnim(new Vector3(0,-4,0), 5f));
         State = GameState.Tutorial;
         UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
         _tutorialSystem.TutorialStart();
         OnTutorialStart?.Invoke();
     }
+
     public void GameStart()
     {
         StartCoroutine(GameStartProcess(() =>
@@ -90,7 +101,11 @@ public class GameManager : SingletonManager<GameManager>
         OnComplete?.Invoke();
     }
 
-
+    public void Init()
+    {
+        State = GameState.Title;
+        Time.timeScale = 1f;
+    }
     public bool IsGamePlaying()
     {
         return State == GameState.GamePlaying;
@@ -111,6 +126,7 @@ public class GameManager : SingletonManager<GameManager>
     {
         State = GameState.GamePlaying;
     }
+
     public void StageClear()
     {
         if (LevelManager.Instance.IsMaxLevel())
