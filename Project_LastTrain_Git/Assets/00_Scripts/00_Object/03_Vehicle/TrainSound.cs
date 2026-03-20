@@ -8,10 +8,13 @@ public class TrainSound : MonoBehaviour
     [SerializeField] AudioClip _trainStartSound;
     [SerializeField] AudioClip _trainRunningSound;
     [SerializeField] AudioClip _trainStopSound;
+    Train _train;
    
 
     public void Awake()
     {
+        _train = GetComponent<Train>();
+        Debug.Log(_train);
         _trainAudioSource = GetComponent<AudioSource>();
     }
 
@@ -20,13 +23,14 @@ public class TrainSound : MonoBehaviour
         GameManager.Instance.OnStageStart += PlayTrainStartSound;
         GameManager.Instance.OnStageStart += PlayTrainRunningSound;
         GameManager.Instance.OnStageClear += PlayTrainStopSound;
+        _train.OnReset += StopTrainRunningSound;
     }
-
     public void OnDisable()
     {
         GameManager.Instance.OnStageStart -= PlayTrainStartSound;
         GameManager.Instance.OnStageStart -= PlayTrainRunningSound;
         GameManager.Instance.OnStageClear -= PlayTrainStopSound;
+        _train.OnReset -= StopTrainRunningSound;
     }
 
     public void PlayTrainStartSound()
@@ -40,13 +44,16 @@ public class TrainSound : MonoBehaviour
         _trainAudioSource.loop = true;
         _trainAudioSource.Play();
     }
+    public void StopTrainRunningSound()
+    {
+        _trainAudioSource.Stop();
+    }
     public void PlayTrainStopSound()
     {
         _trainAudioSource.Stop();
         _trainAudioSource.PlayOneShot(_trainStopSound);
 
     }
-
     public float GetTrainStartSoundClipLength()
     {
         return _trainStartSound.length;

@@ -5,7 +5,7 @@ using System;
 
 public class LevelManager : SingletonManager<LevelManager>
 {
-    int maxLevel = 10;
+    int maxLevel = 1;
     [SerializeField] PlatformController platformController;
 
     public event Action OnLevelChanged;
@@ -27,7 +27,7 @@ public class LevelManager : SingletonManager<LevelManager>
     }
 
 
-    public void Init()
+    public void ResetLevel()
     {
         Level = 1;
     }
@@ -36,6 +36,7 @@ public class LevelManager : SingletonManager<LevelManager>
     {
         if(Level >= maxLevel)
         {
+            Debug.Log("모든 레벨 클리어! ");
             OnAllLevelClear?.Invoke();
             return;
         }

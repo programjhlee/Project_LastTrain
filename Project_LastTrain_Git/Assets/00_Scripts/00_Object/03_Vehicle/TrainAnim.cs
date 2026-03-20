@@ -5,9 +5,8 @@ using System;
 
 public class TrainAnim : MonoBehaviour
 {
-    Transform _trainParent;
+    Transform _trainTransform;
     Train _train;
-    TrainSound _trainSound;
     [SerializeField] GameObject _trainFront;
     [SerializeField] GameObject _trainBack_1;
     [SerializeField] GameObject _trainBack_2;
@@ -27,34 +26,38 @@ public class TrainAnim : MonoBehaviour
     float _intervalMin = 8f;
     float _intervalMax = 15f;
         
-    public void Init()
+
+    public void Awake()
     {
-        if(_trainSound == null)
-        {
-            _trainSound = GetComponent<TrainSound>();
-        }
+        _train = GetComponent<Train>();
+        _trainTransform = transform.parent;
 
-        if(_train == null)
-        {
-            _train = GetComponent<Train>();
-        }
-
-        _trainParent = transform.parent;
-        _trainParent.position = new Vector3(-150f, -4f, 0);
-        
         _timerFront = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         _timerBack1 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         _timerBack2 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
         _timerBack3 = UnityEngine.Random.Range(_intervalMin, _intervalMax);
     }
+
+
     public void OnEnable()
     {
         _train.OnDamaged += OnTakeDamage;
+        _train.OnReset += ResetTrainPos;
+        
     }
-
     public void OnDisable()
     {
         _train.OnDamaged -= OnTakeDamage;
+        _train.OnReset -= ResetTrainPos;
+    }
+    public void SetTrainPos(Vector3 pos)
+    {
+        _trainTransform.position = pos;
+    }
+
+    public void ResetTrainPos()
+    {
+        SetTrainPos(new Vector3(-150f, -4f, 0));
     }
     void Update()
     {
@@ -80,7 +83,6 @@ public class TrainAnim : MonoBehaviour
 
     public void Trumbling(float strength = 0.015f)
     {
-
         float rndFloatX = UnityEngine.Random.Range(-strength, strength);
         float rndFloatY = UnityEngine.Random.Range(-strength, strength);
         
@@ -107,14 +109,12 @@ public class TrainAnim : MonoBehaviour
     }
     public IEnumerator StartTrainAnim(Vector3 targetPos,float speed)
     {
-        _trainSound.PlayTrainStartSound();
-        _trainSound.PlayTrainRunningSound();
-        while (_trainParent.position.x < 0)
+        while (_trainTransform.position.x < 0)
         {
-            _trainParent.position = Vector3.Lerp(_trainParent.position, targetPos, speed * Time.deltaTime);
-            if(Vector3.Distance(_trainParent.position,targetPos) <= 0.01f)
+            _trainTransform.position = Vector3.Lerp(_trainTransform.position, targetPos, speed * Time.deltaTime);
+            if(Vector3.Distance(_trainTransform.position,targetPos) <= 0.01f)
             {
-                _trainParent.position = targetPos;
+                _trainTransform.position = targetPos;
             }
             yield return null;
         }

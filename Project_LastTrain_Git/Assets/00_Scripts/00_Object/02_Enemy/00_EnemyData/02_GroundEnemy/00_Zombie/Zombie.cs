@@ -205,8 +205,6 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     }
 
 
-
-
     IEnumerator DamageProcess(Vector3 dir)
     {
         float attackForce = 10f;

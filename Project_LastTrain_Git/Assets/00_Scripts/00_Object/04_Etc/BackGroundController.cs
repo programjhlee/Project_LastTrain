@@ -17,10 +17,11 @@ public class BackGroundController : MonoBehaviour
 
     float _backGroundSpeed;
     float _railSpeed;
-    public void Init()
+
+
+    public void Awake()
     {
         _platformController = GetComponent<PlatformController>();
-        _repairShop.RepairShopInit();
         _rails = new List<GameObject>();
         _backGrounds = new List<GameObject>();
         for (int i = 0; i < 6; i++)
@@ -38,11 +39,18 @@ public class BackGroundController : MonoBehaviour
             backGround.transform.position = new Vector3(770f * i, 0, 0);
             _backGrounds.Add(backGround);
         }
-        SpeedInit();
+        _repairShop.RepairShopInit();
     }
 
-
-    public void SpeedInit()
+    public void OnEnable()
+    {
+        _platformController.OnReset += ResetBackGroundPos;
+    }
+    public void OnDisable()
+    {
+        _platformController.OnReset -= ResetBackGroundPos;
+    }
+    public void SetBackGroundSpeed()
     {
         _backGroundSpeed = _platformController.TrainSpeed * 2;
         _railSpeed = _platformController.TrainSpeed * 50;
@@ -109,5 +117,17 @@ public class BackGroundController : MonoBehaviour
         }
         OnComplete?.Invoke();
 
+    }
+
+    public void ResetBackGroundPos()
+    {
+        for (int i = 0; i < _rails.Count; i++)
+        {
+            _rails[i].transform.position = new Vector3(_railStartPosX + i * _railSizeX, -10.1f, 0);
+        }
+        for (int i = 0; i < _backGrounds.Count; i++)
+        {
+            _backGrounds[i].transform.position = new Vector3(770f * i, 0, 0);
+        }
     }
 }

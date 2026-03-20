@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     {
         playerAction.SetMoveDirection(Vector3.zero);
 
-        if (GameManager.Instance.IsPaused())
+        if (!GameManager.Instance.IsGamePlaying() && !GameManager.Instance.IsTutorial())
         {
             return;
         }

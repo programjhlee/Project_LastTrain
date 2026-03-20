@@ -9,8 +9,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class TrainEventSystem : MonoBehaviour
 {
-
-    [SerializeField] Train train;
+    [SerializeField] Train _train;
     [SerializeField] List<EventData> eventDataList;
     [SerializeField] PlatformController platformController;
     [SerializeField] GameObject trainBack;
@@ -31,8 +30,11 @@ public class TrainEventSystem : MonoBehaviour
 
     float eventSpawnTime;
     float curTime;
-    public void Init()
+    
+    void Awake()
     {
+        eventLevelSpawnTimeData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
+        trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
         eventLevelSpawnTimeData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
         trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
 
@@ -61,24 +63,30 @@ public class TrainEventSystem : MonoBehaviour
                 eventPoolStack.Push(poolEvent);
             }
             inactiveEventPools[eventID[i]] = eventPoolStack;
+
         }
-        SetEventLevelData();
     }
 
-
-    public void BindEvents()
+    public void OnEnable()
     {
         GameManager.Instance.OnStageClear += ResetTrainEventSystem;
+        GameManager.Instance.OnAllStageClear += ResetTrainEventSystem;
         LevelManager.Instance.OnLevelChanged += SetEventLevelData;
+        _train.OnReset += ResetTrainEventSystem;
+        _train.OnReset += SetEventLevelData;
     }
-    public void ReleaseEvents()
+
+    public void OnDisable()
     {
         GameManager.Instance.OnStageClear -= ResetTrainEventSystem;
+        GameManager.Instance.OnAllStageClear -= ResetTrainEventSystem;
         LevelManager.Instance.OnLevelChanged -= SetEventLevelData;
+        _train.OnReset -= ResetTrainEventSystem;
+        _train.OnReset -= SetEventLevelData;
     }
     public void Update()
     {
-        if (!GameManager.Instance.IsGamePlaying())
+        if (!GameManager.Instance.IsGamePlaying() || !_train.IsRunning)
         {
             return;
         }
@@ -141,7 +149,7 @@ public class TrainEventSystem : MonoBehaviour
         _evtUIHUDStack.AddUIHUD(_uiEventFixValueBar);
         if(evt.TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
         {
-            trainDamageEvent.OnDamage += train.TakeDamage;
+            trainDamageEvent.OnDamage += _train.TakeDamage;
         }
     }
     public Event SpawnEventRandomPos()
@@ -187,7 +195,7 @@ public class TrainEventSystem : MonoBehaviour
             {
                 if (executeEvents[i].TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
                 {
-                    trainDamageEvent.OnDamage -= train.TakeDamage;
+                    trainDamageEvent.OnDamage -= _train.TakeDamage;
                 }
                 executeEvents[i].Exit();
                 endEvents.Add(executeEvents[i]);

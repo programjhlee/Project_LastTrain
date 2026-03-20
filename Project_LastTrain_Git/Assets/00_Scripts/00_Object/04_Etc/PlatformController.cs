@@ -6,10 +6,8 @@ using System;
 public class PlatformController : MonoBehaviour
 {
     [SerializeField] Train _train;
-    TrainSound _trainSound;
     BackGroundController _backGroundController;
     List<Dictionary<string, object>> platformDataTable;
-    UI_Distance ui_Distance;
     float _trainSpeed;
     float _platformDistance;
     bool _trainDestroy;
@@ -42,34 +40,33 @@ public class PlatformController : MonoBehaviour
     public event Action OnReset;
     public event Action OnDistanceZero;
     public event Action OnPlatformArrived;
-    public void Init()
+
+    public void Awake()
     {
         platformDataTable = DataManager.Instance.GetData((int)Define.DataTables.PlatformData);
-        
         _backGroundController = GetComponent<BackGroundController>();
-        _trainSound = GetComponent<TrainSound>();
-        
-        _backGroundController.Init();
-        _trainDestroy = false;
-        BindEvents();
-        SetPlatformData();
     }
 
-    public void BindEvents()
+    public void OnEnable()
     {
         GameManager.Instance.OnGameStart += OnGameStart;
+        GameManager.Instance.OnTutorialStart += SetPlatformData;
         GameManager.Instance.OnStageClear += Arrived;
+        GameManager.Instance.OnAllStageClear += ResetPlatform;
         LevelManager.Instance.OnLevelChanged += SetPlatformData;
         _train.OnTrainDestroy += TrainDestroy;
     }
-    public void ReleaseEvents()
+
+    public void OnDisable()
     {
         GameManager.Instance.OnGameStart -= OnGameStart;
+        GameManager.Instance.OnTutorialStart -= SetPlatformData;
+        GameManager.Instance.OnAllStageClear -= ResetPlatform;
         GameManager.Instance.OnStageClear -= Arrived;
         LevelManager.Instance.OnLevelChanged -= SetPlatformData;
         _train.OnTrainDestroy -= TrainDestroy;
-
     }
+
     public void SetPlatformData()
     {
         for (int i = 0; i < platformDataTable.Count; i++)
@@ -81,20 +78,13 @@ public class PlatformController : MonoBehaviour
                 break;
             }
         }
-        _backGroundController.SpeedInit();
+        _backGroundController.SetBackGroundSpeed();
     }
 
     public void OnGameStart()
     {
         OnPlatformRunning?.Invoke();
     }
-
-    public void OnStageStart()
-    {
-        ui_Distance.Show();
-        _train.StartRunning();
-    }
-
 
     void Update()
     {
@@ -150,7 +140,7 @@ public class PlatformController : MonoBehaviour
 
     public void ResetPlatform()
     {
-        ReleaseEvents();
+        SetPlatformData();
         OnReset?.Invoke();
     }
 }

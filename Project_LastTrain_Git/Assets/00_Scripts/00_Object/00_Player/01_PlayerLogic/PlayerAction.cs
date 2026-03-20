@@ -96,7 +96,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public void ProcessMovement()
     {
-        if (GameManager.Instance.IsPaused())
+        if (!GameManager.Instance.IsGamePlaying() && !GameManager.Instance.IsTutorial())
         {
             _isMoving = false;
             SetMoveDirection(Vector3.zero);

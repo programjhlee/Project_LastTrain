@@ -2,56 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class GameScene : MonoBehaviour
 {
-    [SerializeField] Image _fadeOutImage;
     [SerializeField] Train _train;
-    [SerializeField] TrainEventSystem _trainEventSystem;
-    [SerializeField] BigEventSystem _bigEventSystem;
     [SerializeField] PlatformController _platformController;
     [SerializeField] EnemySpawner _enemySpawner;
     [SerializeField] UI_Title _uiTitle;
     [SerializeField] TutorialSystem _tutorialSystem;
-    
     [SerializeField] Button _startButton;
+    [SerializeField] Button _exitButton;
 
-    
-    public void Awake()
+
+
+    public void OnEnable()
     {
-        Init();
-        _fadeOutImage.gameObject.SetActive(false);
+        _platformController.OnPlatformRunning += () => { UIManager.Instance.ShowUIAt<UI_Distance>(new Vector2(0, 350f)); };
+        _platformController.OnReset += () => { UIManager.Instance.HideUI<UI_Distance>(); };
+        _platformController.OnDistanceZero += () => { UIManager.Instance.HideUI<UI_Distance>(); };
+    }
+    public void Start()
+    {
+        SceneStart();
     }
 
-    public void Init()
-    {
-        CameraManager.Instance.Init();
-        LevelManager.Instance.Init();
-        _uiTitle.Show();
-        _startButton.gameObject.SetActive(true);
-        _train.Init();
-        _trainEventSystem.Init();
-        _bigEventSystem.Init();
-        _platformController.Init();
-        _platformController.OnPlatformRunning += () => UIManager.Instance.ShowUIAt<UI_Distance>(new Vector2(0,350f));
-        _platformController.OnDistanceZero += () => UIManager.Instance.HideUI<UI_Distance>();
-        _platformController.OnReset += () => UIManager.Instance.HideUI<UI_Distance>();
-        
-        _tutorialSystem.Init();
-    }
     public void SceneStart()
     {
-        GameManager.Instance.Init();
-        Init();
+        UIManager.Instance.FadeIn();
+        LevelManager.Instance.ResetLevel();
+        CameraManager.Instance.SetStartCamPrioirty();
+        _uiTitle.Show();
+        _startButton.gameObject.SetActive(true);
+        _exitButton.gameObject.SetActive(true);
+        _train.ResetTrain();
+        _platformController.ResetPlatform();
+        _enemySpawner.SetEnemiesData();
     }
     public void SceneClear()
     {
         GameManager.Instance.GamePaused();
         _train.ResetTrain();
-        _platformController.ResetPlatform();
-        _trainEventSystem.ResetTrainEventSystem();
-        _trainEventSystem.ReleaseEvents();
-        _bigEventSystem.ResetBigEventSystem();
+        _enemySpawner.AllEnemyClear();
     }
 
     public void RestartScene()
@@ -59,17 +50,26 @@ public class GameScene : MonoBehaviour
         StartCoroutine(RestartProcess());
     }
 
-    public void Quit()
+    public void StartButtonClicked()
     {
-        Application.Quit();
+        _uiTitle.Hide();
+        _startButton.gameObject.SetActive(false);
+        _exitButton.gameObject.SetActive(false);
+        GameManager.Instance.TutorialStart();
+    }
+    public void ExitButtonClicked()
+    {
+        UI_Popup ui_popup = UIManager.Instance.ShowUI<UI_Popup>();
+        ui_popup.SetText("정말로 종료하시겠습니까?");
     }
 
     IEnumerator RestartProcess()
     {
-        _fadeOutImage.gameObject.SetActive(true);
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(0.5f);
         SceneClear();
         SceneStart();
         yield return new WaitForSeconds(1f);
-        _fadeOutImage.gameObject.SetActive(false);
+        UIManager.Instance.FadeOut();
     }
 }

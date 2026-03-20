@@ -42,7 +42,7 @@ public class LootManager : SingletonManager<LootManager>
             List<DropTable.DropEntry> currentDropEntry = _dropList[i].DropItems;
             for(int j = 0; j < currentDropEntry.Count; j++)
             {
-                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 12;
+                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 10;
                 GameObject items = new GameObject(currentDropEntry[j].Item.gameObject.name);
                 for (int k = 0; k < 50; k++)
                 {

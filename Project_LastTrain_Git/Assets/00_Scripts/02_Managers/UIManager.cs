@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using DG.Tweening;
 
 public class UIManager : SingletonManager<UIManager>
 {
-
+    [SerializeField] Image _fadeOutImage;
     [SerializeField] Canvas canvas;
     [SerializeField] Canvas canvasHUD;
 
@@ -171,5 +172,16 @@ public class UIManager : SingletonManager<UIManager>
                 Debug.Log("Cant Find UI");
             }
         }
+    }
+
+    public void FadeIn()
+    {
+        _fadeOutImage.transform.SetAsLastSibling();
+        _fadeOutImage.DOFade(0f, 0.5f);
+    }
+    public void FadeOut()
+    {
+        _fadeOutImage.transform.SetAsLastSibling();
+        _fadeOutImage.DOFade(1f, 0.5f);
     }
 }

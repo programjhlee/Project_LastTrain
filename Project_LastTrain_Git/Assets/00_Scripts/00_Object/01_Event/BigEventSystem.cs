@@ -8,7 +8,7 @@ public class BigEventSystem : MonoBehaviour
     [SerializeField] GameObject _bigEventPrefab;
     [SerializeField] Switch _switch;
     [SerializeField] PlatformController _platformController;
-    [SerializeField] Train train;
+    [SerializeField] Train _train;
     
     List<Dictionary<string, object>> bigEventSpawnData;
     BigEvent bigEvent;
@@ -16,26 +16,26 @@ public class BigEventSystem : MonoBehaviour
     float rndTime;
     float curTime;
     int currentIdx;
-    public void Init()
+    public void Awake()
     {
         bigEventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.BigEventSpawnData);
         bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
         bigEvent.gameObject.SetActive(false);
-
-        SetBigEventSystem();
-
     }
-
-    public void BindEvents()
+    public void OnEnable()
     {
         LevelManager.Instance.OnLevelChanged += SetBigEventSystem;
         GameManager.Instance.OnStageClear += TurnOffBigEvent;
+        GameManager.Instance.OnAllStageClear += TurnOffBigEvent;
+        _train.OnReset += ResetBigEventSystem;
     }
 
-    public void ReleaseEvents()
+    public void OnDisable()
     {
         LevelManager.Instance.OnLevelChanged -= SetBigEventSystem;
         GameManager.Instance.OnStageClear -= TurnOffBigEvent;
+        GameManager.Instance.OnAllStageClear -= TurnOffBigEvent;
+        _train.OnReset -= ResetBigEventSystem;
     }
 
     public void SetBigEventSystem()
@@ -71,8 +71,8 @@ public class BigEventSystem : MonoBehaviour
     {
         SoundManager.Instance.PlaySFX(_warningSound);
         _switch.SwitchActive();
-        bigEvent.Init(_platformController.TrainSpeed, train);
-        bigEvent.OnTrainCrashed += train.TakeDamage;
+        bigEvent.Init(_platformController.TrainSpeed, _train);
+        bigEvent.OnTrainCrashed += _train.TakeDamage;
         bigEvent.OnDestroy += _switch.SwitchUnActive;
 
         rndTime = Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
@@ -91,6 +91,6 @@ public class BigEventSystem : MonoBehaviour
     public void ResetBigEventSystem()
     {
         TurnOffBigEvent();
-        ReleaseEvents();
+        SetBigEventSystem();
     }
 }

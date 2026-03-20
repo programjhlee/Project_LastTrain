@@ -6,9 +6,10 @@ public class Train : MonoBehaviour
 {
     float _maxHp;
     float _curHp;
+    
     bool _isRunning = false;
 
-    TrainAnim _trainAnim;
+    public event Action OnInit;
     public event Action OnReset;
     public event Action<float> OnDamaged;
     public event Action<float> OnHpChanged;
@@ -46,16 +47,25 @@ public class Train : MonoBehaviour
             _curHp = value;
         }
     }
-    public void Init()
+
+    public void OnEnable()
+    {
+        GameManager.Instance.OnTutorialStart += StartRunning;
+        GameManager.Instance.OnAllStageClear += StopRunning;
+        GameManager.Instance.OnStageClear += StopRunning;
+        GameManager.Instance.OnStageStart += StartRunning;
+    }
+    public void OnDisable()
+    {
+        GameManager.Instance.OnTutorialStart -= StartRunning;
+        GameManager.Instance.OnAllStageClear -= StopRunning;
+        GameManager.Instance.OnStageClear -= StopRunning;
+        GameManager.Instance.OnStageStart -= StartRunning;
+    }
+    public void ResetTrainHp()
     {
         _maxHp = 100;
         _curHp = _maxHp;
-        if (_trainAnim == null)
-        {
-            _trainAnim = GetComponent<TrainAnim>();
-        }
-        _trainAnim.Init();
-        BindEvents();
         OnHpChanged?.Invoke(_curHp / _maxHp);
     }
     public void TakeDamage(float damage)
@@ -83,22 +93,10 @@ public class Train : MonoBehaviour
     {
         _isRunning = false;        
     }
-
     public void ResetTrain()
-    {
+    { 
         StopRunning();
-        ReleaseEvents();
-    }
-    public void BindEvents()
-    {
-        GameManager.Instance.OnTutorialStart += StartRunning;
-        GameManager.Instance.OnStageClear += StopRunning;
-        GameManager.Instance.OnStageStart += StartRunning;
-    }
-    public void ReleaseEvents()
-    {
-        GameManager.Instance.OnTutorialStart -= StartRunning;
-        GameManager.Instance.OnStageClear -= StopRunning;
-        GameManager.Instance.OnStageStart -= StartRunning;
+        ResetTrainHp();
+        OnReset?.Invoke();
     }
 }

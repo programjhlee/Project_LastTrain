@@ -22,23 +22,19 @@ public class EnemySpawner : MonoBehaviour
 
     float curTime = 0;
     float _spawnTime;
-        
-    void Start()
-    {
-        Init();
-    }
-    public void Init()
+
+    public void Awake()
     {
         _enemyLevelTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyLevelData);
         _enemyInfoTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyInfoData);
-        
+
         _enemyPools = new Dictionary<int, GameObject>();
-        
+
         _activeEnemies = new List<Enemy>();
         _removeEnemies = new List<Enemy>();
         
         EnemyDataInit();
-        
+       
         _trainCol = _trainBack.GetComponent<Collider>();
 
         for (int i = 0; i < _enemyID.Length; i++)
@@ -54,16 +50,19 @@ public class EnemySpawner : MonoBehaviour
                 enemy.gameObject.SetActive(false);
             }
         }
-        SetEnemiesData();
+    }
+    public void OnEnable()
+    {
         GameManager.Instance.OnStageClear += AllEnemyClear;
+        GameManager.Instance.OnAllStageClear += AllEnemyClear;
         LevelManager.Instance.OnLevelChanged += SetEnemiesData;
     }
     public void OnDisable()
     {
         GameManager.Instance.OnStageClear -= AllEnemyClear;
+        GameManager.Instance.OnAllStageClear -= AllEnemyClear;
         LevelManager.Instance.OnLevelChanged -= SetEnemiesData;
     }
-
     public void Update()
     {
         if (!GameManager.Instance.IsGamePlaying())
@@ -131,8 +130,6 @@ public class EnemySpawner : MonoBehaviour
         }
         _removeEnemies.Clear();
     }
-
-
     public void SetEnemiesData()
     {
         for (int i = 0; i < _enemyID.Length; i++)
@@ -150,7 +147,6 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-
 
     public Enemy SpawnEnemy()
     {
@@ -186,5 +182,11 @@ public class EnemySpawner : MonoBehaviour
 
         _activeEnemies.Clear();
         _removeEnemies.Clear();
+    }
+    
+
+    public void ResetEnemySpanwner()
+    {
+        AllEnemyClear();
     }
 }

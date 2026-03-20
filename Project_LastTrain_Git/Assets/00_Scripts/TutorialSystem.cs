@@ -66,7 +66,6 @@ public class TutorialSystem : MonoBehaviour
         {
             _steps[i].Release();
         }
-        _steps.Clear();
         _skipBtn.onClick.RemoveListener(SkipTutorial);
         _skipBtn.gameObject.SetActive(false);
         GameManager.Instance.GameStart();
