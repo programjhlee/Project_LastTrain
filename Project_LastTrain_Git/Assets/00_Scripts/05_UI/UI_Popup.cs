@@ -8,7 +8,6 @@ using TMPro;
 public class UI_Popup : UI_Base
 {
     [SerializeField] RectTransform _uiRect;
-    [SerializeField] TextMeshProUGUI _announceText;
 
     public override void Show()
     {
@@ -22,9 +21,5 @@ public class UI_Popup : UI_Base
     public override void Hide()
     {
         _uiRect.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(()=>base.Hide());
-    }
-    public void SetText(string text)
-    {
-        _announceText.text = text;
     }
 }

@@ -31,6 +31,7 @@ public class GameManager : SingletonManager<GameManager>
         GamePaused
     }
 
+    GameState _beforeState;
     public GameState State
     {
         get;
@@ -145,11 +146,12 @@ public class GameManager : SingletonManager<GameManager>
     }
     public void GamePaused()
     {
+        _beforeState = State;
         State = GameState.GamePaused;
     }
     public void GameResume()
     {
-        State = GameState.GamePlaying;
+        State = _beforeState;
     }
 
     public void StageClear()

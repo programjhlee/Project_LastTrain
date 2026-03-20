@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2566a03fc8176f7428e751107ca05eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _platformController: {fileID: 0}
   ui_distanceText: {fileID: 6397249128761391868}
 --- !u!1 &2848873687251445282
 GameObject:
@@ -158,14 +159,14 @@ MonoBehaviour:
   m_text: 255.00M Left!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
-  m_sharedMaterial: {fileID: -2941035557311306809, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 35ac86f7fdae9514fb1584a52aa6a7ad, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3204448255
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.74509805}
+    rgba: 2298478591
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.53333336}
   m_enableVertexGradient: 1
   m_colorMode: 2
   m_fontColorGradient:

@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: GO!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: a70800b5ee271f44a8a2bb3de8938710, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 35ac86f7fdae9514fb1584a52aa6a7ad, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_colorMode: 2
   m_fontColorGradient:
     topLeft: {r: 1, g: 0.0179291, b: 0, a: 1}
-    topRight: {r: 1, g: 0, b: 0, a: 1}
+    topRight: {r: 1, g: 0.0179291, b: 0, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -6.93
+  m_characterSpacing: -9
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_text: 'Distance : 120.00m'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: a70800b5ee271f44a8a2bb3de8938710, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 35ac86f7fdae9514fb1584a52aa6a7ad, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_colorMode: 2
   m_fontColorGradient:
     topLeft: {r: 1, g: 0, b: 0, a: 1}
-    topRight: {r: 1, g: 0, b: 0, a: 1}
+    topRight: {r: 1, g: 0.0179291, b: 0, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
@@ -335,7 +335,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -6.93
+  m_characterSpacing: -9
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -435,7 +435,7 @@ MonoBehaviour:
   m_text: Level 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: a70800b5ee271f44a8a2bb3de8938710, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 35ac86f7fdae9514fb1584a52aa6a7ad, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -447,7 +447,7 @@ MonoBehaviour:
   m_colorMode: 2
   m_fontColorGradient:
     topLeft: {r: 0.745283, g: 0, b: 0.08334553, a: 1}
-    topRight: {r: 1, g: 0, b: 0, a: 1}
+    topRight: {r: 1, g: 0.0179291, b: 0, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
@@ -469,7 +469,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -6.93
+  m_characterSpacing: -9
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

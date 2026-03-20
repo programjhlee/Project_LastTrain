@@ -26,14 +26,18 @@ public class TutorialSystem : MonoBehaviour
     {
         get { return _train; }
     }
-    public void Init()
+    public void Awake()
     {
-        gameObject.SetActive(true);
         _trainEventSystem = _train.GetComponent<TrainEventSystem>();
         _bigEventSystem = _train.GetComponent<BigEventSystem>();
         _playerAction = _player.GetComponent<PlayerAction>();
-        _skipBtn.onClick.AddListener(SkipTutorial);
+    }
+
+    public void ResetTutorialSystem()
+    {
+        gameObject.SetActive(true);
         _skipBtn.gameObject.SetActive(false);
+        _skipBtn.onClick.AddListener(SkipTutorial);
     }
 
 
@@ -69,6 +73,5 @@ public class TutorialSystem : MonoBehaviour
         _skipBtn.onClick.RemoveListener(SkipTutorial);
         _skipBtn.gameObject.SetActive(false);
         GameManager.Instance.GameStart();
-        gameObject.SetActive(false);
     }
 }

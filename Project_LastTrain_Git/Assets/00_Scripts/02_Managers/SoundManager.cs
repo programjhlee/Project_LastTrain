@@ -24,4 +24,14 @@ public class SoundManager : SingletonManager<SoundManager>
     {
         audio.volume = volume;
     }
+    public void SetBGMVolume(float volume)
+    {
+        Debug.Log("BGM조절중");
+        SetAudioVolume(_BGM, volume);
+    }
+    public void SetSFXVolume(float volume)
+    {
+        Debug.Log("SFX 조절중");
+        SetAudioVolume(_SFX, volume);
+    }
 }

@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: 99.990M left!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
-  m_sharedMaterial: {fileID: -2941035557311306809, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 35ac86f7fdae9514fb1584a52aa6a7ad, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
