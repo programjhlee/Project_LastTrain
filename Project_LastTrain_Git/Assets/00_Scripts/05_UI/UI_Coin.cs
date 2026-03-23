@@ -2,19 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
+using DG.Tweening.Core;
 public class UI_Coin : UI_Base
 {
-
-    [SerializeField] Text coinText;
-
+    [SerializeField] TextMeshProUGUI coinText;
+    RectTransform _uiRect;
     public void Awake()
     {
+        _uiRect = GetComponent<RectTransform>();
         LootManager.Instance.OnItemCountChanged += SetCoinText;
     }
     public void SetCoinText(int coin)
     {
-        Debug.Log("UI°»½Å!");
-        coinText.text = $" : {coin.ToString()}";
+        _uiRect.transform.DOKill();
+        coinText.text = $" X {coin:D2}";
+        _uiRect.DOAnchorPosY(10f, 0.02f).SetRelative().SetLoops(2, LoopType.Yoyo);
+        _uiRect.DOShakeScale(0.02f,0.2f);
     }
 
 }

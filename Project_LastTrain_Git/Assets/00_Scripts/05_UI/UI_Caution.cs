@@ -13,8 +13,10 @@ public class UI_Caution : UI_Popup
     [SerializeField] Button _noButton;
     public void OnEnable()
     {
-        _yesButton.onClick.AddListener(() => base.Hide());
-        _noButton.onClick.AddListener(() => base.Hide());
+        _yesButton.interactable = true;
+        _noButton.interactable = true;
+        _yesButton.onClick.AddListener(() => {_yesButton.interactable = false; base.Hide(); });
+        _noButton.onClick.AddListener(() => { _noButton.interactable = false; base.Hide(); });
     }
     public void OnDisable()
     {
@@ -28,7 +30,7 @@ public class UI_Caution : UI_Popup
     }
     public void BindNoButton(UnityAction action)
     {
-        _yesButton.onClick.AddListener(action);
+        _noButton.onClick.AddListener(action);
     }
     public void SetText(string text)
     {

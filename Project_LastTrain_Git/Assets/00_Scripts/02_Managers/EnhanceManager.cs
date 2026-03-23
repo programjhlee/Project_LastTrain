@@ -62,6 +62,13 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         _ui_Enhance.transform.SetAsFirstSibling();
     }
 
+    public void HideEnhanceUI()
+    {
+        if(_ui_Enhance != null)
+        {
+            _ui_Enhance.Hide();
+        }
+    }
 
     public void FixTrain()
     {

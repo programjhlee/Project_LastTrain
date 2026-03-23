@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: landscape
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 8fa84e1c8f3a97b4bb416e8eb087630e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -32,7 +32,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _HighIntensity
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -60,11 +60,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmmisTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -105,16 +113,27 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FresnelBrightness: 0
+    - _FresnelPower: 0
+    - _FresnelShadowDropoff: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.06
     - _GlossinessSource: 0
     - _GlossyReflections: 1
+    - _HighIntensity: 4.2
+    - _LightScalar: 0.9
+    - _LowIntensity: 0.7
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OutlineSize: 10
     - _Parallax: 0.02
     - _QueueOffset: 0
+    - _RampLevels: 2
     - _ReceiveShadows: 1
+    - _RimAlpha: 1
+    - _RimDropOff: 1
+    - _RimPower: 0.15
     - _Shininess: 0
     - _Smoothness: 0.06
     - _SmoothnessSource: 0
@@ -128,7 +147,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.3216002, g: 0.6886792, b: 0.33908015, a: 1}
-    - _Color: {r: 0.32160017, g: 0.6886792, b: 0.33908013, a: 1}
+    - _Color: {r: 0.15572803, g: 0.6037736, b: 0.116767526, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FresnelColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HighColor: {r: 0.10190669, g: 0.6981132, b: 0.036222856, a: 1}
+    - _LowColor: {r: 0.3250267, g: 0.8301887, b: 0.327547, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []

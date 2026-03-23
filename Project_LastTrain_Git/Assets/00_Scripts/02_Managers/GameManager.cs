@@ -11,7 +11,8 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] TrainSound _trainSound;
     [SerializeField] TutorialSystem _tutorialSystem;
     [SerializeField] PlatformController _platformController;
-    [SerializeField] Image _uiFadeOut;
+    [SerializeField] Button _returnButton;
+
 
     public event Action OnTutorialStart;
     public event Action OnGameStart;
@@ -28,7 +29,8 @@ public class GameManager : SingletonManager<GameManager>
         StageStart,
         StageClear,
         GameAllClear,
-        GamePaused
+        GamePaused,
+        GameOver
     }
 
     GameState _beforeState;
@@ -67,6 +69,8 @@ public class GameManager : SingletonManager<GameManager>
         _trainSound.PlayTrainRunningSound();
         State = GameState.Tutorial;        
         UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
+        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(250,-100));
+        _returnButton.gameObject.SetActive(true);
         _tutorialSystem.TutorialStart();
         OnTutorialStart?.Invoke();
     }
@@ -83,11 +87,6 @@ public class GameManager : SingletonManager<GameManager>
 
     public void StageStart()
     {
-		if (LevelManager.Instance.IsMaxLevel())
-		{
-			Debug.Log("올클리어! 더이상 진행할 수 없습니다!");
-            return;
-		}
 		StartCoroutine(StageStartProcess(() =>
 		{
 			State = GameState.GamePlaying;
@@ -165,9 +164,21 @@ public class GameManager : SingletonManager<GameManager>
         OnStageClear?.Invoke();
         State = GameState.StageClear;
     }
+
+    public void ResetGameManager()
+    {
+        StopAllCoroutines();
+        State = GameState.Title;
+    }
     public void GameOver()
     {
-        Debug.Log("게임오버.....");
-        State = GameState.GamePaused;
+        State = GameState.GameOver;
     }
+    IEnumerator GameOverProcess()
+    {
+        yield return new WaitForSeconds(5f);
+        UIManager.Instance.FadeIn();
+    }
+
+
 }

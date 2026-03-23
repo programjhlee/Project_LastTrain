@@ -12,7 +12,7 @@ public class UI_BigEventCaution : UI_Base
 
     public void SetDistanceText(float distance)
     {
-        UI_distanceText.text = $"{distance:F2}m Left!!";
+        UI_distanceText.text = $"{distance:F2}M LEFT!!";
     }
     
     public override void Show()

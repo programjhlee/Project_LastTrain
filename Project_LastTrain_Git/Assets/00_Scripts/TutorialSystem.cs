@@ -35,6 +35,7 @@ public class TutorialSystem : MonoBehaviour
 
     public void ResetTutorialSystem()
     {
+        ResetTutorial();
         gameObject.SetActive(true);
         _skipBtn.gameObject.SetActive(false);
         _skipBtn.onClick.AddListener(SkipTutorial);
@@ -63,7 +64,6 @@ public class TutorialSystem : MonoBehaviour
 
     public void SkipTutorial()
     {
-        Debug.Log("Tutorial Skip");
         StopAllCoroutines();
 
         for (int i = 0; i < _steps.Count; i++)
@@ -73,5 +73,17 @@ public class TutorialSystem : MonoBehaviour
         _skipBtn.onClick.RemoveListener(SkipTutorial);
         _skipBtn.gameObject.SetActive(false);
         GameManager.Instance.GameStart();
+    }
+
+    public void ResetTutorial()
+    {
+        StopAllCoroutines();
+
+        for (int i = 0; i < _steps.Count; i++)
+        {
+            _steps[i].Release();
+        }
+        _skipBtn.onClick.RemoveListener(SkipTutorial);
+        _skipBtn.gameObject.SetActive(false);
     }
 }

@@ -8,18 +8,19 @@ using TMPro;
 public class UI_Popup : UI_Base
 {
     [SerializeField] RectTransform _uiRect;
-
+    [SerializeField] AudioClip _showSound;
+    [SerializeField] AudioClip _hideSound;
     public override void Show()
     {
+        Debug.Log("ÆË¾÷ ¿­¸²");
+        _uiRect.localScale = Vector3.zero;
         base.Show();
         _uiRect.DOScale(1, 0.3f).SetEase(Ease.OutBack);
-    }
-    public void ClickedYesbutton()
-    {
-        Application.Quit();
+        SoundManager.Instance.PlaySFX(_showSound);
     }
     public override void Hide()
     {
         _uiRect.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(()=>base.Hide());
+        SoundManager.Instance.PlaySFX(_hideSound);
     }
 }

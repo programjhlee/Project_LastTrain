@@ -360,6 +360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiRect: {fileID: 4818636613751895207}
+  _showSound: {fileID: 8300000, guid: 28e04bc911f6ddc4e88ef3f8059e329a, type: 3}
+  _hideSound: {fileID: 8300000, guid: 217e241bcb1d39545a2435f0b8b254fa, type: 3}
   _announceText: {fileID: 4479542662439071418}
   _yesButton: {fileID: 2278648283460375853}
   _noButton: {fileID: 8268785230813000202}
@@ -617,19 +619,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4635931679838023266}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3904588737509905769}
-        m_TargetAssemblyTypeName: UI_Popup, Assembly-CSharp
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &9107847900807726752
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,16 +740,4 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4747609251563230587}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3904588737509905769}
-        m_TargetAssemblyTypeName: UI_Popup, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []

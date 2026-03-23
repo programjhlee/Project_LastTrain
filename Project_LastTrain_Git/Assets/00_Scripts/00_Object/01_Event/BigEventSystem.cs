@@ -27,6 +27,7 @@ public class BigEventSystem : MonoBehaviour
         LevelManager.Instance.OnLevelChanged += SetBigEventSystem;
         GameManager.Instance.OnStageClear += TurnOffBigEvent;
         GameManager.Instance.OnAllStageClear += TurnOffBigEvent;
+        _train.OnTrainDestroy += TurnOffBigEvent;
         _train.OnReset += ResetBigEventSystem;
     }
 
@@ -35,6 +36,7 @@ public class BigEventSystem : MonoBehaviour
         LevelManager.Instance.OnLevelChanged -= SetBigEventSystem;
         GameManager.Instance.OnStageClear -= TurnOffBigEvent;
         GameManager.Instance.OnAllStageClear -= TurnOffBigEvent;
+        _train.OnTrainDestroy -= TurnOffBigEvent;
         _train.OnReset -= ResetBigEventSystem;
     }
 

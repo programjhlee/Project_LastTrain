@@ -5,7 +5,7 @@ using System;
 
 public class LevelManager : SingletonManager<LevelManager>
 {
-    int maxLevel = 1;
+    int maxLevel = 2;
     [SerializeField] PlatformController platformController;
 
     public event Action OnLevelChanged;

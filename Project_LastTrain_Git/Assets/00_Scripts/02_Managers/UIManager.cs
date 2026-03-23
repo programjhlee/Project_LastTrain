@@ -8,6 +8,7 @@ using DG.Tweening;
 public class UIManager : SingletonManager<UIManager>
 {
     [SerializeField] Image _fadeOutImage;
+    //[SerializeField] UI_GameOver _uiGameOver;
     [SerializeField] Canvas canvas;
     [SerializeField] Canvas canvasHUD;
 
@@ -27,7 +28,6 @@ public class UIManager : SingletonManager<UIManager>
     {
         for (int i = 0; i < _uiPrefabs.Count; i++)
         {
-            Debug.Log(_uiPrefabs[i]);
             Type type = _uiPrefabs[i].GetType();
             if (!_uiDics.ContainsKey(type))
             {
@@ -41,10 +41,29 @@ public class UIManager : SingletonManager<UIManager>
             if (!_uiDics.ContainsKey(type))
             {
                 _uiHUDDics[type] = new List<UI_HUD>();
-                _uiHUDDics[type].Add(_uiHUDPrefabs[i]);
             }
             _uiHUDDics[type].Add(_uiHUDPrefabs[i]);
         }
+    }
+
+    public T GetUI<T>(string name = null) where T : UI_Base
+    {
+        Type type = typeof(T);
+        T ui = null;
+        T[] uiInCanvas = canvas.GetComponentsInChildren<T>(true);
+
+        for (int i = 0; i < uiInCanvas.Length; i++)
+        {
+            if (name == null)
+            {
+                ui = uiInCanvas[0];
+            }
+            else if (uiInCanvas[i].name == name)
+            {
+                ui = uiInCanvas[i];
+            }
+        }
+        return ui;
     }
 
     public T ShowUI<T>(string name = null) where T : UI_Base
@@ -173,7 +192,6 @@ public class UIManager : SingletonManager<UIManager>
             }
         }
     }
-
     public void FadeIn()
     {
         _fadeOutImage.transform.SetAsLastSibling();

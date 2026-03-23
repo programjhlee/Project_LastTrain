@@ -11,7 +11,9 @@ public class CameraManager : SingletonManager<CameraManager>
     [SerializeField] CinemachineVirtualCamera _startCam;
     [SerializeField] CinemachineVirtualCamera _stageClearCam;
     [SerializeField] CinemachineVirtualCamera _allClearCam;
+    [SerializeField] CinemachineVirtualCamera _trainCam;
     CinemachineVirtualCamera _currentCam;
+    CinemachineBasicMultiChannelPerlin _noise;
 
     public void Awake()
     {
@@ -30,7 +32,10 @@ public class CameraManager : SingletonManager<CameraManager>
         GameManager.Instance.OnStageStart -= SetPlayerCamPriority;
     }
 
-
+    public void BlendModeInit()
+    {
+        _brain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseIn;
+    }
     public void SetPlayerCamPriority()
     {
         SetCamPriority(_playerCam);
@@ -44,6 +49,23 @@ public class CameraManager : SingletonManager<CameraManager>
     public void SetStartCamPrioirty()
     {
         SetCamPriority(_startCam);
+    }
+    public void SetTrainCamPriority()
+    {
+        SetCamPriority(_trainCam);
+    }
+
+    public void CamShake()
+    {
+        _noise = _currentCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _noise.m_AmplitudeGain = 5f;
+        _noise.m_FrequencyGain = 5f;
+    }
+
+    public void StopShake()
+    {
+        _noise.m_AmplitudeGain = 0f;
+        _noise.m_FrequencyGain = 0f;
     }
 
     public void AllClearCamProcess()

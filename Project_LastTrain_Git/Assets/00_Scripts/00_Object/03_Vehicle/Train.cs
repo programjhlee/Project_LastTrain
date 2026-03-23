@@ -8,7 +8,7 @@ public class Train : MonoBehaviour
     float _curHp;
     
     bool _isRunning = false;
-
+    [SerializeField] GameObject _trainGameObject;
     public event Action OnInit;
     public event Action OnReset;
     public event Action<float> OnDamaged;
@@ -71,13 +71,14 @@ public class Train : MonoBehaviour
     public void TakeDamage(float damage)
     {
         _curHp -= damage;
-        OnDamaged?.Invoke(damage);
         OnHpChanged?.Invoke(_curHp/_maxHp);
         if (_curHp <= 0)
         {
+            StopRunning();
             OnTrainDestroy?.Invoke();
             return;
         }
+        OnDamaged?.Invoke(damage);
     }
     public void TakeFix(float fixAmount)
     {
@@ -95,6 +96,7 @@ public class Train : MonoBehaviour
     }
     public void ResetTrain()
     { 
+        _trainGameObject.SetActive(true);
         StopRunning();
         ResetTrainHp();
         OnReset?.Invoke();

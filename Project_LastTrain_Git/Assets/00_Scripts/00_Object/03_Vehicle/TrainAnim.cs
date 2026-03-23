@@ -7,6 +7,8 @@ public class TrainAnim : MonoBehaviour
 {
     Transform _trainTransform;
     Train _train;
+    [SerializeField] GameObject _trainGameObject;
+    [SerializeField] GameObject _trainDestroyEffect;
     [SerializeField] GameObject _trainFront;
     [SerializeField] GameObject _trainBack_1;
     [SerializeField] GameObject _trainBack_2;
@@ -25,8 +27,7 @@ public class TrainAnim : MonoBehaviour
 
     float _intervalMin = 8f;
     float _intervalMax = 15f;
-        
-
+       
     public void Awake()
     {
         _train = GetComponent<Train>();
@@ -41,12 +42,14 @@ public class TrainAnim : MonoBehaviour
 
     public void OnEnable()
     {
+        _train.OnTrainDestroy += OnTrainDestroy;
         _train.OnDamaged += OnTakeDamage;
         _train.OnReset += ResetTrainPos;
         
     }
     public void OnDisable()
     {
+        _train.OnTrainDestroy -= OnTrainDestroy;
         _train.OnDamaged -= OnTakeDamage;
         _train.OnReset -= ResetTrainPos;
     }
@@ -133,4 +136,21 @@ public class TrainAnim : MonoBehaviour
         StartCoroutine(Shake(_trainBack_3, 30, shakeForce, 0.5f));
     }
 
+    public void OnTrainDestroy()
+    {
+        StartCoroutine(DestroyProcess());
+    }
+
+    IEnumerator DestroyProcess()
+    {
+        CameraManager.Instance.SetTrainCamPriority();
+        CameraManager.Instance.CamShake();
+        yield return new WaitForSeconds(2f);
+        CameraManager.Instance.StopShake();
+        Instantiate(_trainDestroyEffect, _trainFront.transform.position, _trainFront.transform.rotation);
+        Instantiate(_trainDestroyEffect, _trainBack_1.transform.position, _trainBack_1.transform.rotation);
+        Instantiate(_trainDestroyEffect, _trainBack_2.transform.position, _trainBack_2.transform.rotation);
+        Instantiate(_trainDestroyEffect, _trainBack_3.transform.position, _trainBack_3.transform.rotation);
+        _trainGameObject.SetActive(false);
+    }
 }

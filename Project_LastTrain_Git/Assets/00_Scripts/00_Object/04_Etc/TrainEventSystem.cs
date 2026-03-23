@@ -72,6 +72,7 @@ public class TrainEventSystem : MonoBehaviour
         GameManager.Instance.OnStageClear += ResetTrainEventSystem;
         GameManager.Instance.OnAllStageClear += ResetTrainEventSystem;
         LevelManager.Instance.OnLevelChanged += SetEventLevelData;
+        _train.OnTrainDestroy += ResetTrainEventSystem;
         _train.OnReset += ResetTrainEventSystem;
         _train.OnReset += SetEventLevelData;
     }
@@ -81,6 +82,7 @@ public class TrainEventSystem : MonoBehaviour
         GameManager.Instance.OnStageClear -= ResetTrainEventSystem;
         GameManager.Instance.OnAllStageClear -= ResetTrainEventSystem;
         LevelManager.Instance.OnLevelChanged -= SetEventLevelData;
+        _train.OnTrainDestroy -= ResetTrainEventSystem;
         _train.OnReset -= ResetTrainEventSystem;
         _train.OnReset -= SetEventLevelData;
     }
@@ -173,7 +175,6 @@ public class TrainEventSystem : MonoBehaviour
                 executeEvents[i].Execute();
                 eventSightChecker.CheckEventSight(executeEvents[i]);
             }
-            
         }
     }
     public void EventClear()
@@ -189,9 +190,9 @@ public class TrainEventSystem : MonoBehaviour
     {
         curTime = 0;
 
-        for (int i = 0; i< executeEvents.Count; i++)
+        for (int i = 0; i < executeEvents.Count; i++)
         {
-            if (executeEvents[i] != null)
+            if (executeEvents[i].gameObject.activeSelf)
             {
                 if (executeEvents[i].TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
                 {
@@ -201,7 +202,6 @@ public class TrainEventSystem : MonoBehaviour
                 endEvents.Add(executeEvents[i]);
             }
         }
-        EventClear();
         eventSightChecker.SightCheckerClear();
     }
     public void SetEventLevelData()

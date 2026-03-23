@@ -7,6 +7,10 @@ public class BombEvent : Event,ITrainDamageEvent
 {
     Player _player;
     [SerializeField] Renderer _rend;
+    [SerializeField] AudioClip _bombEnterSound;
+    [SerializeField] AudioClip _bombExplosiveSound;
+    [SerializeField] GameObject _bombEffect;
+    [SerializeField] AudioSource _bombAudio;
     BoxCollider _col;
     UIHUDController _evtHUDController;
 
@@ -23,6 +27,7 @@ public class BombEvent : Event,ITrainDamageEvent
         _evtHUDController.Init();
         curFixAmount = EventData.FixAmount;
         _col = GetComponent<BoxCollider>();
+        _bombAudio.PlayOneShot(_bombEnterSound);
     }
 
     public override void Execute()
@@ -89,6 +94,8 @@ public class BombEvent : Event,ITrainDamageEvent
     }
     public void Explosive()
     {
+        Instantiate(_bombEffect, transform.position, transform.rotation);
+        SoundManager.Instance.PlaySFX(_bombExplosiveSound);
         if (_player != null)
         {
             _player.GetComponent<PlayerAction>().TakeDamage(_player.transform.position - transform.position);

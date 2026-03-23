@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ZombieAnim : MonoBehaviour
 {
+    [SerializeField] Renderer _zombieRends;
     Zombie _zombie;
     Animator _animator;
+    
 
     readonly int DEAD = Animator.StringToHash("Dead");
     readonly int ATTACK = Animator.StringToHash("Attack");
@@ -13,11 +16,13 @@ public class ZombieAnim : MonoBehaviour
     readonly int MOVE = Animator.StringToHash("Move");
     float attackClipLength;
 
+
     public void Init()
     {
         _zombie = GetComponent<Zombie>();
         _animator = GetComponentInChildren<Animator>();
         _animator.SetTrigger(MOVE);
+        Debug.Log(_zombieRends);
         _zombie.OnDamaged += PlayZombieDamaged;
         _zombie.OnDied += PlayZombieDead;
         _zombie.OnAttack += PlayZombieAttack;
@@ -39,7 +44,27 @@ public class ZombieAnim : MonoBehaviour
     public void PlayZombieDamaged()
     {
         _animator.SetTrigger(DAMAGED);
+        StartCoroutine(DamagedColorAnim());
+        
     }
+
+    public IEnumerator DamagedColorAnim()
+    {
+        Material[] mats= _zombieRends.materials;
+        
+        for(int i = 0; i < mats.Length; i++) 
+        {
+            Debug.Log(mats[i].name);
+            mats[i].color = Color.red;
+        }
+        yield return new WaitForSeconds(0.2f);
+        for (int i = 0; i < mats.Length; i++)
+        {
+            Debug.Log(mats[i].name);
+            mats[i].color = Color.white;
+        }
+    }
+
 
     public void PlayZombieDead(Enemy _)
     {

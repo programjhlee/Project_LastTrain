@@ -94,6 +94,16 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         _moveDir = moveDir;
     }
 
+    public void ResetPlayerData()
+    {
+        if(_playerData != null)
+        {
+            _playerData.Level = 1;
+            _playerData.AttackPower = 5;
+            _playerData.FixPower = 2;
+        }
+    }
+
     public void ProcessMovement()
     {
         if (!GameManager.Instance.IsGamePlaying() && !GameManager.Instance.IsTutorial())
@@ -275,6 +285,10 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
             yield return null;
         }
+    }
+    public void OnTrainDestroy()
+    {
+        gameObject.SetActive(false);
     }
     void ApplyYVel()
     {

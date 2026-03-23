@@ -41,7 +41,6 @@ public class PlayerAnimationController : MonoBehaviour
         _playerAction.OnDodge += PlayAnimDodge;
 
     }
-
     public void OnAnimationUpdate()
     {
         PlayAnimMove(_playerAction.IsMoving);
@@ -74,5 +73,19 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayAnimHit()
     {
         _playerAnim.SetTrigger(HIT);
+        StartCoroutine(ColorAnim());
+    }
+
+    public IEnumerator ColorAnim()
+    {
+        for(int i = 0; i < _playerRend.Count; i++)
+        {
+            _playerRend[i].material.color = Color.red;
+        }
+        yield return new WaitForSeconds(0.2f);
+        for (int i = 0; i < _playerRend.Count; i++)
+        {
+            _playerRend[i].material.color = Color.white;
+        }
     }
 }

@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class GameScene : MonoBehaviour
 {
+    [SerializeField] AudioClip _titleSound;
     [SerializeField] Train _train;
+    [SerializeField] PlayerAction _player;
     [SerializeField] PlatformController _platformController;
     [SerializeField] EnemySpawner _enemySpawner;
     [SerializeField] UI_Title _uiTitle;
@@ -13,6 +15,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] Button _startButton;
     [SerializeField] Button _optionButton;
     [SerializeField] Button _exitButton;
+    [SerializeField] Button _returnButton;
 
 
 
@@ -21,6 +24,7 @@ public class GameScene : MonoBehaviour
         _platformController.OnPlatformRunning += () => { UIManager.Instance.ShowUIAt<UI_Distance>(new Vector2(0, 350f)); };
         _platformController.OnReset += () => { UIManager.Instance.HideUI<UI_Distance>(); };
         _platformController.OnDistanceZero += () => { UIManager.Instance.HideUI<UI_Distance>(); };
+        _train.OnTrainDestroy += _player.OnTrainDestroy;
     }
     public void Start()
     {
@@ -32,9 +36,12 @@ public class GameScene : MonoBehaviour
         UIManager.Instance.FadeIn();
         LevelManager.Instance.ResetLevel();
         CameraManager.Instance.SetStartCamPrioirty();
+        CameraManager.Instance.BlendModeInit();
+        SoundManager.Instance.PlayBGM(_titleSound);
         _uiTitle.Show();
         _startButton.gameObject.SetActive(true);
         _exitButton.gameObject.SetActive(true);
+        _player.gameObject.SetActive(true);
         _optionButton.gameObject.SetActive(true);
         _train.ResetTrain();
         _platformController.ResetPlatform();
@@ -42,9 +49,17 @@ public class GameScene : MonoBehaviour
     }
     public void SceneClear()
     {
-        GameManager.Instance.GamePaused();
+        GameManager.Instance.ResetGameManager();
+        SoundManager.Instance.StopBGM();
+        UIManager.Instance.HideUI<UI_Enhance>();
+        UIManager.Instance.HideUI<UI_Coin>();
+        UIManager.Instance.HideUI<UI_TrainHP>();
+        UIManager.Instance.HideUI<UI_StageAnnounce>();
         _train.ResetTrain();
         _enemySpawner.AllEnemyClear();
+        _player.ResetPlayerData();
+        _returnButton.gameObject.SetActive(false);
+        _tutorialSystem.ResetTutorialSystem();
     }
 
     public void RestartScene()
@@ -55,6 +70,7 @@ public class GameScene : MonoBehaviour
     public void StartButtonClicked()
     {
         _uiTitle.Hide();
+        SoundManager.Instance.StopBGM();
         _startButton.gameObject.SetActive(false);
         _exitButton.gameObject.SetActive(false);
         _optionButton.gameObject.SetActive(false);
@@ -63,6 +79,7 @@ public class GameScene : MonoBehaviour
     public void OptionButtonClicked()
     {
         UIManager.Instance.ShowUI<UI_Option>();
+        GameManager.Instance.GamePaused();
     }
     public void ExitButtonClicked()
     {
@@ -77,7 +94,7 @@ public class GameScene : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         SceneClear();
         SceneStart();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         UIManager.Instance.FadeIn();
     }
 }

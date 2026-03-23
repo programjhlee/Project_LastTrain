@@ -4,12 +4,13 @@ using UnityEngine;
 using System;
 public class BigEvent : MonoBehaviour
 {
+    [SerializeField] AudioClip _bigEventSoundEffect;
+    [SerializeField] GameObject _bigEventEffect;
     UI_BigEventCaution _ui_caution;
     Renderer _eventRend;
     Vector3 _trainFrontPos;
     float _bigEventSpeed;
     float _damage;
-
 
     public float BigEventSpeed
     {
@@ -81,6 +82,8 @@ public class BigEvent : MonoBehaviour
 
     public void OnTriggerEnter(Collider coll)
     {
+        Instantiate(_bigEventEffect,transform.position, Quaternion.identity);
+        SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
         if (coll.gameObject.CompareTag("Train"))
         {
             OnTrainCrashed?.Invoke(_damage);

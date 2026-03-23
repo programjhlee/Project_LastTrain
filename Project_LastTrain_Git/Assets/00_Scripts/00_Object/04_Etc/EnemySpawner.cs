@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [SerializeField] Train _train;
     [SerializeField] UI_HUDValueBarStrategyData _enemyHUDData;
     [SerializeField] GameObject _trainBack;
     [SerializeField] List<EnemyData> _enemyDataSOList;
@@ -56,12 +57,14 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.OnStageClear += AllEnemyClear;
         GameManager.Instance.OnAllStageClear += AllEnemyClear;
         LevelManager.Instance.OnLevelChanged += SetEnemiesData;
+        _train.OnTrainDestroy += AllEnemyClear;
     }
     public void OnDisable()
     {
         GameManager.Instance.OnStageClear -= AllEnemyClear;
         GameManager.Instance.OnAllStageClear -= AllEnemyClear;
         LevelManager.Instance.OnLevelChanged -= SetEnemiesData;
+        _train.OnTrainDestroy -= AllEnemyClear;
     }
     public void Update()
     {
@@ -182,11 +185,5 @@ public class EnemySpawner : MonoBehaviour
 
         _activeEnemies.Clear();
         _removeEnemies.Clear();
-    }
-    
-
-    public void ResetEnemySpanwner()
-    {
-        AllEnemyClear();
     }
 }

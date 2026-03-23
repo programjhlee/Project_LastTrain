@@ -17,6 +17,11 @@ public class PlayerUIController : MonoBehaviour
     Dictionary<string,UI_HUDControlGuideStrategyData> _controlGuideDics;
     UI_HUDControlGuide _uiControlGuide;
 
+
+    public void OnDisable()
+    {
+        HideControlGuide();
+    }
     public void Init()
     {
         _col = GetComponent<Collider>();
@@ -53,7 +58,7 @@ public class PlayerUIController : MonoBehaviour
         }
         else
         {
-            //HideControlGuide();
+            HideControlGuide();
         }
     }
 

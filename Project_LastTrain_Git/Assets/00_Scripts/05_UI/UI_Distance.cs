@@ -13,8 +13,18 @@ public class UI_Distance : UI_Base
     public void Awake()
     {
         _platformController = GameObject.FindAnyObjectByType<PlatformController>();
+    }
+    public void OnEnable()
+    {
         _platformController.OnDistanceChanged += SetDistanceText;
-        Hide();
+        _platformController.OnPlatformedStop += Hide;
+        _platformController.OnReset += Hide;
+    }
+    public void OnDisable()
+    {
+        _platformController.OnDistanceChanged -= SetDistanceText;
+        _platformController.OnPlatformedStop -= Hide;
+        _platformController.OnReset -= Hide;
     }
 
     public void SetDistanceText(float distance)

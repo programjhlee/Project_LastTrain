@@ -40,6 +40,7 @@ public class PlatformController : MonoBehaviour
     public event Action OnReset;
     public event Action OnDistanceZero;
     public event Action OnPlatformArrived;
+    public event Action OnPlatformedStop;
 
     public void Awake()
     {
@@ -69,6 +70,7 @@ public class PlatformController : MonoBehaviour
 
     public void SetPlatformData()
     {
+        Debug.Log("SetPlatfomrData ¿Ï·á!");
         for (int i = 0; i < platformDataTable.Count; i++)
         {
             if (int.Parse(platformDataTable[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
@@ -108,7 +110,6 @@ public class PlatformController : MonoBehaviour
             {
                 return;
             }
-
             _platformDistance -= _trainSpeed * Time.deltaTime;
             OnDistanceChanged?.Invoke(_platformDistance);
             if (_platformDistance <= 0)
@@ -122,6 +123,7 @@ public class PlatformController : MonoBehaviour
     public void TrainDestroy()
     {
         _trainDestroy = true;
+        OnPlatformedStop?.Invoke();
     }
     public void Arrived()
     {
@@ -140,6 +142,7 @@ public class PlatformController : MonoBehaviour
 
     public void ResetPlatform()
     {
+        _trainDestroy = false;
         SetPlatformData();
         OnReset?.Invoke();
     }

@@ -42,8 +42,8 @@ public class UI_StageAnnounce : UI_Base
         _remainDistanceTextRect.anchoredPosition = _remainDistanceTextRectInitPos;
         _goTextRect.anchoredPosition = _goTextRectInitPos;
 
-        SetText(_levelText, $"Level {LevelManager.Instance.Level}");
-        SetText(_remainDistanceText, $"Remain {_platformController.PlatformDistance:F2}M");
+        SetText(_levelText, $"LEVEL {LevelManager.Instance.Level}");
+        SetText(_remainDistanceText, $"REMAIN {_platformController.PlatformDistance:F2}M");
 
         _levelTextRect.DOAnchorPosX(-300, 0.8f).SetEase(Ease.OutExpo);
         SoundManager.Instance.PlaySFX(_showTextClip);
@@ -67,10 +67,5 @@ public class UI_StageAnnounce : UI_Base
     {
         base.Show();
         StartCoroutine(AnnounceProcess());
-    }
-    public void KillAnnounce()
-    {
-        StopCoroutine(AnnounceProcess());
-        base.Hide();
     }
 }

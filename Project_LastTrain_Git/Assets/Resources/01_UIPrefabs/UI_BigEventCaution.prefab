@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -139}
-  m_SizeDelta: {x: 531.3411, y: 150}
+  m_AnchoredPosition: {x: 0.000034332, y: -104.96}
+  m_SizeDelta: {x: 490.133, y: 90.0893}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2519062245408066163
 CanvasRenderer:
@@ -65,10 +65,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 99.990M left!!
+  m_text: 99.99M LEFT!!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5e19f74412e837d4fa06a766cb2a60b2, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 35ac86f7fdae9514fb1584a52aa6a7ad, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1642ffb07955c974ebd1ac85fc814b70, type: 2}
+  m_sharedMaterial: {fileID: 1365856396814959779, guid: 1642ffb07955c974ebd1ac85fc814b70, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -79,10 +79,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 2
   m_fontColorGradient:
-    topLeft: {r: 1, g: 0.07227322, b: 0, a: 1}
-    topRight: {r: 1, g: 0.07227322, b: 0, a: 1}
-    bottomLeft: {r: 1, g: 0.32082546, b: 0, a: 1}
-    bottomRight: {r: 1, g: 0.32082546, b: 0, a: 1}
+    topLeft: {r: 1, g: 0.801486, b: 0, a: 1}
+    topRight: {r: 1, g: 0.801486, b: 0, a: 1}
+    bottomLeft: {r: 1, g: 0.19551304, b: 0, a: 1}
+    bottomRight: {r: 1, g: 0.19551304, b: 0, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -92,17 +92,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55
-  m_fontSizeBase: 55
+  m_fontSize: 32.8
+  m_fontSizeBase: 32.8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 3
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -5
+  m_characterSpacing: -20.3
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
