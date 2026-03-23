@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843b644b72d196f468079981b0d4ebcc, type: 3}
   m_Name: EnemyTutorialStep
   m_EditorClassIdentifier: 
+  _announceStrategyQuest: {fileID: 11400000, guid: 5ca6eb778263cdc48bc41330364a1b77, type: 2}
+  _attackKeySprite: {fileID: 21300000, guid: 02d886c2e5a67c14296071c7acd83430, type: 3}

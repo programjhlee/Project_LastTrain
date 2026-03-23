@@ -6,6 +6,8 @@ using System;
 [CreateAssetMenu(fileName = "JumpTutorialStep", menuName = "Create Tutorial File / JumpTutorial")]
 public class JumpTutorialStep : TutorialStep
 {
+    [SerializeField] AnnounceStrategyQuest _uiAnnounceStrategy;
+    [SerializeField] Sprite _jumpKeySprite; 
     UI_Announce _uiAnnounce;
     Player _p;
     PlayerAction _pAction;
@@ -18,6 +20,8 @@ public class JumpTutorialStep : TutorialStep
         _pAction = _p.GetComponent<PlayerAction>();
         _uiAnnounce = UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0, 300f));
         _uiAnnounce.Init();
+        _uiAnnounce.SetUIStrategy(_uiAnnounceStrategy);
+        _uiAnnounce.SetQuestSprite(_jumpKeySprite);
     }
 
 
@@ -25,7 +29,6 @@ public class JumpTutorialStep : TutorialStep
     {
         int curCnt = 0;
         int jumpTutorialClearCnt = 3;
-        _uiAnnounce.SetQuestText("점프하기");
         _onJumpAction = () => { curCnt++; };
         _pAction.OnJump += _onJumpAction;
         while (curCnt < jumpTutorialClearCnt)
@@ -35,10 +38,11 @@ public class JumpTutorialStep : TutorialStep
                 yield return null;
                 continue;
             }
-            Debug.Log($"JumpCnt : {curCnt} / {jumpTutorialClearCnt}");
+            _uiAnnounce.SetAnnounceText($"TO JUMP \r\n<size=25> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>");
             yield return _waitForEndOfFrame;
         }
-        Release();
+        _uiAnnounce.SetAnnounceText($"TO JUMP \r\n<size=25> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>");
+        _uiAnnounce.QuestClear();
     }
     public override void Release()
     {
@@ -48,5 +52,6 @@ public class JumpTutorialStep : TutorialStep
         }
         _pAction.OnJump -= _onJumpAction;
         _onJumpAction = null;
+        _uiAnnounce.Hide();
     }
 }

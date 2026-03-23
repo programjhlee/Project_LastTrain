@@ -12,7 +12,6 @@ public class UI_Popup : UI_Base
     [SerializeField] AudioClip _hideSound;
     public override void Show()
     {
-        Debug.Log("ÆË¾÷ ¿­¸²");
         _uiRect.localScale = Vector3.zero;
         base.Show();
         _uiRect.DOScale(1, 0.3f).SetEase(Ease.OutBack);

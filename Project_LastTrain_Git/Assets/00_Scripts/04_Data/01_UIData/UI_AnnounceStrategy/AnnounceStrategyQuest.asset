@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be33d7910df4f504184c915184dbc8f6, type: 3}
-  m_Name: RollingTutorialStep
+  m_Script: {fileID: 11500000, guid: 304cdc5f422544f4fa4b99b9fb2ac60d, type: 3}
+  m_Name: AnnounceStrategyQuest
   m_EditorClassIdentifier: 
-  _announce: {fileID: 11400000, guid: 5ca6eb778263cdc48bc41330364a1b77, type: 2}
-  _dodgeKeySprite: {fileID: 21300000, guid: 17c0c8cdf416bff408580f84e0f4cf6b, type: 3}
+  _announce: {fileID: 2770049178977248700, guid: b9977d2b09f03284090cf90ecb658a47, type: 3}

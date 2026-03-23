@@ -6,7 +6,9 @@ using System;
 [CreateAssetMenu(fileName = "RollingTutorialStep", menuName = "Create Tutorial File / RollingTutorial")]
 public class RollingTutorialStep : TutorialStep
 {
-    [SerializeField] UI_HUDControlGuideStrategyData _rollGuide;
+    [SerializeField] AnnounceStrategyQuest _announce;
+    [SerializeField] Sprite _dodgeKeySprite;
+    UI_Announce _uiAnnounce;
     Player _p;
     PlayerAction _pAction;
 
@@ -19,41 +21,40 @@ public class RollingTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
+        _uiAnnounce = UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0, 300f));
+        _uiAnnounce.Init();
+        _uiAnnounce.SetUIStrategy(_announce);
+        _uiAnnounce.SetQuestSprite(_dodgeKeySprite);
     }
     public override IEnumerator Run()
     {
         int curCnt = 0;
-        int jumpTutorialClearCnt = 3;
-        _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_HUDControlGuide>(_p.transform);
-        _uiControlGuide.BindData(_rollGuide);
-        Debug.Log("Shift키는 플레이어가 구릅니다! 구르는동안 무적이에요!");
+        int rollTutorialClearCnt = 3;
+
         _onDodgeAction = () => { curCnt++; };
         _pAction.OnDodge += _onDodgeAction;
-        while (curCnt < jumpTutorialClearCnt)
+
+        while (curCnt < rollTutorialClearCnt)
         {
-            _uiControlGuide.UpdatePos();
             if (GameManager.Instance.IsPaused())
             {
                 yield return null;
                 continue;
             }
-            Debug.Log($"RollCnt : {curCnt} / {jumpTutorialClearCnt}");
             yield return _waitForEndOfFrame;
+            _uiAnnounce.SetAnnounceText($"TO DODGE  \r\n<size=25>  DODGE COUNT {curCnt:D2} / {rollTutorialClearCnt:D2}</size>");
         }
-        Release();
+        _uiAnnounce.SetAnnounceText($"TO DODGE  \r\n<size=25>  DODGE COUNT {curCnt:D2} / {rollTutorialClearCnt:D2}</size>");
+        _uiAnnounce.QuestClear();
     }
     public override void Release()
     {
-        if (_uiControlGuide != null)
-        {
-            _uiControlGuide.Hide();
-            _uiControlGuide = null;
-        }
         if (_onDodgeAction == null)
         {
             return;
         }
         _pAction.OnDodge -= _onDodgeAction;
         _onDodgeAction = null;
+        _uiAnnounce.Hide();
     }
 }

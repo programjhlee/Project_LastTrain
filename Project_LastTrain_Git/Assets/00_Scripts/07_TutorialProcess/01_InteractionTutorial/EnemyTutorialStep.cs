@@ -6,12 +6,19 @@ using System;
 [CreateAssetMenu(fileName = "EnemyTutorialStep", menuName ="Create Tutorial File/EnemyTutorial")]
 public class EnemyTutorialStep : TutorialStep
 {
+    [SerializeField] AnnounceStrategyQuest _announceStrategyQuest;
+    [SerializeField] Sprite _attackKeySprite;
+    UI_Announce _uiAnnounce;
     EnemySpawner _enemySpawner;
     List<Enemy> _enemyList;
     public Action OnDied;
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
+        _uiAnnounce = UIManager.Instance.ShowUI<UI_Announce>();
+        _uiAnnounce.Init();
+        _uiAnnounce.SetUIStrategy(_announceStrategyQuest);
+        _uiAnnounce.SetQuestSprite(_attackKeySprite);
         _enemySpawner = system.enemySpawner;
         
     }
@@ -26,7 +33,6 @@ public class EnemyTutorialStep : TutorialStep
             Enemy enemy = _enemySpawner.SpawnEnemy();
             _enemyList.Add(enemy);
         }
-        yield return null;
         while (curCnt < targetCnt)
         {
             if (GameManager.Instance.IsPaused())
@@ -34,6 +40,7 @@ public class EnemyTutorialStep : TutorialStep
                 yield return null;
                 continue;
             }
+
             yield return null;
             for (int i = 0; i < _enemyList.Count; i++)
             {
@@ -46,14 +53,16 @@ public class EnemyTutorialStep : TutorialStep
                 }
                 _enemyList[i].OnUpdate();
             }
+            _uiAnnounce.SetAnnounceText($"TO ATTACK \r\n<size=25> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
             yield return _waitForEndOfFrame;
         }
-        Release();
+        _uiAnnounce.SetAnnounceText($"TO ATTACK \r\n<size=25> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
+        _uiAnnounce.QuestClear();
     }
 
     public override void Release()
     {
         _enemyList.Clear();
+        _uiAnnounce.Hide();
     }
-
 }

@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e15e1fffe3a3c4d43863250e30b8ee48, type: 3}
   m_Name: InteractionTutorialStep
   m_EditorClassIdentifier: 
+  _uiAnnounce: {fileID: 2770049178977248700, guid: b9977d2b09f03284090cf90ecb658a47, type: 3}
+  _uiAnnounceStrategy: {fileID: 11400000, guid: 5ca6eb778263cdc48bc41330364a1b77, type: 2}
+  _interactionSprite: {fileID: 21300000, guid: 02d886c2e5a67c14296071c7acd83430, type: 3}

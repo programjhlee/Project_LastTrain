@@ -44,7 +44,6 @@ public class TutorialSystem : MonoBehaviour
 
     public void TutorialStart()
     {
-        Debug.Log("튜토리얼 시작!");
         _skipBtn.gameObject.SetActive(true);
         StartCoroutine(AllTutorialProcess());
     }
@@ -57,6 +56,7 @@ public class TutorialSystem : MonoBehaviour
             yield return StartCoroutine(_steps[i].Run());
             yield return new WaitForSeconds(2f);
             _steps[i].Release();
+            yield return new WaitForSeconds(0.5f);
         }
         GameManager.Instance.GameStart();
         _skipBtn.gameObject.SetActive(false);

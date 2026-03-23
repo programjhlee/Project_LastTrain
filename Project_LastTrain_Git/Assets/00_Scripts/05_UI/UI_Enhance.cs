@@ -33,10 +33,10 @@ public class UI_Enhance : UI_Base
     public void OnEnable()
     {
         EnhanceManager.Instance.OnPlayerEnhance += SetPlayerDataText;
-        EnhanceManager.Instance.OnNotEnoughMoney += NotEnoughMoney;
-        EnhanceManager.Instance.OnFixSucess += FixSuccess;
-        EnhanceManager.Instance.OnPlayerEnhanceSucess += EnhanceSuccess;
-        EnhanceManager.Instance.OnTrainHpFull += TrainHpFull;
+        EnhanceManager.Instance.OnNotEnoughMoney += AnnounceNotEnoughMoney;
+        EnhanceManager.Instance.OnFixSucess += AnnounceFixSuccess;
+        EnhanceManager.Instance.OnPlayerEnhanceSucess += AnnounceEnhanceSuccess;
+        EnhanceManager.Instance.OnTrainHpFull += AnnounceTrainHpFull;
         _enhanceButton.onClick.AddListener(Enhance);
         _fixButton.onClick.AddListener(Fix);
         
@@ -45,10 +45,10 @@ public class UI_Enhance : UI_Base
     public void OnDisable()
     {
         EnhanceManager.Instance.OnPlayerEnhance -= SetPlayerDataText;
-        EnhanceManager.Instance.OnNotEnoughMoney -= NotEnoughMoney;
-        EnhanceManager.Instance.OnFixSucess -= FixSuccess;
-        EnhanceManager.Instance.OnPlayerEnhanceSucess -= EnhanceSuccess;
-        EnhanceManager.Instance.OnTrainHpFull -= TrainHpFull;
+        EnhanceManager.Instance.OnNotEnoughMoney -= AnnounceNotEnoughMoney;
+        EnhanceManager.Instance.OnFixSucess -= AnnounceFixSuccess;
+        EnhanceManager.Instance.OnPlayerEnhanceSucess -= AnnounceEnhanceSuccess;
+        EnhanceManager.Instance.OnTrainHpFull -= AnnounceTrainHpFull;
         _enhanceButton.onClick.RemoveListener(Enhance);
         _fixButton.onClick.RemoveListener(Fix);
     }
@@ -75,30 +75,33 @@ public class UI_Enhance : UI_Base
         button.DOShakePosition(0.3f,5f,20);
     }
 
-    public void NotEnoughMoney()
+    public void AnnounceNotEnoughMoney()
     {
-        SetAnnounceText("돈이 부족합니다...");
+        SetAnnounceText("NOT ENOUGH MONEY..", Color.red);
         SoundManager.Instance.PlaySFX(_failSound);
     }
-    public void TrainHpFull()
+    public void AnnounceTrainHpFull()
     {
-        SetAnnounceText("열차의 체력이 가득 찼습니다...");
+        SetAnnounceText("TRAIN HP IS FULL!!", Color.red);
         SoundManager.Instance.PlaySFX(_failSound);
     }
-    public void FixSuccess()
+    public void AnnounceFixSuccess()
     {
-        SetAnnounceText("수리 성공!");
+        SetAnnounceText("FIX COMPLETE!");
         SoundManager.Instance.PlaySFX(_fixSound);
     }
-    public void EnhanceSuccess()
+    public void AnnounceEnhanceSuccess()
     {
-        SetAnnounceText("플레이어 강화 성공!");
+        SetAnnounceText("LEVEL UP!");
         SoundManager.Instance.PlaySFX(_enhanceSound);
     }
 
 
-    public void SetAnnounceText(string text)
+    public void SetAnnounceText(string text,Color color = default)
     {
+        if (color == default) color = Color.white;
+
+        _announceText.color = color;
         _announceTextRect.DOKill();
         _announceTextRect.localPosition = Vector3.zero;
         _announceText.gameObject.SetActive(true);
