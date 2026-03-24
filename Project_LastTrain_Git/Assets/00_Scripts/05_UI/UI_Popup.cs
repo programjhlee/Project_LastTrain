@@ -19,7 +19,7 @@ public class UI_Popup : UI_Base
     }
     public override void Hide()
     {
-        _uiRect.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(()=>base.Hide());
+        _uiRect.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(()=>Destroy(gameObject));
         SoundManager.Instance.PlaySFX(_hideSound);
     }
 }

@@ -15,7 +15,7 @@ public class EnemyTutorialStep : TutorialStep
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
-        _uiAnnounce = UIManager.Instance.ShowUI<UI_Announce>();
+        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
         _uiAnnounce.Init();
         _uiAnnounce.SetUIStrategy(_announceStrategyQuest);
         _uiAnnounce.SetQuestSprite(_attackKeySprite);
@@ -63,6 +63,6 @@ public class EnemyTutorialStep : TutorialStep
     public override void Release()
     {
         _enemyList.Clear();
-        _uiAnnounce.Hide();
+        UIManager.Instance.CloseAllPopupUI();
     }
 }

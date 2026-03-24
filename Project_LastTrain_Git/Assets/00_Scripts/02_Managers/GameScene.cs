@@ -83,7 +83,7 @@ public class GameScene : MonoBehaviour
     }
     public void ExitButtonClicked()
     {
-        UI_Caution ui_popup = UIManager.Instance.ShowUI<UI_Caution>();
+        UI_Caution ui_popup = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
         ui_popup.BindYesButton(()=> Application.Quit());
         ui_popup.SetText("정말로 종료하시겠습니까?");
     }

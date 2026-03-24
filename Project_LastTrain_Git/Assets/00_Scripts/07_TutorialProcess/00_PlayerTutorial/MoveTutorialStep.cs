@@ -11,7 +11,7 @@ public class MoveTutorialStep : TutorialStep
     UI_Announce _uiAnnounce;
     public override void Bind(TutorialSystem system)
     {
-        _uiAnnounce = UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0,300f));
+        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0,300f));
         _uiAnnounce.Init();
         _uiAnnounce.SetUIStrategy(_uiAnnounceStrategy);
         _uiAnnounce.SetQuestSprite(_moveKeySprite);
@@ -43,6 +43,6 @@ public class MoveTutorialStep : TutorialStep
 
     public override void Release()
     {
-        _uiAnnounce.Hide();
+        UIManager.Instance.CloseAllPopupUI();
     }
 }

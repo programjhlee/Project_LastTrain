@@ -35,7 +35,6 @@ public class BigEventTutorialStep : TutorialStep
             }
             yield return null;
         }
-        Release();
     }
     public override void Release()
     {
@@ -43,6 +42,5 @@ public class BigEventTutorialStep : TutorialStep
         {
             _onCrashed = null;
         }
-
     }
 }

@@ -8,7 +8,6 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] Animator _playerAnim;
     [SerializeField] List<Renderer> _playerRend;
     [SerializeField] GameObject _dodgeEffect;
-    [SerializeField] GameObject _fixEffect;
     PlayerAction _playerAction;
     
     readonly int JUMP = Animator.StringToHash("Jump");

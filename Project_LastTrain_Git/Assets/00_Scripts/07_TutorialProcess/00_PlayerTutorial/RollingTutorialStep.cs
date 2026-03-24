@@ -21,7 +21,7 @@ public class RollingTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
-        _uiAnnounce = UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0, 300f));
+        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
         _uiAnnounce.Init();
         _uiAnnounce.SetUIStrategy(_announce);
         _uiAnnounce.SetQuestSprite(_dodgeKeySprite);
@@ -55,6 +55,6 @@ public class RollingTutorialStep : TutorialStep
         }
         _pAction.OnDodge -= _onDodgeAction;
         _onDodgeAction = null;
-        _uiAnnounce.Hide();
+        UIManager.Instance.CloseAllPopupUI();
     }
 }

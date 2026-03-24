@@ -4820,6 +4820,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAnim: {fileID: 2726436398477363511}
+  _playerRend:
+  - {fileID: 1829165757219250977}
+  - {fileID: 4957867938217311114}
+  - {fileID: 8071165367065782049}
+  - {fileID: 9219069200026549964}
+  - {fileID: 2273504572462018912}
+  - {fileID: 2952793475810236353}
+  - {fileID: 2109734909726116932}
+  - {fileID: 1633237596890447195}
   _dodgeEffect: {fileID: 321873385373208101}
 --- !u!114 &7211622963737956516
 MonoBehaviour:
@@ -4849,6 +4858,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8d7d7729f8004fa4ab7957daf3ea8cee, type: 3}
   - {fileID: 8300000, guid: b2cdec1d4b24cbb4d82ffc1030078b72, type: 3}
   _jumpSound: {fileID: 8300000, guid: 1b3b0a5fe0f205f4683360db92f5df63, type: 3}
+  _playerAction: {fileID: 0}
 --- !u!1 &774216820367232313
 GameObject:
   m_ObjectHideFlags: 0
@@ -5110,13 +5120,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1522701848391691234}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.97629607, z: 0.21643952, w: 0}
+  m_LocalRotation: {x: 0.10401611, y: 0.97073925, z: 0.21520746, w: 0.02306037}
   m_LocalPosition: {x: 0, y: 0.125, z: 0.088}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 955497087530503507}
-  m_LocalEulerAnglesHint: {x: -25, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -24.395, y: 174.358, z: 13.453}
 --- !u!33 &8902035104439447019
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5694,6 +5704,7 @@ MonoBehaviour:
   - {fileID: 2952793475810236353}
   - {fileID: 2109734909726116932}
   - {fileID: 1633237596890447195}
+  _interActionEffect: {fileID: 4021103657954561961, guid: 0523d5f4893f53440952c752ef8e8ec9, type: 3}
   _tool: {fileID: 7661213698539506566}
 --- !u!114 &7925393031405751140
 MonoBehaviour:

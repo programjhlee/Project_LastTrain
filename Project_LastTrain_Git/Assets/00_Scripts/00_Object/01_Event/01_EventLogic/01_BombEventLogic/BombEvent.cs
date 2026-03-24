@@ -10,7 +10,6 @@ public class BombEvent : Event,ITrainDamageEvent
     [SerializeField] AudioClip _bombEnterSound;
     [SerializeField] AudioClip _bombExplosiveSound;
     [SerializeField] GameObject _bombEffect;
-    [SerializeField] GameObject _fixEffect;
     [SerializeField] AudioSource _bombAudio;
     BoxCollider _col;
     UIHUDController _evtHUDController;
@@ -71,7 +70,6 @@ public class BombEvent : Event,ITrainDamageEvent
     {
         curFixAmount -= fixPower;
         InvokeTakeFix(curFixAmount / EventData.FixAmount);
-        Instantiate(_fixEffect,transform.position, Quaternion.identity);
         if (curFixAmount <= 0)
         {
             InvokeOnFix();

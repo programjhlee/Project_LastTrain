@@ -12,12 +12,15 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] Canvas canvas;
     [SerializeField] Canvas canvasHUD;
 
-    [SerializeField] List<UI_Base> _uiPrefabs = new List<UI_Base>();
-    [SerializeField] List<UI_HUD> _uiHUDPrefabs = new List<UI_HUD>();
+    [SerializeField] List<UI_Base> _uiPrefabs;
+    [SerializeField] List<UI_HUD> _uiHUDPrefabs;
+    [SerializeField] List<UI_Popup> _uiPopupPrefabs;
     
     Dictionary<Type, List<UI_Base>> _uiDics = new Dictionary<Type,List<UI_Base>>();
     Dictionary<Type, List<UI_HUD>> _uiHUDDics = new Dictionary<Type,List<UI_HUD>>();
-    
+    Dictionary<Type, UI_Popup> _uiPopupDics = new Dictionary<Type,UI_Popup>();
+
+    Stack<UI_Popup> _uiPopupStack;
     public void Awake()
     {
         Init();
@@ -26,6 +29,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void Init()
     {
+        _uiPopupStack = new Stack<UI_Popup>();
         for (int i = 0; i < _uiPrefabs.Count; i++)
         {
             Type type = _uiPrefabs[i].GetType();
@@ -43,6 +47,11 @@ public class UIManager : SingletonManager<UIManager>
                 _uiHUDDics[type] = new List<UI_HUD>();
             }
             _uiHUDDics[type].Add(_uiHUDPrefabs[i]);
+        }
+        for(int i = 0; i < _uiPopupPrefabs.Count; i++)
+        {
+            Type type = _uiPopupPrefabs[i].GetType();
+            _uiPopupDics[type] = _uiPopupPrefabs[i];
         }
     }
 
@@ -68,7 +77,6 @@ public class UIManager : SingletonManager<UIManager>
 
     public T ShowUI<T>(string name = null) where T : UI_Base
     {
-        Type type = typeof(T);
         T ui = null;
         T[] uiInCanvas = canvas.GetComponentsInChildren<T>(true);
         
@@ -88,7 +96,7 @@ public class UIManager : SingletonManager<UIManager>
 
         if(ui == null)
         {
-            if(_uiDics.TryGetValue(type,out List<UI_Base> uis))
+            if(_uiDics.TryGetValue(typeof(T),out List<UI_Base> uis))
             {
                 for(int i = 0; i < uis.Count; i++)
                 {
@@ -127,6 +135,37 @@ public class UIManager : SingletonManager<UIManager>
         return ui;
     }
 
+    public T ShowPopupUIAt<T>(Vector2 pos) where T : UI_Popup
+    {
+        T ui = null;
+        if(_uiPopupDics.TryGetValue(typeof(T), out UI_Popup popupUI))
+        {
+            if(popupUI != null)
+            {
+                ui = Instantiate(popupUI.gameObject, pos, popupUI.transform.rotation).GetComponent<T>();
+                ui.transform.SetParent(canvas.transform);
+                ui.Show();
+                ui.GetComponent<RectTransform>().anchoredPosition = pos;
+                _uiPopupStack.Push(ui);
+            }
+        }
+        return ui;
+    }
+
+    public void ClosePopupUI()
+    {
+        UI_Popup _popStackUI = _uiPopupStack.Pop();
+        _popStackUI.Hide();
+    }
+
+    public void CloseAllPopupUI()
+    {
+        for(int i = 0; i < _uiPopupStack.Count; i++)
+        {
+            ClosePopupUI();
+        }
+    } 
+
     public void HideUI<T>() where T : UI_Base
     {
         Type type = typeof(T);
@@ -137,10 +176,6 @@ public class UIManager : SingletonManager<UIManager>
             {
                 ui = uiInCanvas;
                 ui.Hide();
-            }
-            else
-            {
-                Debug.Log("Cant Find UI");
             }
         }
     }
@@ -186,19 +221,17 @@ public class UIManager : SingletonManager<UIManager>
                 ui = uiInCanvas;
                 ui.Hide();
             }
-            else
-            {
-                Debug.Log("Cant Find UI");
-            }
+ 
         }
     }
     public void FadeIn()
     {
         _fadeOutImage.transform.SetAsLastSibling();
-        _fadeOutImage.DOFade(0f, 0.5f);
+        _fadeOutImage.DOFade(0f, 0.5f).OnComplete(()=>_fadeOutImage.gameObject.SetActive(false));
     }
     public void FadeOut()
     {
+        _fadeOutImage.gameObject.SetActive(true);
         _fadeOutImage.transform.SetAsLastSibling();
         _fadeOutImage.DOFade(1f, 0.5f);
     }

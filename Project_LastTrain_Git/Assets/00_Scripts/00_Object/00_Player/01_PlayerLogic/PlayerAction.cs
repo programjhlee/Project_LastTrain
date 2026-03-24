@@ -6,6 +6,7 @@ using System;
 public class PlayerAction : MonoBehaviour,IGravityAffected
 {
     [SerializeField] List<Renderer> _playerRend;
+    [SerializeField] GameObject _interActionEffect;
     [SerializeField] Tool _tool;
 
     PlayerData _playerData;
@@ -169,6 +170,9 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
         if (Physics.BoxCast(_col.bounds.center, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, Quaternion.identity, 2f))
         {
+            Vector3 zOffset = new Vector3(-transform.forward.x * 0.5f, 0, -1f);
+            Vector3 hitEffectPos = hit.point + zOffset;
+            Instantiate(_interActionEffect, hitEffectPos, Quaternion.identity);
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable attackable))
             {
                 attackable.TakeDamage(_playerData.AttackPower, hit.collider.transform.position - transform.position);

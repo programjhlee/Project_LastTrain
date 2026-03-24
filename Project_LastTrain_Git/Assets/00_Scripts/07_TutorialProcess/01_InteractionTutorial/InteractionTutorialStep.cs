@@ -15,7 +15,7 @@ public class InteractionTutorialStep : TutorialStep
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
-        _uiAnnounce = UIManager.Instance.ShowUI<UI_Announce>();
+        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
         _uiAnnounce.Init();
         _uiAnnounce.SetUIStrategy(_uiAnnounceStrategy);
         _uiAnnounce.SetQuestSprite(_interactionSprite);
@@ -54,6 +54,6 @@ public class InteractionTutorialStep : TutorialStep
         {
             _onFixAction = null;
         }
-        _uiAnnounce.Hide();
+        UIManager.Instance.CloseAllPopupUI();
     }
 }

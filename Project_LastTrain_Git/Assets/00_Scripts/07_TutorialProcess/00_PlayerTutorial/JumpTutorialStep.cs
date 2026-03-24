@@ -18,7 +18,7 @@ public class JumpTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
-        _uiAnnounce = UIManager.Instance.ShowUIAt<UI_Announce>(new Vector2(0, 300f));
+        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
         _uiAnnounce.Init();
         _uiAnnounce.SetUIStrategy(_uiAnnounceStrategy);
         _uiAnnounce.SetQuestSprite(_jumpKeySprite);
@@ -52,6 +52,6 @@ public class JumpTutorialStep : TutorialStep
         }
         _pAction.OnJump -= _onJumpAction;
         _onJumpAction = null;
-        _uiAnnounce.Hide();
+        UIManager.Instance.CloseAllPopupUI();
     }
 }
