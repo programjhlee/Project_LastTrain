@@ -78,7 +78,6 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     public override void OnUpdate()
     {
         CollideChecker.LandCheck();
-        _zombieSoundController.OnSoundUpdate();
 
         if (transform.position.y < -20f)
         {
@@ -92,6 +91,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
                 break;
 
             case EnemyState.Detect:
+                _zombieSoundController.OnSoundUpdate();
                 if (CollideChecker.IsLanding && CollideChecker.IsCliff)
                 {
                     _moveDir = -_moveDir;
@@ -123,6 +123,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
                 break;
 
             case EnemyState.Chase:
+                _zombieSoundController.OnSoundUpdate();
                 _moveDir = new Vector3(_player.transform.position.x - transform.position.x, 0, _player.transform.position.z - transform.position.z);
                 _moveDir.Normalize();
                 transform.position += new Vector3(_moveDir.x * enemyData.chaseSpeed, YVel, _moveDir.z) * Time.deltaTime;
@@ -134,6 +135,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
                 break;
 
             case EnemyState.Attack:
+                _zombieSoundController.OnSoundUpdate();
                 stateTime += Time.deltaTime;
                 if (stateTime > 1f/enemyData.attackSpeed)
                 {
@@ -149,6 +151,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
                 break;
 
             case EnemyState.Die:
+                _zombieSoundController.OnSoundUpdate();
                 transform.position += new Vector3(0, YVel, 0) * Time.deltaTime;
                 if (CollideChecker.IsLanding)
                 {

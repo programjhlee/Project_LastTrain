@@ -4780,6 +4780,14 @@ PrefabInstance:
       propertyPath: platformController
       value: 
       objectReference: {fileID: 1800714547}
+    - target: {fileID: 934143981866690324, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _shieldSoundEffect
+      value: 
+      objectReference: {fileID: 8300000, guid: cf7ade92133851047aa458ea892002db, type: 3}
+    - target: {fileID: 934143981866690324, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _shieldQuitSoundEffect
+      value: 
+      objectReference: {fileID: 8300000, guid: 9531aa540b7f4aa44aa38c299dc9d287, type: 3}
     - target: {fileID: 1981505973880556645, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
       propertyPath: outlineMode
       value: 1

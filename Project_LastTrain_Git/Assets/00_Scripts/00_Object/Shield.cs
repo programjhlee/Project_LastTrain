@@ -5,6 +5,7 @@ using UnityEngine;
 public class Shield : MonoBehaviour
 {
     [SerializeField] GameObject _shieldEffect;
+    [SerializeField] AudioClip _shieldSoundEffect;
     WaitForSeconds _shieldTime = new WaitForSeconds(5f);
 
     public void Start()
@@ -14,6 +15,7 @@ public class Shield : MonoBehaviour
     }
     public void TurnOn()
     {
+        SoundManager.Instance.PlaySFX(_shieldSoundEffect);
         gameObject.SetActive(true);
         _shieldEffect.SetActive(true);
         StartCoroutine(ShieldProcess(_shieldTime));

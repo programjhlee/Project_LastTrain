@@ -127,6 +127,7 @@ MonoBehaviour:
   _bombEnterSound: {fileID: 8300000, guid: 88559d0baddbc4340bb67226ff3130d8, type: 3}
   _bombExplosiveSound: {fileID: 8300000, guid: dd62092bc061a5e4ab5824b1c5ddd4da, type: 3}
   _bombEffect: {fileID: 3784945155588612436, guid: 8e49ee40c53c60041b2f70b17a59c871, type: 3}
+  _fixEffect: {fileID: 4021103657954561961, guid: 0523d5f4893f53440952c752ef8e8ec9, type: 3}
   _bombAudio: {fileID: 5226621646491938725}
 --- !u!54 &4872977854396457120
 Rigidbody:

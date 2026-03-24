@@ -6,7 +6,8 @@ using System;
 public class BrokenEvent : Event,ITrainDamageEvent
 {
     ParticleSystem[] _effects;
-
+    [SerializeField] GameObject _fixEffect;
+    Collider _col;
     float curTime = 0;
     float curFixAmount = 0;
     UIHUDController _evtHUDController;
@@ -15,6 +16,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
 
     public void Awake()
     {
+        _col = GetComponent<Collider>();
         _effects = GetComponentsInChildren<ParticleSystem>();
         _brokenEventSound = GetComponent<BrokenEventSound>();
         _evtHUDController = GetComponent<UIHUDController>();
@@ -28,6 +30,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
             var main = _effects[i].main;
             main.loop = true;
         }
+        _col.enabled = true;
         curTime = 0;
         EventData = initEventData;
         _evtHUDController.Init();
@@ -51,6 +54,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
     }
     IEnumerator ExitProcess()
     {
+        _col.enabled = false;
         for (int i = 0; i < _effects.Length; i++)
         {
             var main = _effects[i].main;
@@ -66,6 +70,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
     {
         curFixAmount -= fixPower;
         InvokeTakeFix(curFixAmount / EventData.FixAmount);
+        Instantiate(_fixEffect,transform.position,Quaternion.identity);
         if(curFixAmount <= 0)
         {
             InvokeOnFix();
