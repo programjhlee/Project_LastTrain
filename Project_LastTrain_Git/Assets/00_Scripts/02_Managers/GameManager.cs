@@ -11,7 +11,7 @@ public class GameManager : SingletonManager<GameManager>
     [SerializeField] TrainSound _trainSound;
     [SerializeField] TutorialSystem _tutorialSystem;
     [SerializeField] PlatformController _platformController;
-    [SerializeField] Button _returnButton;
+    [SerializeField] Button _menuButton;
 
 
     public event Action OnTutorialStart;
@@ -70,7 +70,7 @@ public class GameManager : SingletonManager<GameManager>
         State = GameState.Tutorial;        
         UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
         UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(250,-100));
-        _returnButton.gameObject.SetActive(true);
+        _menuButton.gameObject.SetActive(true);
         _tutorialSystem.TutorialStart();
         OnTutorialStart?.Invoke();
     }

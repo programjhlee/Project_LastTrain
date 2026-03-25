@@ -226,6 +226,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void FadeIn()
     {
+        _fadeOutImage.gameObject.SetActive(true);
         _fadeOutImage.transform.SetAsLastSibling();
         _fadeOutImage.DOFade(0f, 0.5f).OnComplete(()=>_fadeOutImage.gameObject.SetActive(false));
     }

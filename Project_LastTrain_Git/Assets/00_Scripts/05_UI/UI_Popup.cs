@@ -14,7 +14,7 @@ public class UI_Popup : UI_Base
     {
         _uiRect.localScale = Vector3.zero;
         base.Show();
-        _uiRect.DOScale(1, 0.3f).SetEase(Ease.OutBack);
+        _uiRect.DOScale(1f, 0.3f).SetEase(Ease.OutBack);
         SoundManager.Instance.PlaySFX(_showSound);
     }
     public override void Hide()

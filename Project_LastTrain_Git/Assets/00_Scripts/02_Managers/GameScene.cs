@@ -15,7 +15,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] Button _startButton;
     [SerializeField] Button _optionButton;
     [SerializeField] Button _exitButton;
-    [SerializeField] Button _returnButton;
+    [SerializeField] Button _menuButton;
 
 
 
@@ -43,6 +43,7 @@ public class GameScene : MonoBehaviour
         _exitButton.gameObject.SetActive(true);
         _player.gameObject.SetActive(true);
         _optionButton.gameObject.SetActive(true);
+        _menuButton.gameObject.SetActive(false);
         _train.ResetTrain();
         _platformController.ResetPlatform();
         _enemySpawner.SetEnemiesData();
@@ -55,10 +56,11 @@ public class GameScene : MonoBehaviour
         UIManager.Instance.HideUI<UI_Coin>();
         UIManager.Instance.HideUI<UI_TrainHP>();
         UIManager.Instance.HideUI<UI_StageAnnounce>();
+        UIManager.Instance.CloseAllPopupUI();
         _train.ResetTrain();
         _enemySpawner.AllEnemyClear();
         _player.ResetPlayerData();
-        _returnButton.gameObject.SetActive(false);
+        _menuButton.gameObject.SetActive(false);
         _tutorialSystem.ResetTutorialSystem();
     }
 
@@ -78,7 +80,12 @@ public class GameScene : MonoBehaviour
     }
     public void OptionButtonClicked()
     {
-        UIManager.Instance.ShowUI<UI_Option>();
+        UIManager.Instance.ShowPopupUIAt<UI_Option>(Vector3.zero);
+        GameManager.Instance.GamePaused();
+    }
+    public void MenuButtonClicked()
+    {
+        UIManager.Instance.ShowPopupUIAt<UI_Menu>(Vector3.zero);
         GameManager.Instance.GamePaused();
     }
     public void ExitButtonClicked()
@@ -96,5 +103,13 @@ public class GameScene : MonoBehaviour
         SceneStart();
         yield return new WaitForSeconds(0.5f);
         UIManager.Instance.FadeIn();
+    }
+    public void ReturnToTitle()
+    {
+        GameManager.Instance.GamePaused();
+        UI_Caution _uiCaution = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
+        _uiCaution.SetText("타이틀 화면으로 돌아가시겠습니까?");
+        _uiCaution.BindYesButton(() => { RestartScene(); });
+        _uiCaution.BindNoButton(() => { Debug.Log("게임 재시작"); GameManager.Instance.GameResume(); });
     }
 }
