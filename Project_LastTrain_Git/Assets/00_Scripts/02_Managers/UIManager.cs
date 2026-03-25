@@ -146,25 +146,11 @@ public class UIManager : SingletonManager<UIManager>
                 ui.transform.SetParent(canvas.transform);
                 ui.Show();
                 ui.GetComponent<RectTransform>().anchoredPosition = pos;
-                _uiPopupStack.Push(ui);
+                Debug.Log(ui);
             }
         }
         return ui;
     }
-
-    public void ClosePopupUI()
-    {
-        UI_Popup _popStackUI = _uiPopupStack.Pop();
-        _popStackUI.Hide();
-    }
-
-    public void CloseAllPopupUI()
-    {
-        for(int i = 0; i < _uiPopupStack.Count; i++)
-        {
-            ClosePopupUI();
-        }
-    } 
 
     public void HideUI<T>() where T : UI_Base
     {

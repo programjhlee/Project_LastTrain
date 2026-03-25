@@ -6,9 +6,9 @@ public abstract class UI_HUD : UI_Base
 { 
     protected Transform _target;
     protected float _upDirScale;
-    RectTransform _canvasRect;
-    Camera cam;
-    RectTransform _rect;
+    protected RectTransform _canvasRect;
+    protected Camera cam;
+    protected RectTransform _rect;
 
     public virtual void Bind(Canvas canvas, Transform target,float upDirScale)
     {

@@ -43,6 +43,9 @@ public class MoveTutorialStep : TutorialStep
 
     public override void Release()
     {
-        UIManager.Instance.CloseAllPopupUI();
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
     }
 }

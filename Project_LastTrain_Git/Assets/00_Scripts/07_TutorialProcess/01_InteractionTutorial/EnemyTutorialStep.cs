@@ -63,6 +63,9 @@ public class EnemyTutorialStep : TutorialStep
     public override void Release()
     {
         _enemyList.Clear();
-        UIManager.Instance.CloseAllPopupUI();
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
     }
 }

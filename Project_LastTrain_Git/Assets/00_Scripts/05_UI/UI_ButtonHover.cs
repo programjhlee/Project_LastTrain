@@ -15,4 +15,10 @@ public class UI_ButtonHover :MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         transform.DOScale(1f, 0.2f).SetEase(Ease.OutBack);
     }
 
+    void OnDisable()
+    {
+        transform.DOKill();
+        transform.localScale = Vector3.one;
+    }
+
 }

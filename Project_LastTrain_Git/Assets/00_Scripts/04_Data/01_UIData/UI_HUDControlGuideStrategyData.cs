@@ -8,7 +8,7 @@ public class UI_HUDControlGuideStrategyData : ScriptableObject
 {
     [SerializeField] string _controlGuideName;
     [SerializeField] Sprite _controlGuideKeyImage;
-    [SerializeField] string _controlGuideText;
+    [SerializeField][TextArea(3,10)] string _controlGuideText;
 
 
     public string ControlGuideName

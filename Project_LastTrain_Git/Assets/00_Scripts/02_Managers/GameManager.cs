@@ -90,7 +90,7 @@ public class GameManager : SingletonManager<GameManager>
 		StartCoroutine(StageStartProcess(() =>
 		{
 			State = GameState.GamePlaying;
-			OnGameStart?.Invoke();
+            OnGameStart?.Invoke();
 		}
 	   ));
 	}
@@ -105,8 +105,10 @@ public class GameManager : SingletonManager<GameManager>
 
     public IEnumerator GameStartProcess(Action OnComplete)
     {
+        _menuButton.gameObject.SetActive(false);
         UIManager.Instance.ShowUIAt<UI_StageAnnounce>(new Vector2(0,250));
         yield return new WaitForSeconds(4f);
+        _menuButton.gameObject.SetActive(true);
         OnComplete?.Invoke();
     }
     public void GameAllClear()
@@ -146,11 +148,13 @@ public class GameManager : SingletonManager<GameManager>
     public void GamePaused()
     {
         _beforeState = State;
+
         State = GameState.GamePaused;
     }
     public void GameResume()
     {
         State = _beforeState;
+   
     }
 
     public void StageClear()

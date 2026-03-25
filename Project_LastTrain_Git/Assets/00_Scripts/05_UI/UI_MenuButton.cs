@@ -11,12 +11,14 @@ public class UI_MenuButton : MonoBehaviour
     public void MenuButtonClicked()
     {
         UI_Menu uiMenu = UIManager.Instance.ShowPopupUIAt<UI_Menu>(Vector3.zero);
+        GameManager.Instance.GamePaused();
         uiMenu.OnMenuClosed += UIClosed;
         _uiMenuButton.interactable = false;
 
     }
     public void UIClosed()
     {
+        GameManager.Instance.GameResume();
         _uiMenuButton.interactable = true;
     }
 }

@@ -52,6 +52,9 @@ public class JumpTutorialStep : TutorialStep
         }
         _pAction.OnJump -= _onJumpAction;
         _onJumpAction = null;
-        UIManager.Instance.CloseAllPopupUI();
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
     }
 }

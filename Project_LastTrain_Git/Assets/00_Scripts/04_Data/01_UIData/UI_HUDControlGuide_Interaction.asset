@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: UI_HUDControlGuide_Interaction
   m_EditorClassIdentifier: 
   _controlGuideName: Interaction
-  _controlGuideKeyImage: {fileID: 21300000, guid: eea39e425427f7644b37940bf0d5eea2, type: 3}
-  _controlGuideText: ' To Interaction'
+  _controlGuideKeyImage: {fileID: 21300000, guid: 02d886c2e5a67c14296071c7acd83430, type: 3}
+  _controlGuideText: "TO \nINTERACTION"

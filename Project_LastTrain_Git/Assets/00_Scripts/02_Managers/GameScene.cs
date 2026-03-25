@@ -56,7 +56,6 @@ public class GameScene : MonoBehaviour
         UIManager.Instance.HideUI<UI_Coin>();
         UIManager.Instance.HideUI<UI_TrainHP>();
         UIManager.Instance.HideUI<UI_StageAnnounce>();
-        UIManager.Instance.CloseAllPopupUI();
         _train.ResetTrain();
         _enemySpawner.AllEnemyClear();
         _player.ResetPlayerData();
@@ -81,7 +80,6 @@ public class GameScene : MonoBehaviour
     public void OptionButtonClicked()
     {
         UIManager.Instance.ShowPopupUIAt<UI_Option>(Vector3.zero);
-        GameManager.Instance.GamePaused();
     }
     public void MenuButtonClicked()
     {

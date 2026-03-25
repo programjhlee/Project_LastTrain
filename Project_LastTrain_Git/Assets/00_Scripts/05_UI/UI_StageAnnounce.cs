@@ -23,9 +23,6 @@ public class UI_StageAnnounce : UI_Base
     RectTransform _remainDistanceTextRect;
     RectTransform _goTextRect;
 
-
-
-
     void Awake()
     {
         DOTween.Init();

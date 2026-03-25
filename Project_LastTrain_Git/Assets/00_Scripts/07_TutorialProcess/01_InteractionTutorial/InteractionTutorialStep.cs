@@ -54,6 +54,9 @@ public class InteractionTutorialStep : TutorialStep
         {
             _onFixAction = null;
         }
-        UIManager.Instance.CloseAllPopupUI();
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
     }
 }

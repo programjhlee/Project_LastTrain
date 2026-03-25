@@ -5,6 +5,7 @@ using System;
 
 public class PlayerUIController : MonoBehaviour
 {
+    bool _interactionFind;
     public enum ControlGuideType
     {
         None,
@@ -24,6 +25,7 @@ public class PlayerUIController : MonoBehaviour
     }
     public void Init()
     {
+        _interactionFind = false;
         _col = GetComponent<Collider>();
         _uiControlGuide = UIManager.Instance.ShowUIHUD<UI_HUDControlGuide>(transform);
         _uiControlGuide.Hide();
@@ -35,6 +37,10 @@ public class PlayerUIController : MonoBehaviour
     }
     public void ShowControlGuide(ControlGuideType controlGuide)
     {
+        if (_uiControlGuide.gameObject.activeSelf)
+        {
+            return;
+        }
         string controlName = Enum.GetName(typeof(ControlGuideType),controlGuide);
         _uiControlGuide.BindData(_controlGuideDics[controlName]);
         _uiControlGuide.Show();
@@ -53,12 +59,21 @@ public class PlayerUIController : MonoBehaviour
             if (hit.collider.TryGetComponent<IAttackable>(out IAttackable enemy) || hit.collider.TryGetComponent<IFixable>(out IFixable fixable) ||
                 hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
-                ShowControlGuide(ControlGuideType.Interaction);
+                if (_interactionFind == false)
+                {
+                    ShowControlGuide(ControlGuideType.Interaction);
+                    _interactionFind = true;
+                }
             }
         }
         else
         {
-            HideControlGuide();
+            if (_interactionFind)
+            {
+                HideControlGuide();
+                _interactionFind = false;
+            }
+            
         }
     }
 

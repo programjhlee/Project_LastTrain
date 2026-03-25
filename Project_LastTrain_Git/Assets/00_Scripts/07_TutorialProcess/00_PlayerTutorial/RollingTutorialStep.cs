@@ -55,6 +55,9 @@ public class RollingTutorialStep : TutorialStep
         }
         _pAction.OnDodge -= _onDodgeAction;
         _onDodgeAction = null;
-        UIManager.Instance.CloseAllPopupUI();
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
     }
 }

@@ -18,10 +18,18 @@ public class UI_Menu : UI_Popup
     public void OnEnable()
     {
         _optionButton.onClick.AddListener(_gameScene.OptionButtonClicked);
-        _returnTitleButton.onClick.AddListener(_gameScene.ReturnToTitle);
         _closeButton.onClick.AddListener(base.Hide);
 
     }
+
+    public void GoToTitleButtonClicked()
+    {
+        UI_Caution ui = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
+        ui.SetText("타이틀 화면으로 \n 돌아가시겠습니까?");
+        ui.BindYesButton(() => { base.Hide(); _gameScene.RestartScene(); });
+    }
+
+
     public void OnDestroy()
     {
         _optionButton.onClick.RemoveListener(_gameScene.OptionButtonClicked);
