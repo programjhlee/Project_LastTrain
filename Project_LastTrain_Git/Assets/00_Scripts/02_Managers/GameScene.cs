@@ -90,7 +90,7 @@ public class GameScene : MonoBehaviour
     {
         UI_Caution ui_popup = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
         ui_popup.BindYesButton(()=> Application.Quit());
-        ui_popup.SetText("정말로 종료하시겠습니까?");
+        ui_popup.SetText("ARE YOU SURE TO QUIT?");
     }
 
     IEnumerator RestartProcess()
@@ -106,7 +106,7 @@ public class GameScene : MonoBehaviour
     {
         GameManager.Instance.GamePaused();
         UI_Caution _uiCaution = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
-        _uiCaution.SetText("타이틀 화면으로 돌아가시겠습니까?");
+        _uiCaution.SetText("ARE YOU SURE TO BACK TO THE TITLE?");
         _uiCaution.BindYesButton(() => { RestartScene(); });
         _uiCaution.BindNoButton(() => { Debug.Log("게임 재시작"); GameManager.Instance.GameResume(); });
     }

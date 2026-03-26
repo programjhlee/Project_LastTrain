@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using TMPro;
 
 public class UI_HUDControlGuide : UI_HUD
 {
     UI_HUDControlGuideStrategyData _uiControlGuideData;
-    [SerializeField] TextMeshProUGUI _uiGuideText;
+    [SerializeField] Text _uiGuideText;
     [SerializeField] Image _uiGuideImage;
+    string _uiGuideStr;
     public void BindData(UI_HUDControlGuideStrategyData uiData)
     {
         _uiControlGuideData = uiData;
         _uiGuideImage.sprite = uiData.ControlGuideKeyImage;
-        SetText(uiData.ControlGuideText);
+        _uiGuideStr = uiData.ControlGuideText;
+        Debug.Log(_uiGuideStr);
         transform.localScale = new Vector2(1, 0);
     }
 
@@ -36,6 +37,7 @@ public class UI_HUDControlGuide : UI_HUD
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, cam.WorldToScreenPoint(_target.position + Vector3.up * _upDirScale), cam, out targetPos);
         float hover = (Mathf.Sin(Time.time * 3f) + 1) * 15f;
         _rect.localPosition = new Vector2(targetPos.x,targetPos.y + hover);
+        SetText(_uiGuideStr);
 
     }
     public void SetText(string text)
