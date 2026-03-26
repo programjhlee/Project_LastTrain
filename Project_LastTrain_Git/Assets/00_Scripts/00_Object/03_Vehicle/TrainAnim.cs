@@ -152,5 +152,6 @@ public class TrainAnim : MonoBehaviour
         Instantiate(_trainDestroyEffect, _trainBack_2.transform.position, _trainBack_2.transform.rotation);
         Instantiate(_trainDestroyEffect, _trainBack_3.transform.position, _trainBack_3.transform.rotation);
         _trainGameObject.SetActive(false);
+        
     }
 }

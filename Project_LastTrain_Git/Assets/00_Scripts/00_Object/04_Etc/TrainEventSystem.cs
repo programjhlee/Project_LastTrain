@@ -97,18 +97,18 @@ public class TrainEventSystem : MonoBehaviour
         if(curTime >= eventSpawnTime)
         {
             curTime = 0;
-            Event curEvent = SpawnEventRandomPos();
+            SpawnEventRandomPos();
         }
         EventExecute();
         EventClear();
     }
 
-
-    public Event SpawnEvent(int? eventIdx = null)
+    public Event SpawnEventAt(float normalizeXPos, int? eventIdx = null)
     {
         int selectIdx;
 
         Event evt;
+        Renderer evtRend;
 
         if (eventIdx == null)
         {
@@ -119,25 +119,16 @@ public class TrainEventSystem : MonoBehaviour
             selectIdx = eventIdx.Value;
         }
         evt = inactiveEventPools[eventID[selectIdx]].Pop();
-        evt.gameObject.SetActive(true);
-        evt.Enter(eventDataDics[eventID[selectIdx]]);
-        BindTrainEvent(evt);
-        executeEvents.Add(evt);
-
-        return evt;
-    }
-    public Event SpawnEventAt(float normalizeXPos, int? eventIdx = null)
-    {
-        Event evt;
-        Renderer evtRend;
-
-        evt = SpawnEvent(eventIdx);
         evtRend = evt.GetComponent<Renderer>();
         
         float xPos = rend.bounds.center.x + rend.bounds.extents.x * normalizeXPos;
         float yPos = rend.bounds.center.y + rend.bounds.extents.y + evtRend.bounds.extents.y;
 
-        evt.transform.position = new Vector3(xPos, yPos);
+        evt.gameObject.SetActive(true);
+        evt.Enter(eventDataDics[eventID[selectIdx]], xPos, yPos);
+        BindTrainEvent(evt);
+        executeEvents.Add(evt);
+
         return evt;
     }
 

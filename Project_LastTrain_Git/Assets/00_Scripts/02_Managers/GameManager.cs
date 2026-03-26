@@ -177,11 +177,14 @@ public class GameManager : SingletonManager<GameManager>
     public void GameOver()
     {
         State = GameState.GameOver;
+        StartCoroutine(GameOverProcess());
     }
     IEnumerator GameOverProcess()
     {
         yield return new WaitForSeconds(5f);
-        UIManager.Instance.FadeIn();
+        UIManager.Instance.FadeOut();
+        yield return new WaitForSeconds(2f);
+        CutsceneManager.Instance.PlayCutScene(CutsceneManager.CutsceneType.GameOver);
     }
 
 

@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class CutsceneManager : MonoBehaviour
+public class CutsceneManager : SingletonManager<CutsceneManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Canvas _canvas;
+    [SerializeField]List<Cutscene> _cutsceneList;
+
+    Dictionary<CutsceneType, Cutscene> _cutsceneDict;
+    public enum CutsceneType
     {
-        
+        GameClear,
+        GameOver
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Awake()
     {
-        
+        _cutsceneDict = new Dictionary<CutsceneType, Cutscene>();
+        for(int i = 0; i < _cutsceneList.Count; i++)
+        {
+            Debug.Log(_cutsceneList[i]);
+
+            Cutscene instance = Instantiate(_cutsceneList[i].gameObject,Vector3.zero,Quaternion.identity).GetComponent<Cutscene>();
+            instance.transform.SetParent(_canvas.transform);
+            _cutsceneDict[_cutsceneList[i].CutsceneType] = instance;
+        }
+    }
+
+    public void PlayCutScene(CutsceneType type)
+    {
+        StartCoroutine(_cutsceneDict[type].CutsceneExecute());
     }
 }

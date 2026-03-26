@@ -939,6 +939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786097248}
+  - component: {fileID: 786097249}
   m_Layer: 0
   m_Name: CutSceneManager
   m_TagString: Untagged
@@ -961,6 +962,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &786097249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786097247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67921fd24685fd40ba4c1c433239408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 2030743981}
+  _cutsceneList:
+  - {fileID: 6671463150285660956, guid: 4aef8bb0246dcab498a6e9e8c288830b, type: 3}
 --- !u!1 &814811383 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7312024148069279914, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
@@ -1968,7 +1984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8194808329249807697, guid: b14757fac6db155418e52f26c95ca26c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

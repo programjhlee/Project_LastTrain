@@ -23,7 +23,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
         _brokenEventSound.OnAwake();
     }
 
-    public override void Enter(EventData initEventData)
+    public override void Enter(EventData initEventData, float x = 0, float y = 0)
     {
         for(int i = 0; i < _effects.Length; i++)
         {
@@ -36,6 +36,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
         _evtHUDController.Init();
         curFixAmount = EventData.FixAmount;
         _brokenEventSound.PlayEnterSound();
+        transform.position = new Vector3(x, y, 0);
     }
     public override void Execute()
     {

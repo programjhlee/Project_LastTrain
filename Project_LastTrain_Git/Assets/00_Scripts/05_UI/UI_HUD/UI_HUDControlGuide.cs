@@ -42,7 +42,6 @@ public class UI_HUDControlGuide : UI_HUD
     }
     public void SetText(string text)
     {
-        Debug.Log(text);
         _uiGuideText.text = text;
     }
 }

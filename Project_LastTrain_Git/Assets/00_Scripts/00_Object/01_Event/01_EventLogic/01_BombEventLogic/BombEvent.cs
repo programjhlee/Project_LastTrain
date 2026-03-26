@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 public class BombEvent : Event,ITrainDamageEvent
 {
@@ -18,17 +19,25 @@ public class BombEvent : Event,ITrainDamageEvent
     float curTime;
     float curFixAmount;
     public event Action<float> OnDamage;
-    public override void Enter(EventData initEventData)
+    public void Awake()
     {
+        _evtHUDController = GetComponent<UIHUDController>();
+        _col = GetComponent<BoxCollider>();
+    }
+    public override void Enter(EventData initEventData, float x = 0, float y = 0)
+    {
+        transform.position = new Vector3(x, y + 10f, 0);
+        transform.DOMoveY(y, 0.7f).SetEase(Ease.InQuart).OnComplete(() => transform.DOShakeScale(0.5f));
+
+        _evtHUDController.Init();
         curTime = 0;
         EventData = initEventData;
         _rend.material.color = Color.white;
-        _evtHUDController = GetComponent<UIHUDController>();
-        _evtHUDController.Init();
         curFixAmount = EventData.FixAmount;
-        _col = GetComponent<BoxCollider>();
         _bombAudio.PlayOneShot(_bombEnterSound);
     }
+
+
 
     public override void Execute()
     {
@@ -44,6 +53,7 @@ public class BombEvent : Event,ITrainDamageEvent
 
     IEnumerator ExplosiveProcess()
     {
+        transform.DOShakeScale(1f,5f,10);
         _col.size = new Vector3(2, 2, 2);
         float warningTime = 0.125f;
         while (curTime <= 1f)

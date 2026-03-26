@@ -11,6 +11,8 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     EnemyUIController _enemyUIController;
     ZombieSoundController _zombieSoundController;
     ZombieAnim _anim;
+    Collider _col;
+
 
     Vector3 _moveDir;
     LayerMask _playerLayer;
@@ -38,6 +40,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     public override void OnAwake()
     {
         base.OnAwake();
+        _col = GetComponent<Collider>();
         _playerLayer = LayerMask.GetMask("Player");
         _enemyUIController = GetComponent<EnemyUIController>();
         _anim = GetComponent<ZombieAnim>();
@@ -48,6 +51,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         base.Init(enemydt);
 
         IsActive = true;
+        _col.enabled = true;
 
         Curhp = enemyData.maxHp;
         Maxhp = enemyData.maxHp;
@@ -88,6 +92,13 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         switch (_enemyState)
         {
             case EnemyState.None:
+                IsActive = false;
+                _col.enabled = false;
+                stateTime += Time.deltaTime;
+                if(stateTime >= 3f)
+                {
+                    OnDespawn();
+                }
                 break;
 
             case EnemyState.Detect:
@@ -153,13 +164,11 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
             case EnemyState.Die:
                 _zombieSoundController.OnSoundUpdate();
                 transform.position += new Vector3(0, YVel, 0) * Time.deltaTime;
-                if (CollideChecker.IsLanding)
+                stateTime += Time.deltaTime;
+                if (stateTime >= 0.5f)
                 {
-                    stateTime += Time.deltaTime;
-                }
-                if (stateTime >= 3f)
-                {
-                    OnDespawn();
+                    stateTime = 0;
+                    _enemyState = EnemyState.None;
                 }
                 break;
         }

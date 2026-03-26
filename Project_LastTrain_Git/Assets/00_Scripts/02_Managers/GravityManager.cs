@@ -64,8 +64,10 @@ public class GravityManager : SingletonManager<GravityManager>
         {
             if (obj.YVel < 0)
             {
+
                 obj.YVel = 0;
                 obj.TargetTransform.position = new Vector3(obj.TargetTransform.position.x, obj.CollideChecker.GetLandYPos(), 0);
+                Debug.Log($"{obj} :ÂøÁö ¼º°ø! ÂøÁö À§Ä¡ {obj.TargetTransform.position}");
             }
         }
     }
