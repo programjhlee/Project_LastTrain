@@ -16,6 +16,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public event Action OnTutorialStart;
     public event Action OnGameStart;
+    public event Action OnGameOver;
     public event Action OnStageStart;
     public event Action OnStageClear;
     public event Action OnAllStageClear;
@@ -69,7 +70,7 @@ public class GameManager : SingletonManager<GameManager>
         _trainSound.PlayTrainRunningSound();
         State = GameState.Tutorial;        
         UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
-        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(250,-100));
+        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(300,-150));
         _menuButton.gameObject.SetActive(true);
         _tutorialSystem.TutorialStart();
         OnTutorialStart?.Invoke();
@@ -177,14 +178,17 @@ public class GameManager : SingletonManager<GameManager>
     public void GameOver()
     {
         State = GameState.GameOver;
+        OnGameOver?.Invoke();
         StartCoroutine(GameOverProcess());
     }
     IEnumerator GameOverProcess()
     {
+        _menuButton.gameObject.SetActive(false);
         yield return new WaitForSeconds(5f);
         UIManager.Instance.FadeOut();
         yield return new WaitForSeconds(2f);
         CutsceneManager.Instance.PlayCutScene(CutsceneManager.CutsceneType.GameOver);
+        _menuButton.gameObject.SetActive(true);
     }
 
 

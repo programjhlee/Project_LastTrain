@@ -17,17 +17,14 @@ public class PlayerSoundController : MonoBehaviour
     {
         _playerAction = GetComponentInParent<PlayerAction>();
 
+        _playerAction.OnJump -= PlayJumpSoundEffect;
+        _playerAction.OnAttack -= PlayAttackSoundEffect;
+        _playerAction.OnFix -= PlayFixSoundEffect;
+
         _playerAction.OnJump += PlayJumpSoundEffect;
         _playerAction.OnAttack += PlayAttackSoundEffect;
         _playerAction.OnFix += PlayFixSoundEffect;
 
-    }
-
-
-
-    public void SwingActionSoundEffect()
-    {
-        
     }
     public void PlayFixSoundEffect()
     {

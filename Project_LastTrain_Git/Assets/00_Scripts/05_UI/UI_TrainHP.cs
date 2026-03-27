@@ -16,6 +16,7 @@ public class UI_TrainHP : UI_Base
 
     public void OnEnable()
     {
+        GameManager.Instance.OnGameOver += () => gameObject.SetActive(false);
         train.OnHpChanged += SetTrainHp;
     }
     public void OnDisable()

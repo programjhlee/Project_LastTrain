@@ -73,6 +73,7 @@ public class BrokenEvent : Event,ITrainDamageEvent
         InvokeTakeFix(curFixAmount / EventData.FixAmount);
         if (curFixAmount <= 0)
         {
+            Instantiate(_fixEffect, transform.position, Quaternion.identity);
             InvokeOnFix();
             _brokenEventSound.PlayExitSound();
             Exit();

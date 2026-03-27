@@ -14,6 +14,10 @@ public class UI_Coin : UI_Base
         _uiRect = GetComponent<RectTransform>();
         LootManager.Instance.OnItemCountChanged += SetCoinText;
     }
+    public void OnEnable()
+    {
+        GameManager.Instance.OnGameOver += ()=> gameObject.SetActive(false);
+    }
     public void SetCoinText(int coin)
     {
         _uiRect.transform.DOKill();

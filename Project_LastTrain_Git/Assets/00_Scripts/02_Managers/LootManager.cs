@@ -22,7 +22,14 @@ public class LootManager : SingletonManager<LootManager>
     {
         Init();
     }
-
+    void OnEnable()
+    {
+        GameManager.Instance.OnGameOver += ResetItems;
+    }
+    public void OnDisable()
+    {
+        GameManager.Instance.OnGameOver -= ResetItems;
+    }
     public void Init()
     {
         _itemResourceCntDics = new Dictionary<Type, int>();
@@ -158,7 +165,7 @@ public class LootManager : SingletonManager<LootManager>
         return GetHasItem<Coin>();
     }
 
-    public void ResetItemCount()
+    public void ResetItems()
     {
         for (int i = 0; i < _dropList.Count; i++)
         {
@@ -169,5 +176,11 @@ public class LootManager : SingletonManager<LootManager>
                 OnItemCountChanged?.Invoke(_itemResourceCntDics[currentDropEntry[j].Item.GetType()]);
             }
         }
+        for(int i = 0; i <_activeItemList.Count; i++)
+        {
+            _activeItemList[i].Clear();
+        }
+        _activeItemList.Clear();
+        _removeItemList.Clear();
     }
 }

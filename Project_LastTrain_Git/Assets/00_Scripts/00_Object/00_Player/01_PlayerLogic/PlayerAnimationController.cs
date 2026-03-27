@@ -32,6 +32,14 @@ public class PlayerAnimationController : MonoBehaviour
         }
         _dodgeEffect.SetActive(false);
 
+        _playerAction.OnJump -= PlayAnimJump;
+        _playerAction.OnLand -= OnPlayerLand;
+        _playerAction.OnSwing -= PlayAnimAttack;
+        _playerAction.OnAttack -= PlayAnimAttack;
+        _playerAction.OnFix -= PlayAnimAttack;
+        _playerAction.OnHit -= PlayAnimHit;
+        _playerAction.OnDodge -= PlayAnimDodge;
+
         _playerAction.OnJump += PlayAnimJump;
         _playerAction.OnLand += OnPlayerLand;
         _playerAction.OnSwing += PlayAnimAttack;
@@ -39,8 +47,13 @@ public class PlayerAnimationController : MonoBehaviour
         _playerAction.OnFix += PlayAnimAttack;
         _playerAction.OnHit += PlayAnimHit;
         _playerAction.OnDodge += PlayAnimDodge;
-
+        
+        for (int i = 0; i < _playerRend.Count; i++)
+        {
+            _playerRend[i].material.color = Color.white;
+        }
     }
+
     public void OnAnimationUpdate()
     {
         PlayAnimMove(_playerAction.IsMoving);

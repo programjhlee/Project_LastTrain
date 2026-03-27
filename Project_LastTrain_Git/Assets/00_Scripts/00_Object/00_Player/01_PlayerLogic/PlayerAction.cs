@@ -290,6 +290,11 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             yield return null;
         }
     }
+
+    public void ResetPlayerAction()
+    {
+        StopAllCoroutines();
+    }
     public void OnTrainDestroy()
     {
         gameObject.SetActive(false);

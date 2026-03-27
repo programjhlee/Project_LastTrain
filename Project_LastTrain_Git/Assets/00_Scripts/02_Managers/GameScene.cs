@@ -16,7 +16,7 @@ public class GameScene : MonoBehaviour
     [SerializeField] Button _optionButton;
     [SerializeField] Button _exitButton;
     [SerializeField] Button _menuButton;
-
+    UI_Caution _uiCaution;
 
 
     public void OnEnable()
@@ -39,7 +39,7 @@ public class GameScene : MonoBehaviour
         CameraManager.Instance.BlendModeInit();
         SoundManager.Instance.PlayBGM(_titleSound);
         CutsceneManager.Instance.CurrentSceneClear();
-        LootManager.Instance.ResetItemCount();
+        LootManager.Instance.ResetItems();
         _uiTitle.Show();
         _startButton.gameObject.SetActive(true);
         _exitButton.gameObject.SetActive(true);
@@ -61,6 +61,7 @@ public class GameScene : MonoBehaviour
         _train.ResetTrain();
         _enemySpawner.AllEnemyClear();
         _player.ResetPlayerData();
+        _player.ResetPlayerAction();
         _menuButton.gameObject.SetActive(false);
         _tutorialSystem.ResetTutorialSystem();
     }
@@ -90,9 +91,13 @@ public class GameScene : MonoBehaviour
     }
     public void ExitButtonClicked()
     {
-        UI_Caution ui_popup = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
-        ui_popup.BindYesButton(()=> Application.Quit());
-        ui_popup.SetText("ARE YOU SURE TO QUIT?");
+        if(_uiCaution != null)
+        {
+            return;
+        }
+        _uiCaution = UIManager.Instance.ShowPopupUIAt<UI_Caution>(Vector3.zero);
+        _uiCaution.BindYesButton(()=> Application.Quit());
+        _uiCaution.SetText("ARE YOU SURE TO QUIT?");
     }
 
     IEnumerator RestartProcess()
