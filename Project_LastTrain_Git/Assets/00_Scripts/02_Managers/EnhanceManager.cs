@@ -32,6 +32,20 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
     int enhancePrice;
     int fixPrice;
 
+    public int EnhancePrice
+    {
+        get
+        {
+            return enhancePrice;
+        }
+    }
+
+    public int FixPrice
+    {
+        get { return fixPrice; }
+    }
+
+
     public void Awake()
     {
         Init();

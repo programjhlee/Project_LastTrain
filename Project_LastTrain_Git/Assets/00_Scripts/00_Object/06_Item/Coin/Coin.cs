@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 public class Coin : Item, IGravityAffected
 {
-
+    [SerializeField] AudioClip _coinDropSound;
+    [SerializeField] AudioClip _coinGetSound;
     CollideChecker _CollideChecker;
     
     
@@ -24,8 +26,10 @@ public class Coin : Item, IGravityAffected
 
     public override void Init(ItemData itemData, Vector3 spawnPos)
     {
-        base.Init(itemData, spawnPos);
         _CollideChecker = GetComponent<CollideChecker>();
+        CollideChecker.Col.enabled = true;
+        base.Init(itemData, spawnPos);
+        SoundManager.Instance.PlaySFX(_coinDropSound);
         spawnDirX = UnityEngine.Random.Range(-1f, 1f);
         GetItem += LootManager.Instance.IncreaseResource;
         GravityManager.Instance.AddGravityObj(this);
@@ -54,8 +58,11 @@ public class Coin : Item, IGravityAffected
     {
         if (coll.gameObject.CompareTag("Player"))
         {
+            CollideChecker.Col.enabled = false;
+            SoundManager.Instance.PlaySFX(_coinGetSound);
+            transform.position = coll.transform.position;
+            transform.DOMoveY(0.5f, 0.2f).SetLoops(2,LoopType.Yoyo).OnComplete(()=>Clear());
             InvokeGetItem(this);
-            Clear();
         }
     }
 }

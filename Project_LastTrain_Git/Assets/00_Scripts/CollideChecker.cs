@@ -35,6 +35,13 @@ public class CollideChecker : MonoBehaviour
         get;
         private set;
     }
+    public Collider Col
+    {
+        get
+        {
+            return _col;
+        }
+    }
     public void Awake()
     {
         _col = GetComponent<BoxCollider>();

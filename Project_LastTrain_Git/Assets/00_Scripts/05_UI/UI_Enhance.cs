@@ -9,6 +9,8 @@ public class UI_Enhance : UI_Base
 {
     [SerializeField] Text _playerLevelText;
     [SerializeField] Text _trainHpText;
+    [SerializeField] TextMeshProUGUI _levelUpCostText;
+    [SerializeField] TextMeshProUGUI _fixCostText;
     [SerializeField] TextMeshProUGUI _announceText;
 
     [SerializeField] Button _enhanceButton;
@@ -28,6 +30,8 @@ public class UI_Enhance : UI_Base
         _fixButtonRect = _fixButton.GetComponent<RectTransform>();
         _announceTextRect = _announceText.GetComponent<RectTransform>();
         _announceText.gameObject.SetActive(false);
+        _levelUpCostText.text = $"COST {EnhanceManager.Instance.EnhancePrice}";
+        _fixCostText.text = $"COST {EnhanceManager.Instance.FixPrice}";
     }
 
     public void OnEnable()

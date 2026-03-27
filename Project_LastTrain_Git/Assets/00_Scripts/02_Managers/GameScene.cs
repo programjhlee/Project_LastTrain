@@ -38,6 +38,8 @@ public class GameScene : MonoBehaviour
         CameraManager.Instance.SetStartCamPrioirty();
         CameraManager.Instance.BlendModeInit();
         SoundManager.Instance.PlayBGM(_titleSound);
+        CutsceneManager.Instance.CurrentSceneClear();
+        LootManager.Instance.ResetItemCount();
         _uiTitle.Show();
         _startButton.gameObject.SetActive(true);
         _exitButton.gameObject.SetActive(true);

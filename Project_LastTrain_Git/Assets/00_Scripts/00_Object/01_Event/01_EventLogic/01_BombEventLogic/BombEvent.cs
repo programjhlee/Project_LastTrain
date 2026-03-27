@@ -53,7 +53,7 @@ public class BombEvent : Event,ITrainDamageEvent
 
     IEnumerator ExplosiveProcess()
     {
-        transform.DOShakeScale(1f,5f,10);
+        transform.DOShakeScale(1f,2f);
         _col.size = new Vector3(2, 2, 2);
         float warningTime = 0.125f;
         while (curTime <= 1f)

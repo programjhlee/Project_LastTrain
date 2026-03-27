@@ -121,6 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ae16524f9bcdf468478a484e013bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _coinDropSound: {fileID: 8300000, guid: 8b808349418576146ac1283aad7d0f8d, type: 3}
+  _coinGetSound: {fileID: 8300000, guid: fc69e057814328841bbe0c7324f2449a, type: 3}
   spawnDirX: 0
 --- !u!114 &-4445900074385722933
 MonoBehaviour:

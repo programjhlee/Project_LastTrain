@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public abstract class Cutscene : UI_Base
 {
-    public CutsceneManager.CutsceneType CutsceneType { get; protected set; }
+    public abstract CutsceneManager.CutsceneType CutsceneType { get;}
 
     public abstract IEnumerator CutsceneExecute();
 

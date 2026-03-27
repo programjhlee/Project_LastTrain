@@ -11,14 +11,15 @@ public class GameOverCutscene : Cutscene
     //[SerializeField] Sprite _gameOverCutImage;
     [SerializeField] Text _gameOverText;
 
+    public override CutsceneManager.CutsceneType CutsceneType => CutsceneManager.CutsceneType.GameOver;
+
     public void Awake()
     {
-        CutsceneType = CutsceneManager.CutsceneType.GameOver;
+        _gameScene = GameObject.FindAnyObjectByType<GameScene>();
         gameObject.SetActive(false);
     }
     public override void CutsceneClear()
     {
-        UIManager.Instance.FadeOut();
         gameObject.SetActive(false);
     }
     public override IEnumerator CutsceneExecute()

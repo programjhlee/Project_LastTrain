@@ -17,7 +17,7 @@ public class LootManager : SingletonManager<LootManager>
 
     UI_Coin _uiCoin;
     public event Action<int> OnItemCountChanged;
-    
+
     void Awake()
     {
         Init();
@@ -31,7 +31,7 @@ public class LootManager : SingletonManager<LootManager>
 
         _activeItemList = new List<Item>();
         _removeItemList = new List<Item>();
-        for(int i = 0; i < _itemDatas.Count; i++)
+        for (int i = 0; i < _itemDatas.Count; i++)
         {
             _itemDataDics[_itemDatas[i].GetItemType()] = _itemDatas[i];
         }
@@ -40,9 +40,9 @@ public class LootManager : SingletonManager<LootManager>
         for (int i = 0; i < _dropList.Count; i++)
         {
             List<DropTable.DropEntry> currentDropEntry = _dropList[i].DropItems;
-            for(int j = 0; j < currentDropEntry.Count; j++)
+            for (int j = 0; j < currentDropEntry.Count; j++)
             {
-                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 10;
+                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 0;
                 GameObject items = new GameObject(currentDropEntry[j].Item.gameObject.name);
                 for (int k = 0; k < 50; k++)
                 {
@@ -56,7 +56,7 @@ public class LootManager : SingletonManager<LootManager>
                         _itemDics[itemScript.GetType()] = new List<Item>();
                     }
                     _itemDics[itemScript.GetType()].Add(itemScript);
-                    
+
                     item.SetActive(false);
                 }
             }
@@ -64,7 +64,7 @@ public class LootManager : SingletonManager<LootManager>
     }
     public void Update()
     {
-        for(int i = 0; i < _activeItemList.Count; i++)
+        for (int i = 0; i < _activeItemList.Count; i++)
         {
             if (!_activeItemList[i].gameObject.activeSelf)
             {
@@ -73,20 +73,20 @@ public class LootManager : SingletonManager<LootManager>
             }
             _activeItemList[i].OnUpdate();
         }
-        for(int i = 0; i < _removeItemList.Count; i++)
+        for (int i = 0; i < _removeItemList.Count; i++)
         {
             _activeItemList.Remove(_removeItemList[i]);
         }
         _removeItemList.Clear();
     }
 
-    public void DropItemAt<T>(T dropTarget) where T : IDroppedItem 
+    public void DropItemAt<T>(T dropTarget) where T : IDroppedItem
     {
         int rndCnt;
         float rndChance;
-        DropTable  currentDropTable = _dropList[0];
+        DropTable currentDropTable = _dropList[0];
 
-        for(int i = 0; i < currentDropTable.DropItems.Count; i++)
+        for (int i = 0; i < currentDropTable.DropItems.Count; i++)
         {
             rndCnt = UnityEngine.Random.Range(1, 3);
             rndChance = UnityEngine.Random.Range(0f, 1f);
@@ -156,5 +156,18 @@ public class LootManager : SingletonManager<LootManager>
     public int GetHasCoin()
     {
         return GetHasItem<Coin>();
+    }
+
+    public void ResetItemCount()
+    {
+        for (int i = 0; i < _dropList.Count; i++)
+        {
+            List<DropTable.DropEntry> currentDropEntry = _dropList[i].DropItems;
+            for (int j = 0; j < currentDropEntry.Count; j++)
+            {
+                _itemResourceCntDics[currentDropEntry[j].Item.GetType()] = 0;
+                OnItemCountChanged?.Invoke(_itemResourceCntDics[currentDropEntry[j].Item.GetType()]);
+            }
+        }
     }
 }
