@@ -15,7 +15,6 @@ public class UI_Distance : UI_Base
     {
         _platformController = GameObject.FindAnyObjectByType<PlatformController>();
         _textRectOriginPos = _uiTextRect.anchoredPosition;
-        Debug.Log(_textRectOriginPos);
     }
     public void OnEnable()
     {

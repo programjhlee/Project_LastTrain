@@ -15,7 +15,6 @@ public class UI_HUDControlGuide : UI_HUD
         _uiControlGuideData = uiData;
         _uiGuideImage.sprite = uiData.ControlGuideKeyImage;
         _uiGuideStr = uiData.ControlGuideText;
-        Debug.Log(_uiGuideStr);
         transform.localScale = new Vector2(1, 0);
     }
 

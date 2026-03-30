@@ -56,7 +56,6 @@ public class SoundManager : SingletonManager<SoundManager>
         BGMType[] bgmKey = (BGMType[])Enum.GetValues(typeof(BGMType));
         for(int i = 0; i < bgmKey.Length; i++)
         {
-            Debug.Log($"{bgmKey[i]} , {_bgmSounds[i]}");
             _BGMDict[bgmKey[i]] = _bgmSounds[i];
         }
     }
@@ -72,10 +71,8 @@ public class SoundManager : SingletonManager<SoundManager>
     }
     public void PlayBGM(BGMType type)
     {
-        Debug.Log("BGM Ω√¿€!");
         if (_BGMDict.TryGetValue(type, out AudioClip playClip))
         {
-            Debug.Log(playClip);
             PlayBGM(_BGMDict[type]);
         }
     }

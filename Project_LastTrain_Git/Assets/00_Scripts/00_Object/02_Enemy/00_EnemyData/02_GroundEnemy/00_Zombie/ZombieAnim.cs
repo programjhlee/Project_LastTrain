@@ -57,13 +57,11 @@ public class ZombieAnim : MonoBehaviour
         
         for(int i = 0; i < mats.Length; i++) 
         {
-            Debug.Log(mats[i].name);
             mats[i].color = Color.red;
         }
         yield return new WaitForSeconds(0.2f);
         for (int i = 0; i < mats.Length; i++)
         {
-            Debug.Log(mats[i].name);
             mats[i].color = Color.white;
         }
     }

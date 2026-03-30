@@ -35,8 +35,6 @@ public class TrainEventSystem : MonoBehaviour
     {
         eventLevelSpawnTimeData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
         trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
-        eventLevelSpawnTimeData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
-        trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
 
         eventSightChecker = GetComponent<EventSightChecker>();
         rend = trainBack.GetComponent<Renderer>();

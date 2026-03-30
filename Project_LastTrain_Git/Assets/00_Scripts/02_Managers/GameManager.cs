@@ -24,8 +24,8 @@ public class GameManager : SingletonManager<GameManager>
     public enum GameState
     {
         Title,
-        GameStart,
         Tutorial,
+        GameStart,
         GamePlaying,
         StageStart,
         StageClear,
@@ -42,7 +42,7 @@ public class GameManager : SingletonManager<GameManager>
     }
     void OnEnable()
     {
-        State = GameState.GamePaused;
+        State = GameState.Title;
         _train.OnTrainDestroy += GameOver;
         _platformController.OnDistanceZero += StageClear;
         _platformController.OnPlatformArrived += () => _menuButton.gameObject.SetActive(true);
@@ -79,6 +79,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public void GameStart()
     {
+        State = GameState.GameStart;
         SoundManager.Instance.PlayBGM(SoundManager.BGMType.GameBGM);
         StartCoroutine(GameStartProcess(() =>
         {
@@ -90,6 +91,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public void StageStart()
     {
+        State = GameState.StageStart;
         StartCoroutine(StageStartProcess(() =>
 		{
 			State = GameState.GamePlaying;

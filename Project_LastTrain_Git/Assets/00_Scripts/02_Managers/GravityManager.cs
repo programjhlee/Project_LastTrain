@@ -67,7 +67,7 @@ public class GravityManager : SingletonManager<GravityManager>
 
                 obj.YVel = 0;
                 obj.TargetTransform.position = new Vector3(obj.TargetTransform.position.x, obj.CollideChecker.GetLandYPos(), 0);
-                Debug.Log($"{obj} :착지 성공! 착지 위치 {obj.TargetTransform.position}");
+              
             }
         }
     }

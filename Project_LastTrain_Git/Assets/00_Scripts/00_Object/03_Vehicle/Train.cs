@@ -4,12 +4,12 @@ using UnityEngine;
 using System;
 public class Train : MonoBehaviour
 {
+    [SerializeField] GameObject _trainGameObject;
+
     float _maxHp;
     float _curHp;
     
     bool _isRunning = false;
-    [SerializeField] GameObject _trainGameObject;
-    public event Action OnInit;
     public event Action OnReset;
     public event Action<float> OnDamaged;
     public event Action<float> OnHpChanged;

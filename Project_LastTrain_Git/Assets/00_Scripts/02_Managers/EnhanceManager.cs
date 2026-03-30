@@ -26,7 +26,6 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
     public event Action OnNotEnoughMoney;
     public event Action OnTrainHpFull;
     public event Action<PlayerData> OnPlayerEnhance;
-    public event Action<float> OnTrainHpChanged;
 
 
     int enhancePrice;
@@ -93,11 +92,9 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
         }
         if(_train.CurHp >= _train.MaxHp)
         {
-            Debug.Log("열차 체력 만땅..");
             OnTrainHpFull?.Invoke();
             return;
         }
-        Debug.Log("열차 수리 완료!");
         LootManager.Instance.DecreaseCoin(fixPrice);
         OnFixSucess?.Invoke();
         for (int i = 0; i < _enhanceValueData.Count; i++)

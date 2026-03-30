@@ -73,7 +73,6 @@ public class BigEventSystem : MonoBehaviour
 
     public BigEvent SpawnBigEvent()
     {
-        Debug.Log("BigEvent»ý¼º!");
         SoundManager.Instance.PlaySFX(_warningSound);
         _switch.SwitchActive();
         bigEvent.Init(_platformController.TrainSpeed, _train);
