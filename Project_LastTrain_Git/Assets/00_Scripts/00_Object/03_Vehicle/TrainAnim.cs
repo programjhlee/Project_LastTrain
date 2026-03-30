@@ -115,7 +115,7 @@ public class TrainAnim : MonoBehaviour
         while (_trainTransform.position.x < 0)
         {
             _trainTransform.position = Vector3.Lerp(_trainTransform.position, targetPos, speed * Time.deltaTime);
-            if(Vector3.Distance(_trainTransform.position,targetPos) <= 0.01f)
+            if(Vector3.Distance(_trainTransform.position,targetPos) <= 0.5f)
             {
                 _trainTransform.position = targetPos;
             }

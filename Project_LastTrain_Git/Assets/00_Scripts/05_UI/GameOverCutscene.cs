@@ -9,8 +9,8 @@ public class GameOverCutscene : Cutscene, IPointerClickHandler
 {
     [SerializeField] Canvas _canvas;
     [SerializeField] GameScene _gameScene;
-    //[SerializeField] Sprite _gameOverCutImage;
-    [SerializeField] Text _gameOverText;
+    [SerializeField] AudioClip _gameOverSound;
+    [SerializeField] RectTransform _gameOverTextRect;
     UI_Caution _uiCaution;
     bool _isProcess;
     public override CutsceneManager.CutsceneType CutsceneType => CutsceneManager.CutsceneType.GameOver;
@@ -28,9 +28,10 @@ public class GameOverCutscene : Cutscene, IPointerClickHandler
     public override IEnumerator CutsceneExecute()
     {
         _isProcess = true;
+        SoundManager.Instance.PlaySFX(_gameOverSound);
         gameObject.SetActive(true);
         UIManager.Instance.FadeIn();
-        _gameOverText.DOColor(new Color(255, 255, 255, 255f), 1f);
+        _gameOverTextRect.DOPunchAnchorPos(new Vector2(0, 150f), 1f, 5, 1f);
         yield return new WaitForSeconds(2f);
         _isProcess = false;
         ShowReturnToTitleCaution();

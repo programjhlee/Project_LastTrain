@@ -45,6 +45,7 @@ public class GameManager : SingletonManager<GameManager>
         State = GameState.GamePaused;
         _train.OnTrainDestroy += GameOver;
         _platformController.OnDistanceZero += StageClear;
+        _platformController.OnPlatformArrived += () => _menuButton.gameObject.SetActive(true);
         LevelManager.Instance.OnAllLevelClear += GameAllClear;
     }
     void OnDisable()
@@ -66,11 +67,11 @@ public class GameManager : SingletonManager<GameManager>
     IEnumerator TutorialStartProcess()
     {
         _trainSound.PlayTrainStartSound();
-        yield return StartCoroutine(_trainAnim.StartTrainAnim(new Vector3(0,-4,0), 5f));
+        yield return StartCoroutine(_trainAnim.StartTrainAnim(new Vector3(0,-4,0), 3f));
         _trainSound.PlayTrainRunningSound();
         State = GameState.Tutorial;        
         UIManager.Instance.ShowUIAt<UI_TrainHP>(new Vector3(0, -420));
-        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(300,-150));
+        UIManager.Instance.ShowUIAt<UI_Coin>(new Vector3(250,-150));
         _menuButton.gameObject.SetActive(true);
         _tutorialSystem.TutorialStart();
         OnTutorialStart?.Invoke();
@@ -78,6 +79,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public void GameStart()
     {
+        SoundManager.Instance.PlayBGM(SoundManager.BGMType.GameBGM);
         StartCoroutine(GameStartProcess(() =>
         {
             State = GameState.GamePlaying;
@@ -88,7 +90,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public void StageStart()
     {
-		StartCoroutine(StageStartProcess(() =>
+        StartCoroutine(StageStartProcess(() =>
 		{
 			State = GameState.GamePlaying;
             OnGameStart?.Invoke();
@@ -106,6 +108,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public IEnumerator GameStartProcess(Action OnComplete)
     {
+        SoundManager.Instance.VolumeFadeIn(3f);
         _menuButton.gameObject.SetActive(false);
         UIManager.Instance.ShowUIAt<UI_StageAnnounce>(new Vector2(0,250));
         yield return new WaitForSeconds(4f);
@@ -121,12 +124,15 @@ public class GameManager : SingletonManager<GameManager>
     public IEnumerator GameAllClearProcess()
     {
         State = GameState.GameAllClear;
+        SoundManager.Instance.VolumeFadeOut();
         _trainSound.PlayTrainStartSound();
         CameraManager.Instance.AllClearCamProcess();
-        yield return new WaitForSeconds(3f);
-        UIManager.Instance.FadeOut();
+        yield return new WaitForSeconds(4f);
         _trainSound.StopTrainRunningSound();
-        Debug.Log("올클리어를 축하드립니다!");
+        UIManager.Instance.FadeOut();
+        SoundManager.Instance.StopBGM();
+        yield return new WaitForSeconds(1f);
+        CutsceneManager.Instance.PlayCutScene(CutsceneManager.CutsceneType.GameClear);
     }
 
     public void Init()
@@ -160,12 +166,14 @@ public class GameManager : SingletonManager<GameManager>
 
     public void StageClear()
     {
+        _menuButton.gameObject.SetActive(false);
         if (LevelManager.Instance.IsMaxLevel())
         {
             OnAllStageClear?.Invoke();
             StartCoroutine(GameAllClearProcess());
             return;
         }
+        SoundManager.Instance.VolumeFadeOut(3f, 0.2f);
         OnStageClear?.Invoke();
         State = GameState.StageClear;
     }
@@ -177,6 +185,7 @@ public class GameManager : SingletonManager<GameManager>
     }
     public void GameOver()
     {
+        SoundManager.Instance.StopBGM();
         State = GameState.GameOver;
         OnGameOver?.Invoke();
         StartCoroutine(GameOverProcess());

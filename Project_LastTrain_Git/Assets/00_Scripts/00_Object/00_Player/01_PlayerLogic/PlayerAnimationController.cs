@@ -39,6 +39,7 @@ public class PlayerAnimationController : MonoBehaviour
         _playerAction.OnFix -= PlayAnimAttack;
         _playerAction.OnHit -= PlayAnimHit;
         _playerAction.OnDodge -= PlayAnimDodge;
+        _playerAction.OnPlayerReset -= ResetPlayerAnimation;
 
         _playerAction.OnJump += PlayAnimJump;
         _playerAction.OnLand += OnPlayerLand;
@@ -47,11 +48,7 @@ public class PlayerAnimationController : MonoBehaviour
         _playerAction.OnFix += PlayAnimAttack;
         _playerAction.OnHit += PlayAnimHit;
         _playerAction.OnDodge += PlayAnimDodge;
-        
-        for (int i = 0; i < _playerRend.Count; i++)
-        {
-            _playerRend[i].material.color = Color.white;
-        }
+        _playerAction.OnPlayerReset += ResetPlayerAnimation;
     }
 
     public void OnAnimationUpdate()
@@ -101,4 +98,15 @@ public class PlayerAnimationController : MonoBehaviour
             _playerRend[i].material.color = Color.white;
         }
     }
+
+
+    public void ResetPlayerAnimation()
+    {
+        StopAllCoroutines();
+        for (int i = 0; i < _playerRend.Count; i++)
+        {
+            _playerRend[i].material.color = Color.white;
+        }
+    }
+
 }

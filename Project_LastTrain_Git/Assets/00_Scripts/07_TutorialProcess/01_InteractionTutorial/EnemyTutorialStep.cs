@@ -6,7 +6,7 @@ using System;
 [CreateAssetMenu(fileName = "EnemyTutorialStep", menuName ="Create Tutorial File/EnemyTutorial")]
 public class EnemyTutorialStep : TutorialStep
 {
-    [SerializeField] AnnounceStrategyQuest _announceStrategyQuest;
+    [SerializeField] AnnounceStrategyQuest _uiAnnounceStrategy;
     [SerializeField] Sprite _attackKeySprite;
     UI_Announce _uiAnnounce;
     EnemySpawner _enemySpawner;
@@ -15,10 +15,6 @@ public class EnemyTutorialStep : TutorialStep
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
-        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
-        _uiAnnounce.Init();
-        _uiAnnounce.SetUIStrategy(_announceStrategyQuest);
-        _uiAnnounce.SetQuestSprite(_attackKeySprite);
         _enemySpawner = system.enemySpawner;
         
     }
@@ -28,6 +24,15 @@ public class EnemyTutorialStep : TutorialStep
         _enemyList = new List<Enemy>();
         int curCnt = 0;
         int targetCnt = 3;
+
+        _uiAnnounce = UIManager.Instance.ShowAnnounce(
+          _uiAnnounceStrategy,
+         $"TO ATTACK \n<size=20> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>",
+          new Vector2(0, 300f)
+          );
+        _uiAnnounce.Init();
+        _uiAnnounce.SetQuestSprite(_attackKeySprite);
+
         for (int i = 0; i < targetCnt; i++)
         {
             Enemy enemy = _enemySpawner.SpawnEnemy();
@@ -53,15 +58,19 @@ public class EnemyTutorialStep : TutorialStep
                 }
                 _enemyList[i].OnUpdate();
             }
-            _uiAnnounce.SetAnnounceText($"TO ATTACK \r\n<size=25> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
+            _uiAnnounce.SetAnnounceText($"TO ATTACK \n<size=20> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
             yield return _waitForEndOfFrame;
         }
-        _uiAnnounce.SetAnnounceText($"TO ATTACK \r\n<size=25> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
+        _uiAnnounce.SetAnnounceText($"TO ATTACK \n<size=20> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
         _uiAnnounce.QuestClear();
     }
 
     public override void Release()
     {
+        for (int i = 0; i < _enemyList.Count; i++)
+        {
+            _enemyList[i].OnDespawn();
+        }
         _enemyList.Clear();
         if (_uiAnnounce != null)
         {

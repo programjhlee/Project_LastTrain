@@ -8,7 +8,7 @@ public class JumpTutorialStep : TutorialStep
 {
     [SerializeField] AnnounceStrategyQuest _uiAnnounceStrategy;
     [SerializeField] Sprite _jumpKeySprite; 
-    UI_Announce _uiAnnounce;
+    [SerializeField] UI_Announce _uiAnnounce;
     Player _p;
     PlayerAction _pAction;
     Action _onJumpAction;
@@ -18,10 +18,6 @@ public class JumpTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
-        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
-        _uiAnnounce.Init();
-        _uiAnnounce.SetUIStrategy(_uiAnnounceStrategy);
-        _uiAnnounce.SetQuestSprite(_jumpKeySprite);
     }
 
 
@@ -31,6 +27,13 @@ public class JumpTutorialStep : TutorialStep
         int jumpTutorialClearCnt = 3;
         _onJumpAction = () => { curCnt++; };
         _pAction.OnJump += _onJumpAction;
+        _uiAnnounce = UIManager.Instance.ShowAnnounce(
+            _uiAnnounceStrategy,
+           $"TO JUMP \n<size=20> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>",
+            new Vector2(0, 300f)
+            );
+        _uiAnnounce.Init();
+        _uiAnnounce.SetQuestSprite(_jumpKeySprite);
         while (curCnt < jumpTutorialClearCnt)
         {
             if (GameManager.Instance.IsPaused())
@@ -38,10 +41,10 @@ public class JumpTutorialStep : TutorialStep
                 yield return null;
                 continue;
             }
-            _uiAnnounce.SetAnnounceText($"TO JUMP \r\n<size=25> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>");
+            _uiAnnounce.SetAnnounceText($"TO JUMP \n<size=20> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>");
             yield return _waitForEndOfFrame;
         }
-        _uiAnnounce.SetAnnounceText($"TO JUMP \r\n<size=25> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>");
+        _uiAnnounce.SetAnnounceText($"TO JUMP \n<size=20> JUMP {curCnt:D2} / {jumpTutorialClearCnt:D2}</size>");
         _uiAnnounce.QuestClear();
     }
     public override void Release()

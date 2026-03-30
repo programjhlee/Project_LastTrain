@@ -22,8 +22,6 @@ public class CutsceneManager : SingletonManager<CutsceneManager>
         _cutsceneDict = new Dictionary<CutsceneType, Cutscene>();
         for(int i = 0; i < _cutsceneList.Count; i++)
         {
-            Debug.Log(_cutsceneList[i].CutsceneType);
-
             Cutscene instance = Instantiate(_cutsceneList[i].gameObject,Vector3.zero,Quaternion.identity).GetComponent<Cutscene>();
             instance.transform.SetParent(_canvas.transform);
             instance.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;

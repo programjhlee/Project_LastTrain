@@ -167,8 +167,7 @@ public class EnemySpawner : MonoBehaviour
             }
             spawnEnemy = selectEnemyPool.transform.GetChild(i).GetComponent<Enemy>();
             spawnEnemy.Init(_enemyDataDics[selectEnemyID]);
-            spawnEnemy.SetEnemyPos(new Vector3(Random.Range(_trainCol.bounds.min.x, _trainCol.bounds.max.x), transform.position.y, 0));
-            spawnEnemy.gameObject.SetActive(true);
+            spawnEnemy.SetEnemyPos(new Vector3(Random.Range(_trainCol.bounds.min.x, _trainCol.bounds.max.x), _trainCol.bounds.max.y, 0));
             _activeEnemies.Add(spawnEnemy);
             break;
         }

@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "UI_HUDStrategy",menuName = "Create UI_HUD_StrategyData")]
 public class UI_HUDValueBarStrategyData : ScriptableObject
 {
-    [SerializeField] Color _fillColor;
+    [SerializeField] Sprite _fillSprite;
     [SerializeField] Vector2 _uiHudSize;
 
-    public Color FillColor
+    public Sprite FillSprite
     {
         get
         {
-            return _fillColor; 
+            return _fillSprite ; 
         }
         private set
         {
-            _fillColor = value;
+            _fillSprite = value;
         }
     }
     public Vector2 UIHUDSize

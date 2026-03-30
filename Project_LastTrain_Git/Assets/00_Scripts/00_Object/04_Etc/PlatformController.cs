@@ -70,7 +70,6 @@ public class PlatformController : MonoBehaviour
 
     public void SetPlatformData()
     {
-        Debug.Log("SetPlatfomrData ¿Ï·á!");
         for (int i = 0; i < platformDataTable.Count; i++)
         {
             if (int.Parse(platformDataTable[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)

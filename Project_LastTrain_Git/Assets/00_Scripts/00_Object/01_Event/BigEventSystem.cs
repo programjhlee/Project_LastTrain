@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BigEventSystem : MonoBehaviour
 {
+    [SerializeField] AnnounceStrategyAlert _announceAlert;
+    [SerializeField] UI_Announce _uiAnnounce;
     [SerializeField] AudioClip _warningSound;
     [SerializeField] GameObject _bigEventPrefab;
     [SerializeField] Switch _switch;
@@ -48,7 +51,7 @@ public class BigEventSystem : MonoBehaviour
             if (int.Parse(bigEventSpawnData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
             {
                 currentIdx = i;
-                rndTime = Random.Range(int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMAX"].ToString()));
+                rndTime = UnityEngine.Random.Range(int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMAX"].ToString()));
                 break;
             }
         }
@@ -59,7 +62,6 @@ public class BigEventSystem : MonoBehaviour
         {
             return;
         }
-       
         curTime += Time.deltaTime;
 
         if(curTime >= rndTime && !bigEvent.gameObject.activeSelf)
@@ -71,18 +73,32 @@ public class BigEventSystem : MonoBehaviour
 
     public BigEvent SpawnBigEvent()
     {
+        Debug.Log("BigEvent»ý¼º!");
         SoundManager.Instance.PlaySFX(_warningSound);
         _switch.SwitchActive();
         bigEvent.Init(_platformController.TrainSpeed, _train);
         bigEvent.OnTrainCrashed += _train.TakeDamage;
         bigEvent.OnDestroy += _switch.SwitchUnActive;
-
-        rndTime = Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
+        bigEvent.OnDestroy += HideAnnounceUI;
+        _uiAnnounce = UIManager.Instance.ShowAnnounce(_announceAlert, "GO TO THE FRONT!!", new Vector2(0, 300f));
+        rndTime = UnityEngine.Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
         return bigEvent;
+    }
+
+    public void HideAnnounceUI()
+    {
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
     }
     public void TurnOffBigEvent()
     {
         curTime = 0;
+        if(_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
         if (bigEvent.gameObject.activeSelf)
         {
             _switch.SwitchUnActive();

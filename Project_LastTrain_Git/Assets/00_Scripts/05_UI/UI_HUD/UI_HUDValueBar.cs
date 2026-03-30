@@ -13,7 +13,7 @@ public class UI_HUDValueBar : UI_HUD
     { 
         _uiRect = GetComponent<RectTransform>();
         _strategyData = strategyData;
-        _fillImage.color = _strategyData.FillColor;
+        _fillImage.sprite = _strategyData.FillSprite;
         _uiRect.sizeDelta = _strategyData.UIHUDSize;
         transform.localScale = new Vector3(1, 1, 1);
         _slider.value = 1;

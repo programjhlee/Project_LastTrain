@@ -100,7 +100,7 @@ public class CollideChecker : MonoBehaviour
     {
         Vector3 rayDirection = new Vector3(moveDir.x , -_col.bounds.extents.y, 0);
         rayDirection.Normalize();
-        IsCliff = !Physics.Raycast(transform.position, rayDirection,1.5f,_groundLayer);
+        IsCliff = !Physics.Raycast(transform.position, rayDirection,3f,_groundLayer);
         Debug.DrawRay(transform.position, rayDirection, Color.red);
     }
 

@@ -47,9 +47,9 @@ public class Train : MonoBehaviour
             _curHp = value;
         }
     }
-
     public void OnEnable()
     {
+
         GameManager.Instance.OnTutorialStart += StartRunning;
         GameManager.Instance.OnAllStageClear += StopRunning;
         GameManager.Instance.OnStageClear += StopRunning;
@@ -62,6 +62,10 @@ public class Train : MonoBehaviour
         GameManager.Instance.OnStageClear -= StopRunning;
         GameManager.Instance.OnStageStart -= StartRunning;
     }
+    public void Start()
+    {
+        SoundManager.Instance.AddObjAudioSource(gameObject);
+    }
     public void ResetTrainHp()
     {
         _maxHp = 100;
@@ -70,6 +74,7 @@ public class Train : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        Debug.Log($"데미지 받음 Damage : {damage}");
         _curHp -= damage;
         OnHpChanged?.Invoke(_curHp/_maxHp);
         if (_curHp <= 0)

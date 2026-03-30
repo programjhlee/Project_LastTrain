@@ -6,6 +6,7 @@ public class BigEvent : MonoBehaviour
 {
     [SerializeField] AudioClip _bigEventSoundEffect;
     [SerializeField] GameObject _bigEventEffect;
+    [SerializeField] AnnounceStrategyAlert _announceStrategyAlert;
     UI_BigEventCaution _ui_caution;
     Renderer _eventRend;
     Vector3 _trainFrontPos;
@@ -48,7 +49,7 @@ public class BigEvent : MonoBehaviour
         float arrivedTime = trainRend.bounds.center.x + trainRend.bounds.extents.x + Mathf.Max(speed * 6 - LevelManager.Instance.Level, 3f); 
         transform.position = new Vector3(arrivedTime, trainRend.bounds.center.y, trainRend.bounds.center.z);
         _trainFrontPos = new Vector3(trainRend.bounds.center.x + trainRend.bounds.extents.x, trainRend.bounds.center.y, trainRend.bounds.center.z);
-        _ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(725, 350));
+        _ui_caution = UIManager.Instance.ShowUIAt<UI_BigEventCaution>(new Vector2(745, 150));
     }
 
     public void OnDisable()
@@ -80,15 +81,24 @@ public class BigEvent : MonoBehaviour
     }
 
 
+
     public void OnTriggerEnter(Collider coll)
     {
-        Instantiate(_bigEventEffect,transform.position, Quaternion.identity);
-        SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
+        if (coll.gameObject.CompareTag("Shield"))
+        {
+            Debug.Log("½Çµå¿¡ ºÎµúÇû¾î¿ä!!");
+            Instantiate(_bigEventEffect, transform.position, Quaternion.identity);
+            SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
+            gameObject.SetActive(false);
+        }
         if (coll.gameObject.CompareTag("Train"))
         {
+            Debug.Log("¿­Â÷¿¡ ºÎµúÇû¾î¿ä!!");
+            Instantiate(_bigEventEffect, transform.position, Quaternion.identity);
+            SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
             OnTrainCrashed?.Invoke(_damage);
+            gameObject.SetActive(false);
         }
-        gameObject.SetActive(false);
     }
 
 }

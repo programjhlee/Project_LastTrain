@@ -119,19 +119,19 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HighIntensity: 1.5
+    - _HighIntensity: 1
     - _LightScalar: 1
     - _LowIntensity: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineSize: 15.14
+    - _OutlineSize: 35
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _RampLevels: 2
     - _ReceiveShadows: 1
-    - _RimAlpha: 0
-    - _RimDropOff: 0
-    - _RimPower: 0
+    - _RimAlpha: 1
+    - _RimDropOff: 1
+    - _RimPower: 0.2
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -143,10 +143,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FresnelColor: {r: 0, g: 0, b: 0, a: 1}
     - _HighColor: {r: 1, g: 1, b: 1, a: 1}
     - _LowColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

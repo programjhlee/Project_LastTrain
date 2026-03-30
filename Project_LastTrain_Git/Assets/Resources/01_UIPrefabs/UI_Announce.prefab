@@ -93,7 +93,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2859643387414768452
 RectTransform:
   m_ObjectHideFlags: 0
@@ -177,7 +177,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943213883414609844}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.021851838}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -186,7 +186,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 120, y: 0}
-  m_SizeDelta: {x: 925, y: 240}
+  m_SizeDelta: {x: 520, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8892152156603196272
 CanvasRenderer:
@@ -216,9 +216,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'TO MOVE
-
-    <size=25> Distance  0 / 20m</size>'
+  m_text: "TO JUMP \n<size=20> JUMP 00 / 03</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1642ffb07955c974ebd1ac85fc814b70, type: 2}
   m_sharedMaterial: {fileID: 1365856396814959779, guid: 1642ffb07955c974ebd1ac85fc814b70, type: 2}
@@ -315,7 +313,7 @@ RectTransform:
   m_GameObject: {fileID: 3160889934073997402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3409419901947265752}
@@ -378,12 +376,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiRect: {fileID: 6137245565664116700}
-  _showSound: {fileID: 0}
-  _hideSound: {fileID: 0}
+  _showSound: {fileID: 8300000, guid: 9c6b210daf1c96440a2bdc2a6d259677, type: 3}
+  _hideSound: {fileID: 8300000, guid: 83a885f051058b14da6f659e3bd96081, type: 3}
   _announceText: {fileID: 7557314951618295516}
-  _checkBox: {fileID: 343223650200684907}
+  _checkBox: {fileID: 7153138107580417974}
   _questImage: {fileID: 710816450537500628}
   _checkImage: {fileID: 133722218251384739}
+  _questClearSound: {fileID: 8300000, guid: 83d5e518a9af5bf4fa7f6def78e52c7e, type: 3}
   _textPanelRect: {fileID: 3821782154388897685}
   _textRect: {fileID: 7914615961054857006}
 --- !u!1 &3235824056506989332
@@ -422,8 +421,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120.07, y: 0}
-  m_SizeDelta: {x: 1160, y: 240}
+  m_AnchoredPosition: {x: 120, y: 0}
+  m_SizeDelta: {x: 760, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8832965370941108457
 CanvasRenderer:
@@ -528,7 +527,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c5d6cf0940f164d418500d839e57c2d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fa1362334ad066a4da2e9d64f1dbad20, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -571,7 +570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -259.93, y: 0}
+  m_AnchoredPosition: {x: -260, y: 0}
   m_SizeDelta: {x: 240, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7153138107580417974

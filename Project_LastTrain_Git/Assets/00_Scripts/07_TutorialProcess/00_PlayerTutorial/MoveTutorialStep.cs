@@ -11,17 +11,20 @@ public class MoveTutorialStep : TutorialStep
     UI_Announce _uiAnnounce;
     public override void Bind(TutorialSystem system)
     {
-        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0,300f));
-        _uiAnnounce.Init();
-        _uiAnnounce.SetUIStrategy(_uiAnnounceStrategy);
-        _uiAnnounce.SetQuestSprite(_moveKeySprite);
+        
     }
 
     public override IEnumerator Run()
     {
         float curDistance = 0;
         float movementTutorialClearDistance = 20f;
-       
+        _uiAnnounce = UIManager.Instance.ShowAnnounce(
+            _uiAnnounceStrategy,
+            $"TO MOVE \r\n<size=20> DISTANCE {curDistance:F2} / {movementTutorialClearDistance:F2}M</size>",
+            new Vector2(0, 300f)
+            );
+        _uiAnnounce.Init();
+        _uiAnnounce.SetQuestSprite(_moveKeySprite);
         while (curDistance < movementTutorialClearDistance)
         {
             if (GameManager.Instance.IsPaused())
@@ -29,7 +32,7 @@ public class MoveTutorialStep : TutorialStep
                 yield return null;
                 continue;
             }
-            _uiAnnounce.SetAnnounceText($"TO MOVE \r\n<size=25> DISTANCE {curDistance:F2} / {movementTutorialClearDistance:F2}M</size>");
+            _uiAnnounce.SetAnnounceText($"TO MOVE \r\n<size=20> DISTANCE {curDistance:F2} / {movementTutorialClearDistance:F2}M</size>");
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
             {
                 curDistance += 0.3f;
@@ -37,7 +40,7 @@ public class MoveTutorialStep : TutorialStep
             }
             yield return null;
         }
-        _uiAnnounce.SetAnnounceText($"TO MOVE \r\n<size=25> DISTANCE {curDistance:F2} / {movementTutorialClearDistance:F2}M</size>");
+        _uiAnnounce.SetAnnounceText($"TO MOVE \r\n<size=20> DISTANCE {curDistance:F2} / {movementTutorialClearDistance:F2}M</size>");
         _uiAnnounce.QuestClear();
     }
 

@@ -5,6 +5,7 @@ using System;
 
 public class BrokenEvent : Event,ITrainDamageEvent
 {
+    Coroutine _exitProcess;
     ParticleSystem[] _effects;
     [SerializeField] GameObject _fixEffect;
     Collider _col;
@@ -50,8 +51,11 @@ public class BrokenEvent : Event,ITrainDamageEvent
     }
     public override void Exit()
     {
-        StartCoroutine(ExitProcess());
-
+        if (_exitProcess != null)
+        {
+            StopCoroutine(_exitProcess);
+        }
+        _exitProcess = StartCoroutine(ExitProcess());
     }
     IEnumerator ExitProcess()
     {

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab47008d0ca183429f3a71457c52e6e, type: 3}
   m_Name: UI_HUDValueBarEvent
   m_EditorClassIdentifier: 
-  _fillColor: {r: 1, g: 0.6082859, b: 0, a: 1}
+  _fillSprite: {fileID: -6045235674028870251, guid: 7ed010a2b51d0fb4f9fee6a47b1334fd, type: 3}
   _uiHudSize: {x: 170, y: 50}

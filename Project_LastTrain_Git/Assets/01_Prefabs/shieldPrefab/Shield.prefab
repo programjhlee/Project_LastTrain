@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1213923299605432765}
   m_Layer: 0
   m_Name: Shield
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shieldEffect: {fileID: 7078805554712878042}
+  _shieldSoundEffect: {fileID: 0}
 --- !u!1001 &809434788776695981
 PrefabInstance:
   m_ObjectHideFlags: 0

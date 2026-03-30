@@ -9,6 +9,7 @@ public class BombEvent : Event,ITrainDamageEvent
     Player _player;
     [SerializeField] Renderer _rend;
     [SerializeField] AudioClip _bombEnterSound;
+    [SerializeField] AudioClip _bombFallSound;
     [SerializeField] AudioClip _bombExplosiveSound;
     [SerializeField] GameObject _bombEffect;
     [SerializeField] GameObject _fixEffect;
@@ -28,14 +29,15 @@ public class BombEvent : Event,ITrainDamageEvent
     public override void Enter(EventData initEventData, float x = 0, float y = 0)
     {
         transform.position = new Vector3(x, y + 10f, 0);
-        transform.DOMoveY(y, 0.7f).SetEase(Ease.InQuart).OnComplete(() => transform.DOShakeScale(0.5f));
-
+        transform.DOMoveY(y, 1.2f).SetEase(Ease.InQuart).OnComplete(() => transform.DOShakeScale(0.5f));
+        _col.size = Vector3.one;
         _evtHUDController.Init();
         curTime = 0;
         EventData = initEventData;
         _rend.material.color = Color.white;
         curFixAmount = EventData.FixAmount;
         _bombAudio.PlayOneShot(_bombEnterSound);
+        _bombAudio.PlayOneShot(_bombFallSound);
     }
 
 

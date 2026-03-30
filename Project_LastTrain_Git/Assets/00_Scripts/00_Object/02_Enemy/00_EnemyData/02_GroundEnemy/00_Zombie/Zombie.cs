@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using DG.Tweening;
 
 public class Zombie : GroundEnemy, IAttackable, IDroppedItem
 {
@@ -24,6 +25,7 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     public enum EnemyState
     {
         None,
+        Dead,
         Detect,
         Chase,
         Attack,
@@ -35,7 +37,9 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     public event Action OnChase;
     public event Action OnDamaged;
     public event Action OnAttack;
+    public event Action<Vector3> OnSetPosition;
     public event Action<Zombie> OnDied;
+    public event Action OnSpawn;
 
     public override void OnAwake()
     {
@@ -48,19 +52,19 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
     }
     public override void Init(EnemyData enemydt)
     {
+        gameObject.SetActive(true);
         base.Init(enemydt);
+        Curhp = enemyData.maxHp;
+        Maxhp = enemyData.maxHp;
 
         IsActive = true;
         _col.enabled = true;
-
-        Curhp = enemyData.maxHp;
-        Maxhp = enemyData.maxHp;
 
         enemyData.findDistance = 5f;
         enemyData.attackSpeed = 2f;
         enemyData.attackDistance = 1.5f;
 
-        _enemyState = EnemyState.Detect;
+        _enemyState = EnemyState.None;
         _moveDir = Vector3.left;
         stateTime = 0;
 
@@ -73,10 +77,26 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         OnDamaged += _enemyUIController.SetValueBarRatio;
         OnDied += LootManager.Instance.DropItemAt;
     }
+
+    public override void SetEnemyPos(Vector3 pos)
+    {
+        OnSetPosition?.Invoke(pos);
+        OnSpawn?.Invoke();
+        transform.position = pos - new Vector3(0,3,0);
+        transform.DOMoveY(pos.y + _col.bounds.extents.y + 0.1f, 1f).OnComplete(() => {
+            _enemyState = EnemyState.Detect;
+        }
+        );
+    }
+
     void OnDisable()
     {
         OnDamaged = null;
         OnDied = null;
+        OnChase = null;
+        OnAttack = null;
+        OnSetPosition = null;
+        OnSpawn = null;
     }
 
     public override void OnUpdate()
@@ -92,13 +112,6 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         switch (_enemyState)
         {
             case EnemyState.None:
-                IsActive = false;
-                _col.enabled = false;
-                stateTime += Time.deltaTime;
-                if(stateTime >= 3f)
-                {
-                    OnDespawn();
-                }
                 break;
 
             case EnemyState.Detect:
@@ -130,7 +143,6 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
 
 
                 }
-
                 break;
 
             case EnemyState.Chase:
@@ -168,7 +180,16 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
                 if (stateTime >= 0.5f)
                 {
                     stateTime = 0;
-                    _enemyState = EnemyState.None;
+                    _enemyState = EnemyState.Dead;
+                }
+                break;
+            case EnemyState.Dead:
+                IsActive = false;
+                _col.enabled = false;
+                stateTime += Time.deltaTime;
+                if (stateTime >= 3f)
+                {
+                    OnDespawn();
                 }
                 break;
         }
@@ -190,6 +211,8 @@ public class Zombie : GroundEnemy, IAttackable, IDroppedItem
         OnDamaged = null;
         OnAttack = null;
         OnDied = null;
+        OnSetPosition = null;
+        _player = null;
         gameObject.SetActive(false);
     }
 

@@ -45,6 +45,7 @@ public class TutorialSystem : MonoBehaviour
     public void TutorialStart()
     {
         _skipBtn.gameObject.SetActive(true);
+        _skipBtn.onClick.AddListener(SkipTutorial);
         StartCoroutine(AllTutorialProcess());
     }
 

@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2798056aafb6514f90c489bf6ee6fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _zombieSpawnEffect: {fileID: 4425129568585013132, guid: fe3bb73674ea78b429e214e5a79def9d, type: 3}
   _zombieRends: {fileID: 1164050551007917821}
 --- !u!114 &1128380983695872172
 MonoBehaviour:
@@ -188,6 +189,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8f35785a657ecd744bfed00b3b0e1bb1, type: 3}
   _deadSound: {fileID: 8300000, guid: 35b3db34693a2b1449beaebffc72cde3, type: 3}
   _attackSound: {fileID: 8300000, guid: e514660d68dc626499d4bf3c5c1b14b9, type: 3}
+  _spawnSound: {fileID: 8300000, guid: c94db0bc74495b64bb936d07099c17ee, type: 3}
 --- !u!1001 &726606641257258579
 PrefabInstance:
   m_ObjectHideFlags: 0

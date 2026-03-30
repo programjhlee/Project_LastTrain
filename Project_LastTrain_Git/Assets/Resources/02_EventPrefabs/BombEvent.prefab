@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rend: {fileID: 8373142380919933173}
   _bombEnterSound: {fileID: 8300000, guid: 88559d0baddbc4340bb67226ff3130d8, type: 3}
+  _bombFallSound: {fileID: 8300000, guid: d09862efe30b8c34aa3811fd5b483b91, type: 3}
   _bombExplosiveSound: {fileID: 8300000, guid: dd62092bc061a5e4ab5824b1c5ddd4da, type: 3}
   _bombEffect: {fileID: 3784945155588612436, guid: 8e49ee40c53c60041b2f70b17a59c871, type: 3}
   _fixEffect: {fileID: 8771972552311404799, guid: 91db29fd2780c8046a4678ec7cdc1abf, type: 3}

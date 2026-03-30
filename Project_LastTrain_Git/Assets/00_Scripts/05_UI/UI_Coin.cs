@@ -16,6 +16,7 @@ public class UI_Coin : UI_Base
     }
     public void OnEnable()
     {
+        GameManager.Instance.OnAllStageClear += () => gameObject.SetActive(false);
         GameManager.Instance.OnGameOver += ()=> gameObject.SetActive(false);
     }
     public void SetCoinText(int coin)

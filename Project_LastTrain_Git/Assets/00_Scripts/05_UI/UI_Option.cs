@@ -10,16 +10,18 @@ public class UI_Option : UI_Popup
     [SerializeField] Button _closeButton;
     public void SetBgmVolume(float value)
     {
-        SoundManager.Instance.SetBGMVolume(value);
+        SoundManager.Instance.SetUserBGMValue(value);
     }
 
     public void SetSfxVolume(float value)
     {
-        SoundManager.Instance.SetSFXVolume(value);
+        SoundManager.Instance.SetUserSFXValue(value);
     }
     public override void Show()
     {
         base.Show();
+        _bgmSlider.value = SoundManager.Instance.UserBGMVolumeSet;
+        _sfxSlider.value = SoundManager.Instance.UserSFXVolumeSet;
         _bgmSlider.interactable = true;
         _sfxSlider.interactable = true;
         _closeButton.interactable = true;
@@ -27,6 +29,7 @@ public class UI_Option : UI_Popup
     public override void Hide()
     {
         base.Hide();
+ 
         _bgmSlider.interactable = false;
         _sfxSlider.interactable = false;
         _closeButton.interactable = false;

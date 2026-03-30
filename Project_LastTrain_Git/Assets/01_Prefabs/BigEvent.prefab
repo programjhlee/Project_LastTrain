@@ -149,6 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bigEventSoundEffect: {fileID: 8300000, guid: 1e47eb6d715cb2d47b9ae01139e17d97, type: 3}
   _bigEventEffect: {fileID: 575319445162951685, guid: 5fde1f5ce93551647bceda3120176089, type: 3}
+  _announceStrategyAlert: {fileID: 11400000, guid: 386652f19af3b9149adcb2f9182c468f, type: 2}
+  _uiAnnounce: {fileID: 2770049178977248700, guid: b9977d2b09f03284090cf90ecb658a47, type: 3}
 --- !u!1001 &3956413779090940936
 PrefabInstance:
   m_ObjectHideFlags: 0

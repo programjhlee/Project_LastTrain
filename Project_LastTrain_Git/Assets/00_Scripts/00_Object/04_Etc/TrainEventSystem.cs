@@ -57,6 +57,7 @@ public class TrainEventSystem : MonoBehaviour
             for (int j = 0; j < 20; j++)
             {
                 Event poolEvent = Instantiate(Resources.Load<GameObject>(trainEventData[i]["PATH"].ToString())).GetComponent<Event>();
+                SoundManager.Instance.AddObjAudioSource(poolEvent.gameObject);
                 poolEvent.gameObject.name = $"{eventDataDics[eventID[i]]}_{j + 1}";
                 poolEvent.gameObject.SetActive(false);
                 poolEvent.transform.SetParent(eventPool);

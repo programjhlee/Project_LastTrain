@@ -23,7 +23,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
     public event Action OnInteraction;
     public event Action OnHit;
     public event Action OnDodge;
-
+    public event Action OnPlayerReset;
 
     bool _isActive =false;
     bool _isMoving = false;
@@ -97,12 +97,26 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     public void ResetPlayerData()
     {
+        transform.position = new Vector3(-10, 0, 0);
         if(_playerData != null)
         {
             _playerData.Level = 1;
             _playerData.AttackPower = 5;
             _playerData.FixPower = 2;
         }
+        StopAllCoroutines();
+        
+        _isHit = false;
+        _canHit = true;
+        _canRolling = true;
+        _canInteraction = true;
+        
+        for (int i = 0; i < _playerRend.Count; i++)
+        {
+            _playerRend[i].enabled = true;
+        }
+
+        OnPlayerReset?.Invoke();
     }
 
     public void ProcessMovement()
@@ -238,7 +252,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
 
     IEnumerator GetDamageSequence(Vector3 dir)
     {
-        _isHit = true;
+         _isHit = true;
         _canHit = false;
 
         float attackForce = 10f;
@@ -291,10 +305,6 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
         }
     }
 
-    public void ResetPlayerAction()
-    {
-        StopAllCoroutines();
-    }
     public void OnTrainDestroy()
     {
         gameObject.SetActive(false);
@@ -313,7 +323,7 @@ public class PlayerAction : MonoBehaviour,IGravityAffected
             StartCoroutine(GetDamageSequence(Vector3.zero));
         }
     }
-public void OnDrawGizmos()
+    public void OnDrawGizmos()
     {
         if (_col == null) return;
 

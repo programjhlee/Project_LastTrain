@@ -37,7 +37,7 @@ public class GameScene : MonoBehaviour
         LevelManager.Instance.ResetLevel();
         CameraManager.Instance.SetStartCamPrioirty();
         CameraManager.Instance.BlendModeInit();
-        SoundManager.Instance.PlayBGM(_titleSound);
+        SoundManager.Instance.PlayBGM(SoundManager.BGMType.Title);
         CutsceneManager.Instance.CurrentSceneClear();
         LootManager.Instance.ResetItems();
         _uiTitle.Show();
@@ -47,6 +47,7 @@ public class GameScene : MonoBehaviour
         _optionButton.gameObject.SetActive(true);
         _menuButton.gameObject.SetActive(false);
         _train.ResetTrain();
+        _player.ResetPlayerData();
         _platformController.ResetPlatform();
         _enemySpawner.SetEnemiesData();
     }
@@ -54,16 +55,15 @@ public class GameScene : MonoBehaviour
     {
         GameManager.Instance.ResetGameManager();
         SoundManager.Instance.StopBGM();
+        _train.ResetTrain();
+        _enemySpawner.AllEnemyClear();
+        _player.ResetPlayerData();
+        _menuButton.gameObject.SetActive(false);
+        _tutorialSystem.ResetTutorialSystem();
         UIManager.Instance.HideUI<UI_Enhance>();
         UIManager.Instance.HideUI<UI_Coin>();
         UIManager.Instance.HideUI<UI_TrainHP>();
         UIManager.Instance.HideUI<UI_StageAnnounce>();
-        _train.ResetTrain();
-        _enemySpawner.AllEnemyClear();
-        _player.ResetPlayerData();
-        _player.ResetPlayerAction();
-        _menuButton.gameObject.SetActive(false);
-        _tutorialSystem.ResetTutorialSystem();
     }
 
     public void RestartScene()

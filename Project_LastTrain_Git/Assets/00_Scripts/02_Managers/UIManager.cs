@@ -8,14 +8,15 @@ using DG.Tweening;
 public class UIManager : SingletonManager<UIManager>
 {
     [SerializeField] Image _fadeOutImage;
-    //[SerializeField] UI_GameOver _uiGameOver;
     [SerializeField] Canvas canvas;
     [SerializeField] Canvas canvasHUD;
 
     [SerializeField] List<UI_Base> _uiPrefabs;
     [SerializeField] List<UI_HUD> _uiHUDPrefabs;
     [SerializeField] List<UI_Popup> _uiPopupPrefabs;
-    
+    [SerializeField] UI_Announce _uiAnnounce;
+
+
     Dictionary<Type, List<UI_Base>> _uiDics = new Dictionary<Type,List<UI_Base>>();
     Dictionary<Type, List<UI_HUD>> _uiHUDDics = new Dictionary<Type,List<UI_HUD>>();
     Dictionary<Type, UI_Popup> _uiPopupDics = new Dictionary<Type,UI_Popup>();
@@ -146,7 +147,6 @@ public class UIManager : SingletonManager<UIManager>
                 ui.transform.SetParent(canvas.transform);
                 ui.Show();
                 ui.GetComponent<RectTransform>().anchoredPosition = pos;
-                Debug.Log(ui);
             }
         }
         return ui;
@@ -221,5 +221,16 @@ public class UIManager : SingletonManager<UIManager>
         _fadeOutImage.gameObject.SetActive(true);
         _fadeOutImage.transform.SetAsLastSibling();
         _fadeOutImage.DOFade(1f, 0.5f);
+    }
+
+    public UI_Announce ShowAnnounce(IAnnounceStrategy strategy , string announceText, Vector3 pos)
+    {
+        _uiAnnounce.SetUIStrategy(strategy);
+        _uiAnnounce.SetAnnounceText(announceText);
+        UI_Announce ui = Instantiate(_uiAnnounce, pos, _uiAnnounce.transform.rotation).GetComponent<UI_Announce>();
+        ui.transform.SetParent(canvas.transform);
+        ui.Show();
+        ui.GetComponent<RectTransform>().anchoredPosition = pos;
+        return ui;
     }
 }

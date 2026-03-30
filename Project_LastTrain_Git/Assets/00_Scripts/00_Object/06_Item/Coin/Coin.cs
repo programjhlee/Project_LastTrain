@@ -8,6 +8,7 @@ public class Coin : Item, IGravityAffected
 {
     [SerializeField] AudioClip _coinDropSound;
     [SerializeField] AudioClip _coinGetSound;
+    [SerializeField] GameObject _coinGetEffect;
     CollideChecker _CollideChecker;
     
     
@@ -59,8 +60,9 @@ public class Coin : Item, IGravityAffected
         if (coll.gameObject.CompareTag("Player"))
         {
             CollideChecker.Col.enabled = false;
-            SoundManager.Instance.PlaySFX(_coinGetSound);
+            SoundManager.Instance.PlaySFX(_coinGetSound,0.5f);
             transform.position = coll.transform.position;
+            Instantiate(_coinGetEffect, transform.position, Quaternion.identity);
             transform.DOMoveY(0.5f, 0.2f).SetLoops(2,LoopType.Yoyo).OnComplete(()=>Clear());
             InvokeGetItem(this);
         }

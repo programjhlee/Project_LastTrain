@@ -12,6 +12,7 @@ public class UI_Announce : UI_Popup
     [SerializeField] GameObject _checkBox;
     [SerializeField] Image _questImage;
     [SerializeField] Image _checkImage;
+    [SerializeField] AudioClip _questClearSound;
     [SerializeField] RectTransform _textPanelRect;
     [SerializeField] RectTransform _textRect;
     RectTransform _checkImageRect;
@@ -47,6 +48,7 @@ public class UI_Announce : UI_Popup
     }
     public void QuestClear()
     {
+        SoundManager.Instance.PlaySFX(_questClearSound);
         _checkImageRect.localScale = Vector3.zero;
         _checkImage.gameObject.SetActive(true);
         Sequence clearSequence = DOTween.Sequence();
@@ -64,5 +66,10 @@ public class UI_Announce : UI_Popup
     public void SetImage(Sprite _image = null)
     {
         _checkImage.sprite = _image;
+    }
+
+    public void SetTextColor(Color color)
+    {
+        _announceText.color = color;
     }
 }

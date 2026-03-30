@@ -6,7 +6,7 @@ using System;
 [CreateAssetMenu(fileName = "RollingTutorialStep", menuName = "Create Tutorial File / RollingTutorial")]
 public class RollingTutorialStep : TutorialStep
 {
-    [SerializeField] AnnounceStrategyQuest _announce;
+    [SerializeField] AnnounceStrategyQuest _uiAnnounceStrategy;
     [SerializeField] Sprite _dodgeKeySprite;
     UI_Announce _uiAnnounce;
     Player _p;
@@ -21,10 +21,7 @@ public class RollingTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
-        _uiAnnounce = UIManager.Instance.ShowPopupUIAt<UI_Announce>(new Vector2(0, 300f));
-        _uiAnnounce.Init();
-        _uiAnnounce.SetUIStrategy(_announce);
-        _uiAnnounce.SetQuestSprite(_dodgeKeySprite);
+
     }
     public override IEnumerator Run()
     {
@@ -34,6 +31,14 @@ public class RollingTutorialStep : TutorialStep
         _onDodgeAction = () => { curCnt++; };
         _pAction.OnDodge += _onDodgeAction;
 
+        _uiAnnounce = UIManager.Instance.ShowAnnounce(
+           _uiAnnounceStrategy,
+          $"TO Dodge \n<size=20> Dodge {curCnt:D2} / {rollTutorialClearCnt:D2}</size>",
+           new Vector2(0, 300f)
+           );
+        _uiAnnounce.Init();
+        _uiAnnounce.SetQuestSprite(_dodgeKeySprite);
+
         while (curCnt < rollTutorialClearCnt)
         {
             if (GameManager.Instance.IsPaused())
@@ -42,9 +47,9 @@ public class RollingTutorialStep : TutorialStep
                 continue;
             }
             yield return _waitForEndOfFrame;
-            _uiAnnounce.SetAnnounceText($"TO DODGE  \r\n<size=25>  DODGE COUNT {curCnt:D2} / {rollTutorialClearCnt:D2}</size>");
+            _uiAnnounce.SetAnnounceText($"TO DODGE  \n<size=20>  DODGE COUNT {curCnt:D2} / {rollTutorialClearCnt:D2}</size>");
         }
-        _uiAnnounce.SetAnnounceText($"TO DODGE  \r\n<size=25>  DODGE COUNT {curCnt:D2} / {rollTutorialClearCnt:D2}</size>");
+        _uiAnnounce.SetAnnounceText($"TO DODGE  \n<size=20>  DODGE COUNT {curCnt:D2} / {rollTutorialClearCnt:D2}</size>");
         _uiAnnounce.QuestClear();
     }
     public override void Release()

@@ -11,6 +11,7 @@ public class ZombieSoundController : MonoBehaviour
     [SerializeField] List<AudioClip> _damageSounds;
     [SerializeField] AudioClip _deadSound;
     [SerializeField] AudioClip _attackSound;
+    [SerializeField] AudioClip _spawnSound;
 
     List<AudioClip> _currentAudioList;
     float _curTime = 0;
@@ -27,6 +28,7 @@ public class ZombieSoundController : MonoBehaviour
         zombie.OnDamaged += PlayDamageSound;
         zombie.OnDied += PlayDeadSound;
         zombie.OnAttack += PlayAttackSound;
+        zombie.OnSpawn += PlaySpawnSound;
         _currentAudioList = _detectSounds;
     }
 
@@ -44,6 +46,11 @@ public class ZombieSoundController : MonoBehaviour
     public void PlayAttackSound()
     {
         SoundManager.Instance.PlaySFX(_attackSound);
+    }
+
+    public void PlaySpawnSound()
+    {
+        SoundManager.Instance.PlaySFX(_spawnSound);
     }
     public void PlayChaseSound()
     {

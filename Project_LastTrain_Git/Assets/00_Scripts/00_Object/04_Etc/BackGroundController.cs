@@ -8,8 +8,10 @@ public class BackGroundController : MonoBehaviour
     PlatformController _platformController;
     [SerializeField] GameObject _railPrefab;
     [SerializeField] GameObject _backGroundPrefab;
+    [SerializeField] GameObject _backPropPrefab;
     [SerializeField] RepairShop _repairShop;
     List<GameObject> _backGrounds;
+    List<GameObject> _backProps;
     List<GameObject> _rails;
 
     float _railSizeX;
@@ -27,11 +29,13 @@ public class BackGroundController : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             GameObject rail = Instantiate(_railPrefab);
+            
             rail.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
             rail.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
             _railSizeX = rail.GetComponentInChildren<Renderer>().bounds.extents.x * 2;
             rail.transform.position = new Vector3(_railStartPosX + i * _railSizeX, -10.1f, 0);
             _rails.Add(rail);
+            
         }
         for (int i = 0; i < 2; i++)
         {

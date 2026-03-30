@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ZombieAnim : MonoBehaviour
 {
+    [SerializeField] GameObject _zombieSpawnEffect;
     [SerializeField] Renderer _zombieRends;
     Zombie _zombie;
     Animator _animator;
@@ -22,10 +23,10 @@ public class ZombieAnim : MonoBehaviour
         _zombie = GetComponent<Zombie>();
         _animator = GetComponentInChildren<Animator>();
         _animator.SetTrigger(MOVE);
-        Debug.Log(_zombieRends);
         _zombie.OnDamaged += PlayZombieDamaged;
         _zombie.OnDied += PlayZombieDead;
         _zombie.OnAttack += PlayZombieAttack;
+        _zombie.OnSetPosition += PlayZombieSpawnEffect;
         foreach(var clip in _animator.runtimeAnimatorController.animationClips)
         {
             if(clip.name == "zombie_attackshorts")
@@ -40,12 +41,14 @@ public class ZombieAnim : MonoBehaviour
         _animator.SetTrigger(ATTACK);
         _animator.SetFloat("AttackSpeed", attackClipLength * _zombie.enemyData.attackSpeed);
     }
-
+    public void PlayZombieSpawnEffect(Vector3 pos)
+    {
+        Instantiate(_zombieSpawnEffect, pos, Quaternion.identity);
+    }
     public void PlayZombieDamaged()
     {
         _animator.SetTrigger(DAMAGED);
         StartCoroutine(DamagedColorAnim());
-        
     }
 
     public IEnumerator DamagedColorAnim()

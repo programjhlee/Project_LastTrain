@@ -5,6 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - _uiAnnounceStrategy: {fileID: 11400000, guid: 5ca6eb778263cdc48bc41330364a1b77, type: 2}
+  - _jumpKeySprite: {instanceID: 0}
+  - _uiAnnounce: {fileID: 2770049178977248700, guid: b9977d2b09f03284090cf90ecb658a47, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

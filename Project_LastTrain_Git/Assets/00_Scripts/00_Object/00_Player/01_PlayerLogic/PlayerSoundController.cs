@@ -7,6 +7,8 @@ public class PlayerSoundController : MonoBehaviour
     [SerializeField] List<AudioClip> _fixSounds;
     [SerializeField] List<AudioClip> _attackSounds;
     [SerializeField] List<AudioClip> _walkSounds;
+    [SerializeField] AudioClip _dodgeSound;
+    [SerializeField] AudioClip _swingSound;
     [SerializeField] AudioClip _jumpSound;
     [SerializeField] PlayerAction _playerAction;
     
@@ -20,10 +22,14 @@ public class PlayerSoundController : MonoBehaviour
         _playerAction.OnJump -= PlayJumpSoundEffect;
         _playerAction.OnAttack -= PlayAttackSoundEffect;
         _playerAction.OnFix -= PlayFixSoundEffect;
+        _playerAction.OnSwing -= PlaySwingSoundEffect;
+        _playerAction.OnDodge -= PlayDodgeSoundEffect;
 
         _playerAction.OnJump += PlayJumpSoundEffect;
         _playerAction.OnAttack += PlayAttackSoundEffect;
         _playerAction.OnFix += PlayFixSoundEffect;
+        _playerAction.OnSwing += PlaySwingSoundEffect;
+        _playerAction.OnDodge += PlayDodgeSoundEffect;
 
     }
     public void PlayFixSoundEffect()
@@ -44,5 +50,13 @@ public class PlayerSoundController : MonoBehaviour
     public void PlayJumpSoundEffect()
     {
         SoundManager.Instance.PlaySFX(_jumpSound, 0.5f);
+    }
+    public void PlayDodgeSoundEffect()
+    {
+        SoundManager.Instance.PlaySFX(_dodgeSound);
+    }
+    public void PlaySwingSoundEffect()
+    {
+        SoundManager.Instance.PlaySFX(_swingSound, 0.7f);
     }
 }
