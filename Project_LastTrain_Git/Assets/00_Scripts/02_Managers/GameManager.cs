@@ -102,6 +102,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public IEnumerator StageStartProcess(Action OnComplete)
     {
+        _menuButton.gameObject.SetActive(false);
         State = GameState.StageStart;
         OnStageStart?.Invoke();
         yield return new WaitForSeconds(1.5f);

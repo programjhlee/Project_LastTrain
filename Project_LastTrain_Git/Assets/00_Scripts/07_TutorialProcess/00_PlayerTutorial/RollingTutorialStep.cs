@@ -11,16 +11,15 @@ public class RollingTutorialStep : TutorialStep
     UI_Announce _uiAnnounce;
     Player _p;
     PlayerAction _pAction;
-
-    UI_HUDControlGuide _uiControlGuide;
     Action _onDodgeAction;
-
+    bool _isCanceled;
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
     public override void Bind(TutorialSystem system)
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
+        _isCanceled = false;
 
     }
     public override IEnumerator Run()
@@ -39,7 +38,7 @@ public class RollingTutorialStep : TutorialStep
         _uiAnnounce.Init();
         _uiAnnounce.SetQuestSprite(_dodgeKeySprite);
 
-        while (curCnt < rollTutorialClearCnt)
+        while (curCnt < rollTutorialClearCnt && !_isCanceled)
         {
             if (GameManager.Instance.IsPaused())
             {
@@ -54,6 +53,7 @@ public class RollingTutorialStep : TutorialStep
     }
     public override void Release()
     {
+        _isCanceled = true;
         if (_onDodgeAction == null)
         {
             return;

@@ -9,6 +9,7 @@ public class JumpTutorialStep : TutorialStep
     [SerializeField] AnnounceStrategyQuest _uiAnnounceStrategy;
     [SerializeField] Sprite _jumpKeySprite; 
     [SerializeField] UI_Announce _uiAnnounce;
+    bool _isCanceled;
     Player _p;
     PlayerAction _pAction;
     Action _onJumpAction;
@@ -18,6 +19,7 @@ public class JumpTutorialStep : TutorialStep
     {
         _p = system.player;
         _pAction = _p.GetComponent<PlayerAction>();
+        _isCanceled = false;
     }
 
 
@@ -34,7 +36,7 @@ public class JumpTutorialStep : TutorialStep
             );
         _uiAnnounce.Init();
         _uiAnnounce.SetQuestSprite(_jumpKeySprite);
-        while (curCnt < jumpTutorialClearCnt)
+        while (curCnt < jumpTutorialClearCnt && !_isCanceled)
         {
             if (GameManager.Instance.IsPaused())
             {
@@ -49,6 +51,7 @@ public class JumpTutorialStep : TutorialStep
     }
     public override void Release()
     {
+        _isCanceled = true;
         if (_onJumpAction == null)
         {
             return;

@@ -9,9 +9,10 @@ public class MoveTutorialStep : TutorialStep
     [SerializeField] AnnounceStrategyQuest _uiAnnounceStrategy;
     [SerializeField] Sprite _moveKeySprite;
     UI_Announce _uiAnnounce;
+    bool _isCanceled;
     public override void Bind(TutorialSystem system)
     {
-        
+        _isCanceled = false;
     }
 
     public override IEnumerator Run()
@@ -25,7 +26,7 @@ public class MoveTutorialStep : TutorialStep
             );
         _uiAnnounce.Init();
         _uiAnnounce.SetQuestSprite(_moveKeySprite);
-        while (curDistance < movementTutorialClearDistance)
+        while (curDistance < movementTutorialClearDistance && !_isCanceled)
         {
             if (GameManager.Instance.IsPaused())
             {
@@ -46,6 +47,7 @@ public class MoveTutorialStep : TutorialStep
 
     public override void Release()
     {
+        _isCanceled = true;
         if (_uiAnnounce != null)
         {
             _uiAnnounce.Hide();

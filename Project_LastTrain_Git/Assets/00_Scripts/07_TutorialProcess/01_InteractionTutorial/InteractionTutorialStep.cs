@@ -12,14 +12,15 @@ public class InteractionTutorialStep : TutorialStep
     Event _bombEvent;
     UIHUDController _brokenEventHUD;
     UIHUDController _bombEventHUD;
-  TrainEventSystem _trainEventSystem;
+    TrainEventSystem _trainEventSystem;
     UI_Announce _uiAnnounce;
     public Action _onFixAction;
-
+    bool _isCanceled;
     WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
     public override void Bind(TutorialSystem system)
     {
         _trainEventSystem = system.train.GetComponent<TrainEventSystem>();
+        _isCanceled = false;
     }
     public override IEnumerator Run()
     {
@@ -40,7 +41,7 @@ public class InteractionTutorialStep : TutorialStep
         _bombEventHUD = _bombEvent.GetComponent<UIHUDController>();
         _brokenEvent.OnFixed += _onFixAction; 
         _bombEvent.OnFixed += _onFixAction;
-        while (curCnt < targetCnt)
+        while (curCnt < targetCnt && !_isCanceled)
         {
             if (GameManager.Instance.IsPaused())
             {
@@ -57,6 +58,7 @@ public class InteractionTutorialStep : TutorialStep
     }
     public override void Release()
     {
+        _isCanceled = true;
         if (_brokenEvent != null && _brokenEvent.gameObject.activeSelf)
         {
             _brokenEvent.Exit();

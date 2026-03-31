@@ -86,14 +86,12 @@ public class BigEvent : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Shield"))
         {
-            Debug.Log("½Çµå¿¡ ºÎµúÇû¾î¿ä!!");
             Instantiate(_bigEventEffect, transform.position, Quaternion.identity);
             SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
             gameObject.SetActive(false);
         }
         if (coll.gameObject.CompareTag("Train"))
         {
-            Debug.Log("¿­Â÷¿¡ ºÎµúÇû¾î¿ä!!");
             Instantiate(_bigEventEffect, transform.position, Quaternion.identity);
             SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
             OnTrainCrashed?.Invoke(_damage);

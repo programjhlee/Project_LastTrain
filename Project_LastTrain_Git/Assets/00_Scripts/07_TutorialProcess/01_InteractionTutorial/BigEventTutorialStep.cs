@@ -13,10 +13,12 @@ public class BigEventTutorialStep : TutorialStep
     BigEvent _bigEvent;
     Action _onCrashed;
     UI_Announce _uiAnnounce;
+    bool _isCanceled;
     public override void Bind(TutorialSystem system)
     {
         _train = system.train;
         _bigEventSystem = _train.GetComponent<BigEventSystem>();
+        _isCanceled = false;
     }
     public override IEnumerator Run()
     {
@@ -27,7 +29,7 @@ public class BigEventTutorialStep : TutorialStep
             , new Vector2(0, 150f));
         _uiAnnounce.SetQuestSprite(_shieldSprite);
         _onCrashed = () => { curCnt++; };
-        while (curCnt < targetCnt)
+        while (curCnt < targetCnt&& !_isCanceled)
         {
             _uiAnnounce.SetAnnounceText($"<size=30> PROTECT TRAIN </size> \n <size=25> {curCnt} / {targetCnt} </size>");
             if (_bigEvent == null||(_bigEvent != null && _bigEvent.gameObject.activeSelf == false))
@@ -44,6 +46,7 @@ public class BigEventTutorialStep : TutorialStep
     }
     public override void Release()
     {
+        _isCanceled = true;
         if (_uiAnnounce != null)
         {
             _uiAnnounce.Hide();

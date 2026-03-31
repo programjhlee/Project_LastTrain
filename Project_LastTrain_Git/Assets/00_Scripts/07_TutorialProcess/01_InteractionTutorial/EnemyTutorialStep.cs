@@ -12,11 +12,11 @@ public class EnemyTutorialStep : TutorialStep
     EnemySpawner _enemySpawner;
     List<Enemy> _enemyList;
     public Action OnDied;
-    WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+    bool _isCanceled;
     public override void Bind(TutorialSystem system)
     {
         _enemySpawner = system.enemySpawner;
-        
+        _isCanceled = false;
     }
 
     public override IEnumerator Run()
@@ -38,7 +38,7 @@ public class EnemyTutorialStep : TutorialStep
             Enemy enemy = _enemySpawner.SpawnEnemy();
             _enemyList.Add(enemy);
         }
-        while (curCnt < targetCnt)
+        while (curCnt < targetCnt && !_isCanceled)
         {
             if (GameManager.Instance.IsPaused())
             {
@@ -59,7 +59,7 @@ public class EnemyTutorialStep : TutorialStep
                 _enemyList[i].OnUpdate();
             }
             _uiAnnounce.SetAnnounceText($"TO ATTACK \n<size=20> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
-            yield return _waitForEndOfFrame;
+            yield return null;
         }
         _uiAnnounce.SetAnnounceText($"TO ATTACK \n<size=20> DEFEAT ENEMY {curCnt:D2} / {targetCnt:D2}</size>");
         _uiAnnounce.QuestClear();
@@ -67,11 +67,14 @@ public class EnemyTutorialStep : TutorialStep
 
     public override void Release()
     {
-        for (int i = 0; i < _enemyList.Count; i++)
+        if (_enemyList != null)
         {
-            _enemyList[i].OnDespawn();
+            for (int i = 0; i < _enemyList.Count; i++)
+            {
+                _enemyList[i].OnDespawn();
+            }
+            _enemyList.Clear();
         }
-        _enemyList.Clear();
         if (_uiAnnounce != null)
         {
             _uiAnnounce.Hide();

@@ -4278,17 +4278,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4536359742257246427, guid: ed93b033386b43a42828ce3db4dc19b3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.467
-      objectReference: {fileID: 0}
     - target: {fileID: 5855119410044227914, guid: ed93b033386b43a42828ce3db4dc19b3, type: 3}
       propertyPath: m_Name
       value: RepairShop
-      objectReference: {fileID: 0}
-    - target: {fileID: 5855119410044227914, guid: ed93b033386b43a42828ce3db4dc19b3, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -13,7 +13,9 @@ public class TutorialSystem : MonoBehaviour
     [SerializeField] EnemySpawner _enemySpawner;
     [SerializeField] Train _train;
     [SerializeField] Switch _switch;
-    
+
+    bool _isSkip;
+
     TrainEventSystem _trainEventSystem;
     BigEventSystem _bigEventSystem;
     PlayerAction _playerAction;
@@ -26,19 +28,20 @@ public class TutorialSystem : MonoBehaviour
     {
         get { return _train; }
     }
-    public void Awake()
+    private void Awake()
     {
         _trainEventSystem = _train.GetComponent<TrainEventSystem>();
         _bigEventSystem = _train.GetComponent<BigEventSystem>();
         _playerAction = _player.GetComponent<PlayerAction>();
+        _isSkip = false;
     }
 
     public void ResetTutorialSystem()
     {
+        _isSkip = false;
         ResetTutorial();
         gameObject.SetActive(true);
         _skipBtn.gameObject.SetActive(false);
-        _skipBtn.onClick.AddListener(SkipTutorial);
     }
 
 
@@ -53,6 +56,10 @@ public class TutorialSystem : MonoBehaviour
     {
         for (int i = 0; i < _steps.Count; i++)
         {
+            if (_isSkip)
+            {
+                yield break;
+            }
             _steps[i].Bind(this);
             yield return StartCoroutine(_steps[i].Run());
             yield return new WaitForSeconds(2f);
@@ -65,8 +72,7 @@ public class TutorialSystem : MonoBehaviour
 
     public void SkipTutorial()
     {
-        StopAllCoroutines();
-
+        _isSkip = true;
         for (int i = 0; i < _steps.Count; i++)
         {
             _steps[i].Release();
@@ -79,7 +85,6 @@ public class TutorialSystem : MonoBehaviour
     public void ResetTutorial()
     {
         StopAllCoroutines();
-
         for (int i = 0; i < _steps.Count; i++)
         {
             _steps[i].Release();
