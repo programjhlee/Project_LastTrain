@@ -21,7 +21,7 @@ public class BigEventSystem : MonoBehaviour
     int currentIdx;
     public void Awake()
     {
-        bigEventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.BigEventSpawnData);
+        bigEventSpawnData = DataManager.Instance.GetData(DataManager.DataTables.BigEventSpawnData);
         bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
         bigEvent.gameObject.SetActive(false);
     }
