@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EventData", menuName = "Event/CreateEventData")]
+[CreateAssetMenu(fileName = "EventData", menuName = "Create TrainEventData")]
 public class EventData : ScriptableObject
 {
     public int EventID {get ; set;}

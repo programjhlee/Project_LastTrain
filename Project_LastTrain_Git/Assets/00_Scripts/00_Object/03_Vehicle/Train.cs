@@ -5,15 +5,11 @@ using System;
 public class Train : MonoBehaviour
 {
     [SerializeField] GameObject _trainGameObject;
-
-    float _maxHp;
-    float _curHp;
     
     bool _isRunning = false;
-    public event Action OnReset;
-    public event Action<float> OnDamaged;
-    public event Action<float> OnHpChanged;
-    public event Action OnTrainDestroy;
+    float _maxHp;
+    float _curHp;
+
     public bool IsRunning
     {
         get
@@ -47,9 +43,13 @@ public class Train : MonoBehaviour
             _curHp = value;
         }
     }
+
+    public event Action OnReset;
+    public event Action<float> OnDamaged;
+    public event Action<float> OnHpChanged;
+    public event Action OnTrainDestroy;
     public void OnEnable()
     {
-
         GameManager.Instance.OnTutorialStart += StartRunning;
         GameManager.Instance.OnAllStageClear += StopRunning;
         GameManager.Instance.OnStageClear += StopRunning;
@@ -66,15 +66,8 @@ public class Train : MonoBehaviour
     {
         SoundManager.Instance.AddObjAudioSource(gameObject);
     }
-    public void ResetTrainHp()
-    {
-        _maxHp = 100;
-        _curHp = _maxHp;
-        OnHpChanged?.Invoke(_curHp / _maxHp);
-    }
     public void TakeDamage(float damage)
     {
-        Debug.Log($"데미지 받음 Damage : {damage}");
         _curHp -= damage;
         OnHpChanged?.Invoke(_curHp/_maxHp);
         if (_curHp <= 0)
@@ -103,7 +96,9 @@ public class Train : MonoBehaviour
     { 
         _trainGameObject.SetActive(true);
         StopRunning();
-        ResetTrainHp();
+        _maxHp = 100;
+        _curHp = _maxHp;
+        OnHpChanged?.Invoke(_curHp / _maxHp);
         OnReset?.Invoke();
     }
 }

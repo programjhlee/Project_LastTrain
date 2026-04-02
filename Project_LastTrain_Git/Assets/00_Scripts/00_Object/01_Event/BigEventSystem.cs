@@ -13,17 +13,17 @@ public class BigEventSystem : MonoBehaviour
     [SerializeField] PlatformController _platformController;
     [SerializeField] Train _train;
     
-    List<Dictionary<string, object>> bigEventSpawnData;
-    BigEvent bigEvent;
+    List<Dictionary<string, object>> _bigEventSpawnData;
+    BigEvent _bigEvent;
 
-    float rndTime;
-    float curTime;
-    int currentIdx;
+    float _rndTime;
+    float _curTime;
+    int _currentIdx;
     public void Awake()
     {
-        bigEventSpawnData = DataManager.Instance.GetData(DataManager.DataTables.BigEventSpawnData);
-        bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
-        bigEvent.gameObject.SetActive(false);
+        _bigEventSpawnData = DataManager.Instance.GetData(DataManager.DataTables.BigEventSpawnData);
+        _bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
+        _bigEvent.gameObject.SetActive(false);
     }
     public void OnEnable()
     {
@@ -45,13 +45,13 @@ public class BigEventSystem : MonoBehaviour
 
     public void SetBigEventSystem()
     {
-        curTime = 0;
-        for(int i = 0; i < bigEventSpawnData.Count; i++)
+        _curTime = 0;
+        for(int i = 0; i < _bigEventSpawnData.Count; i++)
         {
-            if (int.Parse(bigEventSpawnData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
+            if (int.Parse(_bigEventSpawnData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
             {
-                currentIdx = i;
-                rndTime = UnityEngine.Random.Range(int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMAX"].ToString()));
+                _currentIdx = i;
+                _rndTime = UnityEngine.Random.Range(int.Parse(_bigEventSpawnData[i]["SPAWNINTERVALMIN"].ToString()), int.Parse(_bigEventSpawnData[i]["SPAWNINTERVALMAX"].ToString()));
                 break;
             }
         }
@@ -62,11 +62,11 @@ public class BigEventSystem : MonoBehaviour
         {
             return;
         }
-        curTime += Time.deltaTime;
+        _curTime += Time.deltaTime;
 
-        if(curTime >= rndTime && !bigEvent.gameObject.activeSelf)
+        if(_curTime >= _rndTime && !_bigEvent.gameObject.activeSelf)
         {
-            curTime = 0;
+            _curTime = 0;
             SpawnBigEvent();
         }
     }
@@ -75,13 +75,13 @@ public class BigEventSystem : MonoBehaviour
     {
         SoundManager.Instance.PlaySFX(_warningSound);
         _switch.SwitchActive();
-        bigEvent.Init(_platformController.TrainSpeed, _train);
-        bigEvent.OnTrainCrashed += _train.TakeDamage;
-        bigEvent.OnDestroy += _switch.SwitchUnActive;
-        bigEvent.OnDestroy += HideAnnounceUI;
+        _bigEvent.Init(_platformController.TrainSpeed, _train);
+        _bigEvent.OnTrainCrashed += _train.TakeDamage;
+        _bigEvent.OnDestroy += _switch.SwitchUnActive;
+        _bigEvent.OnDestroy += HideAnnounceUI;
         _uiAnnounce = UIManager.Instance.ShowAnnounce(_announceAlert, "GO TO THE FRONT!!", new Vector2(0, 300f));
-        rndTime = UnityEngine.Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
-        return bigEvent;
+        _rndTime = UnityEngine.Random.Range(int.Parse(_bigEventSpawnData[_currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(_bigEventSpawnData[_currentIdx]["SPAWNINTERVALMAX"].ToString()));
+        return _bigEvent;
     }
 
     public void HideAnnounceUI()
@@ -93,15 +93,15 @@ public class BigEventSystem : MonoBehaviour
     }
     public void TurnOffBigEvent()
     {
-        curTime = 0;
+        _curTime = 0;
         if(_uiAnnounce != null)
         {
             _uiAnnounce.Hide();
         }
-        if (bigEvent.gameObject.activeSelf)
+        if (_bigEvent.gameObject.activeSelf)
         {
             _switch.SwitchUnActive();
-            bigEvent.gameObject.SetActive(false);
+            _bigEvent.gameObject.SetActive(false);
         }
     }
 

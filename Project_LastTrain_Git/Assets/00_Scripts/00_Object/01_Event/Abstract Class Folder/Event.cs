@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class Event : MonoBehaviour, IFixable
 {
-    EventData _eventData;
     public EventData EventData { get; protected set; }
     public event Action OnFixed;
     public event Action<float> OnTakeFix;
@@ -13,17 +12,16 @@ public abstract class Event : MonoBehaviour, IFixable
     public abstract void Execute();
     public abstract void Exit();
 
-
     public abstract void TakeFix(float fixPower);
-    protected void InvokeOnFix()
+    public void InvokeOnFix()
     {
         OnFixed?.Invoke();
     }
-    protected void InvokeTakeFix(float fixRatio)
+    public void InvokeTakeFix(float fixRatio)
     {
         OnTakeFix?.Invoke(fixRatio);
     }
-    protected void ReleaseActionEvent()
+    public void ReleaseActionEvent()
     {
         OnFixed = null;
         OnTakeFix = null;

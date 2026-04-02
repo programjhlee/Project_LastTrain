@@ -13,11 +13,10 @@ public class TrainEventSystem : MonoBehaviour
     [SerializeField] PlatformController _platformController;
     [SerializeField] GameObject _trainBack;
     [SerializeField] UI_HUDValueBarStrategyData _uiEventFixBarData;
-    
+
     EventSightChecker _eventSightChecker;
     Renderer _trainRend;
     
-    int[] eventID;
     List<Dictionary<string, object>> _eventLevelSpawnTimeData;
     List<Dictionary<string, object>> _trainEventData;
 
@@ -27,6 +26,7 @@ public class TrainEventSystem : MonoBehaviour
     List<Event> _executeEvents = new List<Event>();
     List<Event> _endEvents = new List<Event>();
 
+    int[] eventID;
     float _eventSpawnTime;
     float _curTime;
     
@@ -200,6 +200,7 @@ public class TrainEventSystem : MonoBehaviour
             if (int.Parse(_eventLevelSpawnTimeData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
             {
                 _eventSpawnTime = float.Parse(_eventLevelSpawnTimeData[i]["EVENTINTERVAL"].ToString());
+                break;
             }
         }
     }
