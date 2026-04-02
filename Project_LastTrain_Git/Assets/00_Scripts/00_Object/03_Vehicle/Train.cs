@@ -66,12 +66,6 @@ public class Train : MonoBehaviour
     {
         SoundManager.Instance.AddObjAudioSource(gameObject);
     }
-    public void ResetTrainHp()
-    {
-        _maxHp = 100;
-        _curHp = _maxHp;
-        OnHpChanged?.Invoke(_curHp / _maxHp);
-    }
     public void TakeDamage(float damage)
     {
         Debug.Log($"데미지 받음 Damage : {damage}");
@@ -87,6 +81,10 @@ public class Train : MonoBehaviour
     }
     public void TakeFix(float fixAmount)
     {
+        if(_curHp >= _maxHp)
+        {
+            return;
+        }
         _curHp += fixAmount;
         OnHpChanged?.Invoke(_curHp / _maxHp);
     }
@@ -100,10 +98,12 @@ public class Train : MonoBehaviour
         _isRunning = false;        
     }
     public void ResetTrain()
-    { 
-        _trainGameObject.SetActive(true);
+    {
         StopRunning();
-        ResetTrainHp();
+        _trainGameObject.SetActive(true);
+        _maxHp = 100;
+        _curHp = _maxHp;
+        OnHpChanged?.Invoke(_curHp / _maxHp);
         OnReset?.Invoke();
     }
 }

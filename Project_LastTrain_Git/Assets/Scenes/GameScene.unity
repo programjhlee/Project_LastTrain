@@ -3932,6 +3932,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 57838344}
     - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _uiEventFixBarData
+      value: 
+      objectReference: {fileID: 11400000, guid: 18d6a96051a8f954f8f67695ed7f2522, type: 2}
+    - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
       propertyPath: platformController
       value: 
       objectReference: {fileID: 1800714547}

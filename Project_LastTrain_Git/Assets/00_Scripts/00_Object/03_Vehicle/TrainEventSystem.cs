@@ -9,58 +9,57 @@ using UnityEngine.UIElements;
 public class TrainEventSystem : MonoBehaviour
 {
     [SerializeField] Train _train;
-    [SerializeField] List<EventData> eventDataList;
-    [SerializeField] PlatformController platformController;
-    [SerializeField] GameObject trainBack;
-    [SerializeField] UI_HUDValueBarStrategyData _uiEventFixBarData;
+    [SerializeField] GameObject _trainBack;
+    [SerializeField] List<EventData> _eventDataList;
     
-    EventSightChecker eventSightChecker;
-    Renderer rend;
+    EventSightChecker _eventSightChecker;
+    Renderer _trainRend;
     
-    int[] eventID;
-    List<Dictionary<string, object>> eventLevelSpawnTimeData;
-    List<Dictionary<string, object>> trainEventData;
+    int[] _eventID;
+    List<Dictionary<string, object>> _eventLevelSpawnTimeData;
+    List<Dictionary<string, object>> _trainEventData;
 
-    Dictionary<int, EventData> eventDataDics = new Dictionary<int, EventData>();
-    Dictionary<int, Stack<Event>> inactiveEventPools = new Dictionary<int, Stack<Event>>();
+    Dictionary<int, EventData> _eventDataDics = new Dictionary<int, EventData>();
+    Dictionary<int, Stack<Event>> _inactiveEventPools = new Dictionary<int, Stack<Event>>();
 
-    List<Event> executeEvents = new List<Event>();
-    List<Event> endEvents = new List<Event>();
+    List<Event> _executeEvents = new List<Event>();
+    List<Event> _endEvents = new List<Event>();
 
-    float eventSpawnTime;
-    float curTime;
+    float _eventSpawnTime;
+    float _curTime;
     
     void Awake()
     {
-        eventLevelSpawnTimeData = DataManager.Instance.GetData((int)Define.DataTables.EventSpawnData);
-        trainEventData = DataManager.Instance.GetData((int)Define.DataTables.TrainEventData);
+        _eventLevelSpawnTimeData = DataManager.Instance.GetData(DataManager.DataTables.EventSpawnData);
+        _trainEventData = DataManager.Instance.GetData(DataManager.DataTables.TrainEventData);
 
-        eventSightChecker = GetComponent<EventSightChecker>();
-        rend = trainBack.GetComponent<Renderer>();
-        eventID = new int[eventDataList.Count];
+        _eventSightChecker = GetComponent<EventSightChecker>();
+        _trainRend = _trainBack.GetComponent<Renderer>();
+        _eventID = new int[_eventDataList.Count];
 
-        for (int i = 0; i < trainEventData.Count; i++)
+        for (int i = 0; i < _trainEventData.Count; i++)
         {
-            eventDataList[i].EventID = int.Parse(trainEventData[i]["EVENTID"].ToString());
-            eventDataList[i].EventName = trainEventData[i]["EVENTNAME"].ToString();
-            eventDataList[i].CyclePerTime = float.Parse(trainEventData[i]["CYCLEPERTIME"].ToString());
-            eventDataList[i].DamageToTrain = float.Parse(trainEventData[i]["DAMAGETOTRAIN"].ToString());
-            eventDataList[i].FixAmount = float.Parse(trainEventData[i]["FIXAMOUNT"].ToString()) + (float.Parse(trainEventData[i]["FIXAMOUNTPERLEVEL"].ToString()) * LevelManager.Instance.Level);
-            eventDataDics[eventDataList[i].EventID] = eventDataList[i];
-            eventID[i] = eventDataList[i].EventID;
+            _eventDataList[i].EventID = int.Parse(_trainEventData[i]["EVENTID"].ToString());
+            _eventDataList[i].EventName = _trainEventData[i]["EVENTNAME"].ToString();
+            _eventDataList[i].CyclePerTime = float.Parse(_trainEventData[i]["CYCLEPERTIME"].ToString());
+            _eventDataList[i].DamageToTrain = float.Parse(_trainEventData[i]["DAMAGETOTRAIN"].ToString());
+            _eventDataList[i].FixAmount = float.Parse(_trainEventData[i]["FIXAMOUNT"].ToString()) + (float.Parse(_trainEventData[i]["FIXAMOUNTPERLEVEL"].ToString()) * LevelManager.Instance.Level);
+            _eventDataDics[_eventDataList[i].EventID] = _eventDataList[i];
+            _eventID[i] = _eventDataList[i].EventID;
 
-            Transform eventPool = new GameObject($"{eventDataDics[eventID[i]].EventName}").GetComponent<Transform>();
+            Transform eventPool = new GameObject($"{_eventDataDics[_eventID[i]].EventName}").GetComponent<Transform>();
             Stack<Event> eventPoolStack = new Stack<Event>();
+            
             for (int j = 0; j < 20; j++)
             {
-                Event poolEvent = Instantiate(Resources.Load<GameObject>(trainEventData[i]["PATH"].ToString())).GetComponent<Event>();
+                Event poolEvent = Instantiate(Resources.Load<GameObject>(_trainEventData[i]["PATH"].ToString())).GetComponent<Event>();
                 SoundManager.Instance.AddObjAudioSource(poolEvent.gameObject);
-                poolEvent.gameObject.name = $"{eventDataDics[eventID[i]]}_{j + 1}";
+                poolEvent.gameObject.name = $"{_eventDataDics[_eventID[i]]}_{j + 1}";
                 poolEvent.gameObject.SetActive(false);
                 poolEvent.transform.SetParent(eventPool);
                 eventPoolStack.Push(poolEvent);
             }
-            inactiveEventPools[eventID[i]] = eventPoolStack;
+            _inactiveEventPools[_eventID[i]] = eventPoolStack;
 
         }
     }
@@ -91,10 +90,10 @@ public class TrainEventSystem : MonoBehaviour
             return;
         }
 
-        curTime += Time.deltaTime;
-        if(curTime >= eventSpawnTime)
+        _curTime += Time.deltaTime;
+        if(_curTime >= _eventSpawnTime)
         {
-            curTime = 0;
+            _curTime = 0;
             SpawnEventRandomPos();
         }
         EventExecute();
@@ -110,22 +109,22 @@ public class TrainEventSystem : MonoBehaviour
 
         if (eventIdx == null)
         {
-            selectIdx = UnityEngine.Random.Range(0, eventID.Length);
+            selectIdx = UnityEngine.Random.Range(0, _eventID.Length);
         }
         else
         {
             selectIdx = eventIdx.Value;
         }
-        evt = inactiveEventPools[eventID[selectIdx]].Pop();
+        evt = _inactiveEventPools[_eventID[selectIdx]].Pop();
         evtRend = evt.GetComponent<Renderer>();
         
-        float xPos = rend.bounds.center.x + rend.bounds.extents.x * normalizeXPos;
-        float yPos = rend.bounds.center.y + rend.bounds.extents.y + evtRend.bounds.extents.y;
+        float xPos = _trainRend.bounds.center.x + _trainRend.bounds.extents.x * normalizeXPos;
+        float yPos = _trainRend.bounds.center.y + _trainRend.bounds.extents.y + evtRend.bounds.extents.y;
 
         evt.gameObject.SetActive(true);
-        evt.Enter(eventDataDics[eventID[selectIdx]], xPos, yPos);
+        evt.Enter(_eventDataDics[_eventID[selectIdx]], xPos, yPos);
         BindTrainEvent(evt);
-        executeEvents.Add(evt);
+        _executeEvents.Add(evt);
 
         return evt;
     }
@@ -151,55 +150,55 @@ public class TrainEventSystem : MonoBehaviour
 
     public void EventExecute()
     {
-        for (int i = 0; i < executeEvents.Count; i++)
+        for (int i = 0; i < _executeEvents.Count; i++)
         {
-            if (!executeEvents[i].gameObject.activeSelf)
+            if (!_executeEvents[i].gameObject.activeSelf)
             {
-                eventSightChecker.CheckEventSight(executeEvents[i]);
-                endEvents.Add(executeEvents[i]);
-                inactiveEventPools[executeEvents[i].EventData.EventID].Push(executeEvents[i]);
+                _eventSightChecker.CheckEventSight(_executeEvents[i]);
+                _endEvents.Add(_executeEvents[i]);
+                _inactiveEventPools[_executeEvents[i].EventData.EventID].Push(_executeEvents[i]);
             }
             else
             {
-                executeEvents[i].Execute();
-                eventSightChecker.CheckEventSight(executeEvents[i]);
+                _executeEvents[i].Execute();
+                _eventSightChecker.CheckEventSight(_executeEvents[i]);
             }
         }
     }
     public void EventClear()
     {
-        for(int i = 0; i < endEvents.Count; i++)
+        for(int i = 0; i < _endEvents.Count; i++)
         {
-            eventSightChecker.CheckEventSight(endEvents[i]);
-            executeEvents.Remove(endEvents[i]);
+            _eventSightChecker.CheckEventSight(_endEvents[i]);
+            _executeEvents.Remove(_endEvents[i]);
         }
-        endEvents.Clear();
+        _endEvents.Clear();
     }
     public void ResetTrainEventSystem()
     {
-        curTime = 0;
+        _curTime = 0;
 
-        for (int i = 0; i < executeEvents.Count; i++)
+        for (int i = 0; i < _executeEvents.Count; i++)
         {
-            if (executeEvents[i].gameObject.activeSelf)
+            if (_executeEvents[i].gameObject.activeSelf)
             {
-                if (executeEvents[i].TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
+                if (_executeEvents[i].TryGetComponent<ITrainDamageEvent>(out ITrainDamageEvent trainDamageEvent))
                 {
                     trainDamageEvent.OnDamage -= _train.TakeDamage;
                 }
-                executeEvents[i].Exit();
-                endEvents.Add(executeEvents[i]);
+                _executeEvents[i].Exit();
+                _endEvents.Add(_executeEvents[i]);
             }
         }
-        eventSightChecker.SightCheckerClear();
+        _eventSightChecker.SightCheckerClear();
     }
     public void SetEventLevelData()
     {
-        for(int i = 0; i < eventLevelSpawnTimeData.Count; i++)
+        for(int i = 0; i < _eventLevelSpawnTimeData.Count; i++)
         {
-            if (int.Parse(eventLevelSpawnTimeData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
+            if (int.Parse(_eventLevelSpawnTimeData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
             {
-                eventSpawnTime = float.Parse(eventLevelSpawnTimeData[i]["EVENTINTERVAL"].ToString());
+                _eventSpawnTime = float.Parse(_eventLevelSpawnTimeData[i]["EVENTINTERVAL"].ToString());
             }
         }
     }
