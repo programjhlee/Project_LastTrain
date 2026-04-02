@@ -4,15 +4,5 @@ using UnityEngine;
 
 public static class Define 
 {
-    public enum DataTables
-    {
-        PlatformData,
-        EnemyInfoData,
-        BigEventSpawnData,
-        EnhancePriceData,
-        EnhanceValueData,
-        EventSpawnData,
-        TrainEventData,
-        EnemyLevelData,
-    }
+    
 }

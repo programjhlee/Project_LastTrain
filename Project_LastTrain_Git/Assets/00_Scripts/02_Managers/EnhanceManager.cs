@@ -51,8 +51,8 @@ public class EnhanceManager : SingletonManager<EnhanceManager>
     }
     public void Init()
     {
-        _enhancePriceData = DataManager.Instance.GetData((int)Define.DataTables.EnhancePriceData);
-        _enhanceValueData = DataManager.Instance.GetData((int)Define.DataTables.EnhanceValueData);
+        _enhancePriceData = DataManager.Instance.GetData(DataManager.DataTables.EnhancePriceData);
+        _enhanceValueData = DataManager.Instance.GetData(DataManager.DataTables.EnhanceValueData);
 
         _platformController.OnPlatformArrived += ShowEnhanceUI;
 

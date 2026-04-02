@@ -26,8 +26,8 @@ public class EnemySpawner : MonoBehaviour
 
     public void Awake()
     {
-        _enemyLevelTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyLevelData);
-        _enemyInfoTable = DataManager.Instance.GetData((int)Define.DataTables.EnemyInfoData);
+        _enemyLevelTable = DataManager.Instance.GetData(DataManager.DataTables.EnemyLevelData);
+        _enemyInfoTable = DataManager.Instance.GetData(DataManager.DataTables.EnemyInfoData);
 
         _enemyPools = new Dictionary<int, GameObject>();
 

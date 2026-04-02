@@ -3932,9 +3932,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 57838344}
     - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _trainBack
+      value: 
+      objectReference: {fileID: 814811383}
+    - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
       propertyPath: platformController
       value: 
       objectReference: {fileID: 1800714547}
+    - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _eventDataList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _eventDataList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ea066b55e58f58428f4bffa84f28e6e, type: 2}
+    - target: {fileID: 732087978466760246, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
+      propertyPath: _eventDataList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d0e16915ea39adf49b6ac51133a0e0ed, type: 2}
     - target: {fileID: 934143981866690324, guid: 9ffafb9209012cd45aa8058768e67d30, type: 3}
       propertyPath: _shieldSoundEffect
       value: 

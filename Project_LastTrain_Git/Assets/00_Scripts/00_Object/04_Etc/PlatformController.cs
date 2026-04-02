@@ -44,7 +44,7 @@ public class PlatformController : MonoBehaviour
 
     public void Awake()
     {
-        platformDataTable = DataManager.Instance.GetData((int)Define.DataTables.PlatformData);
+        platformDataTable = DataManager.Instance.GetData(DataManager.DataTables.PlatformData);
         _backGroundController = GetComponent<BackGroundController>();
     }
 

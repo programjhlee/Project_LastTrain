@@ -5,11 +5,22 @@ using UnityEngine;
 
 public class DataManager : SingletonManager<DataManager>
 {
-    string[] _data = Enum.GetNames(typeof(Define.DataTables));
-
-    public List<Dictionary<string,object>> GetData(int idx)
+    public enum DataTables
     {
-        string path = _data[idx];
+        PlatformData,
+        EnemyInfoData,
+        BigEventSpawnData,
+        EnhancePriceData,
+        EnhanceValueData,
+        EventSpawnData,
+        TrainEventData,
+        EnemyLevelData,
+    }
+    string[] _data = Enum.GetNames(typeof(DataTables));
+
+    public List<Dictionary<string,object>> GetData(DataTables dataTable)
+    {
+        string path = _data[(int) dataTable];
         if(path != null)
         {
             List<Dictionary<string, object>> returnList = CSVReader.Read(path);
