@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: f477b0a1f1c3fdc4fa358b643e34db0c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _brokenEventEnterSound: {fileID: 8300000, guid: 6a0387b3e4d74d44d984388887198581, type: 3}
+  - _fixedEventSound: {fileID: 8300000, guid: 361ceb2dac9378243be8e685a6bba5db, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

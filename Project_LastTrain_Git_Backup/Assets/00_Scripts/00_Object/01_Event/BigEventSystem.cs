@@ -1,0 +1,113 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class BigEventSystem : MonoBehaviour
+{
+    [SerializeField] AnnounceStrategyAlert _announceAlert;
+    [SerializeField] UI_Announce _uiAnnounce;
+    [SerializeField] AudioClip _warningSound;
+    [SerializeField] GameObject _bigEventPrefab;
+    [SerializeField] Switch _switch;
+    [SerializeField] PlatformController _platformController;
+    [SerializeField] Train _train;
+    
+    List<Dictionary<string, object>> bigEventSpawnData;
+    BigEvent bigEvent;
+
+    float rndTime;
+    float curTime;
+    int currentIdx;
+    public void Awake()
+    {
+        bigEventSpawnData = DataManager.Instance.GetData((int)Define.DataTables.BigEventSpawnData);
+        bigEvent = Instantiate(_bigEventPrefab).GetComponent<BigEvent>();
+        bigEvent.gameObject.SetActive(false);
+    }
+    public void OnEnable()
+    {
+        LevelManager.Instance.OnLevelChanged += SetBigEventSystem;
+        GameManager.Instance.OnStageClear += TurnOffBigEvent;
+        GameManager.Instance.OnAllStageClear += TurnOffBigEvent;
+        _train.OnTrainDestroy += TurnOffBigEvent;
+        _train.OnReset += ResetBigEventSystem;
+    }
+
+    public void OnDisable()
+    {
+        LevelManager.Instance.OnLevelChanged -= SetBigEventSystem;
+        GameManager.Instance.OnStageClear -= TurnOffBigEvent;
+        GameManager.Instance.OnAllStageClear -= TurnOffBigEvent;
+        _train.OnTrainDestroy -= TurnOffBigEvent;
+        _train.OnReset -= ResetBigEventSystem;
+    }
+
+    public void SetBigEventSystem()
+    {
+        curTime = 0;
+        for(int i = 0; i < bigEventSpawnData.Count; i++)
+        {
+            if (int.Parse(bigEventSpawnData[i]["LEVEL"].ToString()) == LevelManager.Instance.Level)
+            {
+                currentIdx = i;
+                rndTime = UnityEngine.Random.Range(int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[i]["SPAWNINTERVALMAX"].ToString()));
+                break;
+            }
+        }
+    }
+    void Update()
+    {
+        if (!GameManager.Instance.IsGamePlaying())
+        {
+            return;
+        }
+        curTime += Time.deltaTime;
+
+        if(curTime >= rndTime && !bigEvent.gameObject.activeSelf)
+        {
+            curTime = 0;
+            SpawnBigEvent();
+        }
+    }
+
+    public BigEvent SpawnBigEvent()
+    {
+        SoundManager.Instance.PlaySFX(_warningSound);
+        _switch.SwitchActive();
+        bigEvent.Init(_platformController.TrainSpeed, _train);
+        bigEvent.OnTrainCrashed += _train.TakeDamage;
+        bigEvent.OnDestroy += _switch.SwitchUnActive;
+        bigEvent.OnDestroy += HideAnnounceUI;
+        _uiAnnounce = UIManager.Instance.ShowAnnounce(_announceAlert, "GO TO THE FRONT!!", new Vector2(0, 300f));
+        rndTime = UnityEngine.Random.Range(int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMIN"].ToString()), int.Parse(bigEventSpawnData[currentIdx]["SPAWNINTERVALMAX"].ToString()));
+        return bigEvent;
+    }
+
+    public void HideAnnounceUI()
+    {
+        if (_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
+    }
+    public void TurnOffBigEvent()
+    {
+        curTime = 0;
+        if(_uiAnnounce != null)
+        {
+            _uiAnnounce.Hide();
+        }
+        if (bigEvent.gameObject.activeSelf)
+        {
+            _switch.SwitchUnActive();
+            bigEvent.gameObject.SetActive(false);
+        }
+    }
+
+    public void ResetBigEventSystem()
+    {
+        TurnOffBigEvent();
+        SetBigEventSystem();
+    }
+}

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b936eda5eadd0a45a3335bf6db404f1, type: 3}
+  m_Name: JumpTutorialStep
+  m_EditorClassIdentifier: 
+  _uiAnnounceStrategy: {fileID: 11400000, guid: 5ca6eb778263cdc48bc41330364a1b77, type: 2}
+  _jumpKeySprite: {fileID: 21300000, guid: fa1362334ad066a4da2e9d64f1dbad20, type: 3}
+  _uiAnnounce: {fileID: 2770049178977248700, guid: b9977d2b09f03284090cf90ecb658a47, type: 3}
