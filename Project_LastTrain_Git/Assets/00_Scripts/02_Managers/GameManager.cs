@@ -109,7 +109,7 @@ public class GameManager : SingletonManager<GameManager>
         StartCoroutine(GameStartProcess(OnComplete));
     }
 
-    public IEnumerator GameStartProcess(Action OnComplete)
+    IEnumerator GameStartProcess(Action OnComplete)
     {
         SoundManager.Instance.VolumeFadeIn(3f);
         _menuButton.gameObject.SetActive(false);
@@ -124,7 +124,7 @@ public class GameManager : SingletonManager<GameManager>
 
     }
 
-    public IEnumerator GameAllClearProcess()
+    IEnumerator GameAllClearProcess()
     {
         State = GameState.GameAllClear;
         SoundManager.Instance.VolumeFadeOut();
@@ -138,11 +138,6 @@ public class GameManager : SingletonManager<GameManager>
         CutsceneManager.Instance.PlayCutScene(CutsceneManager.CutsceneType.GameClear);
     }
 
-    public void Init()
-    {
-        State = GameState.Title;
-        Time.timeScale = 1f;
-    }
     public bool IsGamePlaying()
     {
         return State == GameState.GamePlaying;

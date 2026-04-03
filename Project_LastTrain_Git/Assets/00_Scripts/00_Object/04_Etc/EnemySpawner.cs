@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     Dictionary<int, GameObject> _enemyPools;
     Dictionary<int, EnemyData> _enemyDataDics;
 
-    float curTime = 0;
+    float _curTime = 0;
     float _spawnTime;
 
     public void Awake()
@@ -33,9 +33,23 @@ public class EnemySpawner : MonoBehaviour
 
         _activeEnemies = new List<Enemy>();
         _removeEnemies = new List<Enemy>();
-        
-        EnemyDataInit();
-       
+
+        _enemyDataDics = new Dictionary<int, EnemyData>();
+        _enemyID = new int[_enemyInfoTable.Count];
+
+        for (int i = 0; i < _enemyInfoTable.Count; i++)
+        {
+            _enemyID[i] = int.Parse(_enemyInfoTable[i]["ENEMYID"].ToString());
+            _enemyDataSOList[i].enemyID = _enemyID[i];
+            _enemyDataSOList[i].maxHp = float.Parse((_enemyInfoTable[i]["HP"].ToString()));
+            _enemyDataSOList[i].moveSpeed = float.Parse((_enemyInfoTable[i]["MOVESPEED"].ToString()));
+            _enemyDataSOList[i].chaseSpeed = float.Parse((_enemyInfoTable[i]["CHASESPEED"].ToString()));
+            _enemyDataSOList[i].findDistance = float.Parse((_enemyInfoTable[i]["FINDDISTANCE"].ToString()));
+            _enemyDataSOList[i].attackDistance = float.Parse((_enemyInfoTable[i]["ATTACKSPEED"].ToString()));
+            _enemyDataSOList[i].prefabAddress = _enemyInfoTable[i]["ADDRESS"].ToString();
+            _enemyDataDics[_enemyID[i]] = _enemyDataSOList[i];
+        }
+
         _trainCol = _trainBack.GetComponent<Collider>();
 
         for (int i = 0; i < _enemyID.Length; i++)
@@ -73,10 +87,10 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        curTime += Time.deltaTime;
-        if (curTime > _spawnTime)
+        _curTime += Time.deltaTime;
+        if (_curTime > _spawnTime)
         {
-            curTime = 0;
+            _curTime = 0;
             SpawnEnemy();
         }
         EnemyUpdate();
@@ -94,25 +108,6 @@ public class EnemySpawner : MonoBehaviour
             _activeEnemies[i].OnLateUpdate();
         }
     }
-    public void EnemyDataInit()
-    {
-        _enemyDataDics = new Dictionary<int, EnemyData>();
-        _enemyID = new int[_enemyInfoTable.Count];
-
-        for(int i = 0; i < _enemyInfoTable.Count; i++)
-        {
-            _enemyID[i] = int.Parse(_enemyInfoTable[i]["ENEMYID"].ToString());
-            _enemyDataSOList[i].enemyID = _enemyID[i];
-            _enemyDataSOList[i].maxHp = float.Parse((_enemyInfoTable[i]["HP"].ToString()));
-            _enemyDataSOList[i].moveSpeed = float.Parse((_enemyInfoTable[i]["MOVESPEED"].ToString()));
-            _enemyDataSOList[i].chaseSpeed = float.Parse((_enemyInfoTable[i]["CHASESPEED"].ToString()));
-            _enemyDataSOList[i].findDistance = float.Parse((_enemyInfoTable[i]["FINDDISTANCE"].ToString()));
-            _enemyDataSOList[i].attackDistance = float.Parse((_enemyInfoTable[i]["ATTACKSPEED"].ToString()));
-            _enemyDataSOList[i].prefabAddress = _enemyInfoTable[i]["ADDRESS"].ToString();
-            _enemyDataDics[_enemyID[i]] = _enemyDataSOList[i];
-        }
-    }
-
     public void EnemyUpdate()
     {
         for (int i = 0; i < _activeEnemies.Count; i++)
@@ -150,7 +145,6 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-
     public Enemy SpawnEnemy()
     {
         int rnd = Random.Range(0, _enemyID.Length);
@@ -175,7 +169,7 @@ public class EnemySpawner : MonoBehaviour
     }
     public void AllEnemyClear()
     {
-        curTime = 0;
+        _curTime = 0;
 
         for(int i = 0; i<_activeEnemies.Count; i++)
         {
