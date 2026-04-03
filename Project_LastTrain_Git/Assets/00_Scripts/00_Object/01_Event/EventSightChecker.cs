@@ -6,26 +6,26 @@ using UnityEngine.UIElements;
 
 public class EventSightChecker : MonoBehaviour
 {
-    Camera cam;
+    Camera _cam;
 
-    UI_EventCaution ui_eventCautionLeft;
-    UI_EventCaution ui_eventCautionRight;
+    UI_EventCaution _ui_eventCautionLeft;
+    UI_EventCaution _ui_eventCautionRight;
 
-    Dictionary<Event,bool> wasOutLeftEvent = new Dictionary<Event,bool>();
-    Dictionary<Event, bool> wasOutRightEvent = new Dictionary<Event, bool>();
-    int sightOutLeftCnt;
-    int sightOutRightCnt;
+    Dictionary<Event,bool> _wasOutLeftEvent = new Dictionary<Event,bool>();
+    Dictionary<Event, bool> _wasOutRightEvent = new Dictionary<Event, bool>();
+    int _sightOutLeftCnt;
+    int _sightOutRightCnt;
 
     public void Awake()
     {
-        cam = Camera.main;
-        sightOutLeftCnt = 0;
-        sightOutRightCnt = 0;
+        _cam = Camera.main;
+        _sightOutLeftCnt = 0;
+        _sightOutRightCnt = 0;
 
     }
     public void CheckEventSight(Event curEvent)
     {
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_cam);
         Plane[] leftBound = new Plane[] { planes[0], planes[4], planes[5] };
         Plane[] rightBound = new Plane[] { planes[1], planes[4], planes[5] };
 
@@ -33,45 +33,45 @@ public class EventSightChecker : MonoBehaviour
     }
     public void ShowCautionUI()
     {
-        if (sightOutLeftCnt >= 1)
+        if (_sightOutLeftCnt >= 1)
         {
-            if (ui_eventCautionLeft == null)
+            if (_ui_eventCautionLeft == null)
             {
-                ui_eventCautionLeft = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(-800, 0), "UI_EventCautionLeft");
+                _ui_eventCautionLeft = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(-800, 0), "UI_EventCautionLeft");
             }
             else
             {
-                ui_eventCautionLeft.Show();
+                _ui_eventCautionLeft.Show();
             }
-            ui_eventCautionLeft.SetEventCount(sightOutLeftCnt);
+            _ui_eventCautionLeft.SetEventCount(_sightOutLeftCnt);
         }
         else
         {
-            if (ui_eventCautionLeft == null)
+            if (_ui_eventCautionLeft == null)
             {
                 return;
             }
-            ui_eventCautionLeft.Hide();
+            _ui_eventCautionLeft.Hide();
         }
-        if (sightOutRightCnt >= 1)
+        if (_sightOutRightCnt >= 1)
         {
-            if (ui_eventCautionRight == null)
+            if (_ui_eventCautionRight == null)
             {
-                ui_eventCautionRight = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(800, 0), "UI_EventCautionRight");
+                _ui_eventCautionRight = UIManager.Instance.ShowUIAt<UI_EventCaution>(new Vector2(800, 0), "UI_EventCautionRight");
             }
             else
             {
-                ui_eventCautionRight.Show();
+                _ui_eventCautionRight.Show();
             }
-            ui_eventCautionRight.SetEventCount(sightOutRightCnt);
+            _ui_eventCautionRight.SetEventCount(_sightOutRightCnt);
         }
         else
         {
-            if (ui_eventCautionRight == null)
+            if (_ui_eventCautionRight == null)
             {
                 return;
             }
-            ui_eventCautionRight.Hide();
+            _ui_eventCautionRight.Hide();
         }
     }
 
@@ -84,21 +84,21 @@ public class EventSightChecker : MonoBehaviour
     {
         if (!curEvent.gameObject.activeSelf)
         {
-            if (!wasOutLeftEvent.TryGetValue(curEvent,out bool wasLeftOutValue) || !wasOutRightEvent.TryGetValue(curEvent, out bool wasRightOutValue))
+            if (!_wasOutLeftEvent.TryGetValue(curEvent,out bool wasLeftOutValue) || !_wasOutRightEvent.TryGetValue(curEvent, out bool wasRightOutValue))
             {
                 yield break;
             }
 
-            if (wasOutLeftEvent[curEvent])
+            if (_wasOutLeftEvent[curEvent])
             {
-                sightOutLeftCnt--;
+                _sightOutLeftCnt--;
             }
-            if (wasOutRightEvent[curEvent])
+            if (_wasOutRightEvent[curEvent])
             {
-                sightOutRightCnt--;
+                _sightOutRightCnt--;
             }
-            wasOutLeftEvent.Remove(curEvent);
-            wasOutRightEvent.Remove(curEvent);
+            _wasOutLeftEvent.Remove(curEvent);
+            _wasOutRightEvent.Remove(curEvent);
             ShowCautionUI();
             yield break;
         }
@@ -110,22 +110,22 @@ public class EventSightChecker : MonoBehaviour
             yield return null;
         }
          
-        if (!wasOutLeftEvent.ContainsKey(curEvent) || !wasOutRightEvent.ContainsKey(curEvent))
+        if (!_wasOutLeftEvent.ContainsKey(curEvent) || !_wasOutRightEvent.ContainsKey(curEvent))
         {
-            if (!wasOutLeftEvent.ContainsKey(curEvent))
+            if (!_wasOutLeftEvent.ContainsKey(curEvent))
             {
-                wasOutLeftEvent[curEvent] = CheckOutBound(leftBound, curEventCol);
-                if (wasOutLeftEvent[curEvent])
+                _wasOutLeftEvent[curEvent] = CheckOutBound(leftBound, curEventCol);
+                if (_wasOutLeftEvent[curEvent])
                 {
-                    sightOutLeftCnt++;
+                    _sightOutLeftCnt++;
                 }
             }
-            if (!wasOutRightEvent.ContainsKey(curEvent))
+            if (!_wasOutRightEvent.ContainsKey(curEvent))
             {
-                wasOutRightEvent[curEvent] = CheckOutBound(rightBound, curEventCol);
-                if (wasOutRightEvent[curEvent])
+                _wasOutRightEvent[curEvent] = CheckOutBound(rightBound, curEventCol);
+                if (_wasOutRightEvent[curEvent])
                 {
-                    sightOutRightCnt++;
+                    _sightOutRightCnt++;
                 }
             }
         }
@@ -134,48 +134,48 @@ public class EventSightChecker : MonoBehaviour
             bool curEventBoundLeft = CheckOutBound(leftBound, curEventCol);
             bool curEventBoundRight = CheckOutBound(rightBound, curEventCol);
 
-            if (wasOutLeftEvent[curEvent] != curEventBoundLeft)
+            if (_wasOutLeftEvent[curEvent] != curEventBoundLeft)
             {
-                if (wasOutLeftEvent[curEvent])
+                if (_wasOutLeftEvent[curEvent])
                 {
-                    sightOutLeftCnt--;
+                    _sightOutLeftCnt--;
                 }
                 else
                 {
-                    sightOutLeftCnt++;
+                   _sightOutLeftCnt++;
                 }
-                wasOutLeftEvent[curEvent] = curEventBoundLeft;
+                _wasOutLeftEvent[curEvent] = curEventBoundLeft;
             }
-            if (wasOutRightEvent[curEvent] != curEventBoundRight)
+            if (_wasOutRightEvent[curEvent] != curEventBoundRight)
             {
-                if (wasOutRightEvent[curEvent])
+                if (_wasOutRightEvent[curEvent])
                 {
-                    sightOutRightCnt--;
+                    _sightOutRightCnt--;
                 }
                 else
                 {
-                    sightOutRightCnt++;
+                    _sightOutRightCnt++;
                 }
-                wasOutRightEvent[curEvent] = curEventBoundRight;
+                _wasOutRightEvent[curEvent] = curEventBoundRight;
             }
         }
         ShowCautionUI();
     }
     public void SightCheckerClear()
     {
-        if(ui_eventCautionLeft != null)
+        if(_ui_eventCautionLeft != null)
         {
-            ui_eventCautionLeft.Hide();
+            _ui_eventCautionLeft.Hide();
 
         }
-        if(ui_eventCautionRight != null)
+        if(_ui_eventCautionRight != null)
         {
-            ui_eventCautionRight.Hide();
+            _ui_eventCautionRight.Hide();
         }
 
-        sightOutRightCnt = 0;
-        sightOutLeftCnt = 0;
-        wasOutRightEvent.Clear();
-        wasOutLeftEvent.Clear();
+        _sightOutRightCnt = 0;
+        _sightOutLeftCnt = 0;
+        _wasOutRightEvent.Clear();
+        _wasOutLeftEvent.Clear();
     }
 }
