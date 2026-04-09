@@ -138,11 +138,6 @@ public class GameManager : SingletonManager<GameManager>
         CutsceneManager.Instance.PlayCutScene(CutsceneManager.CutsceneType.GameClear);
     }
 
-    public void Init()
-    {
-        State = GameState.Title;
-        Time.timeScale = 1f;
-    }
     public bool IsGamePlaying()
     {
         return State == GameState.GamePlaying;
@@ -180,7 +175,10 @@ public class GameManager : SingletonManager<GameManager>
         OnStageClear?.Invoke();
         State = GameState.StageClear;
     }
-
+    public bool IsGamePaused()
+    {
+        return State == GameState.GamePaused;
+    }
     public void ResetGameManager()
     {
         StopAllCoroutines();

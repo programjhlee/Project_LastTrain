@@ -96,7 +96,7 @@ public class Train : MonoBehaviour
     { 
         _trainGameObject.SetActive(true);
         StopRunning();
-        _maxHp = 100;
+        _maxHp = 99999;
         _curHp = _maxHp;
         OnHpChanged?.Invoke(_curHp / _maxHp);
         OnReset?.Invoke();

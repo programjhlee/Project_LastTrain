@@ -65,7 +65,7 @@ public class BigEvent : MonoBehaviour
 
     public void Update()
     {
-        if (gameObject.activeSelf)
+        if (gameObject.activeSelf && !GameManager.Instance.IsGamePaused())
         {
             MoveEvent();
         }

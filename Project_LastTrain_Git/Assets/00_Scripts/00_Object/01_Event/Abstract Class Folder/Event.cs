@@ -11,17 +11,16 @@ public abstract class Event : MonoBehaviour, IFixable
     public abstract void Enter(EventData initEventData, float x = 0, float y = 0);
     public abstract void Execute();
     public abstract void Exit();
-
     public abstract void TakeFix(float fixPower);
-    public void InvokeOnFix()
+    protected void InvokeOnFix()
     {
         OnFixed?.Invoke();
     }
-    public void InvokeTakeFix(float fixRatio)
+    protected void InvokeTakeFix(float fixRatio)
     {
         OnTakeFix?.Invoke(fixRatio);
     }
-    public void ReleaseActionEvent()
+    protected void ReleaseActionEvent()
     {
         OnFixed = null;
         OnTakeFix = null;

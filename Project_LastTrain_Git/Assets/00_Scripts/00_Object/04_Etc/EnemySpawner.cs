@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     Dictionary<int, GameObject> _enemyPools;
     Dictionary<int, EnemyData> _enemyDataDics;
 
-    float curTime = 0;
+    float _curTime = 0;
     float _spawnTime;
 
     public void Awake()
@@ -73,10 +73,10 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        curTime += Time.deltaTime;
-        if (curTime > _spawnTime)
+        _curTime += Time.deltaTime;
+        if (_curTime > _spawnTime)
         {
-            curTime = 0;
+            _curTime = 0;
             SpawnEnemy();
         }
         EnemyUpdate();
@@ -175,7 +175,7 @@ public class EnemySpawner : MonoBehaviour
     }
     public void AllEnemyClear()
     {
-        curTime = 0;
+        _curTime = 0;
 
         for(int i = 0; i<_activeEnemies.Count; i++)
         {

@@ -31,7 +31,7 @@ public class EventSightChecker : MonoBehaviour
 
         StartCoroutine(CheckOutBoundProcess(leftBound, rightBound, curEvent));
     }
-    public void ShowCautionUI()
+    void ShowCautionUI()
     {
         if (_sightOutLeftCnt >= 1)
         {
@@ -45,14 +45,6 @@ public class EventSightChecker : MonoBehaviour
             }
             _ui_eventCautionLeft.SetEventCount(_sightOutLeftCnt);
         }
-        else
-        {
-            if (_ui_eventCautionLeft == null)
-            {
-                return;
-            }
-            _ui_eventCautionLeft.Hide();
-        }
         if (_sightOutRightCnt >= 1)
         {
             if (_ui_eventCautionRight == null)
@@ -65,17 +57,27 @@ public class EventSightChecker : MonoBehaviour
             }
             _ui_eventCautionRight.SetEventCount(_sightOutRightCnt);
         }
-        else
+        else if(_sightOutLeftCnt <= 0 || _sightOutRightCnt <= 0)
         {
-            if (_ui_eventCautionRight == null)
+            if(_sightOutLeftCnt <= 0)
             {
-                return;
+                if (_ui_eventCautionLeft != null)
+                {
+                    _ui_eventCautionLeft.Hide();
+                }
             }
-            _ui_eventCautionRight.Hide();
+            if(_sightOutRightCnt <= 0)
+            {
+                if (_ui_eventCautionRight != null)
+                {
+                    _ui_eventCautionRight.Hide();
+                }
+            }
         }
+        
     }
 
-    public bool CheckOutBound(Plane[] planes, Collider col)
+    bool CheckOutBound(Plane[] planes, Collider col)
     {
         return !GeometryUtility.TestPlanesAABB(planes,col.bounds);
     }
@@ -128,12 +130,14 @@ public class EventSightChecker : MonoBehaviour
                     _sightOutRightCnt++;
                 }
             }
+            Debug.Log($"{curEvent} : WasLeft : {_wasOutLeftEvent[curEvent]}, WasRight {_wasOutRightEvent[curEvent]}");
         }
         else
         {
             bool curEventBoundLeft = CheckOutBound(leftBound, curEventCol);
             bool curEventBoundRight = CheckOutBound(rightBound, curEventCol);
-
+            Debug.Log($"{curEvent} : Left : {curEventBoundLeft}, Right {curEventBoundRight}");
+            Debug.Log($"{curEvent} : WasLeft : {_wasOutLeftEvent[curEvent]}, WasRight {_wasOutRightEvent[curEvent]}");
             if (_wasOutLeftEvent[curEvent] != curEventBoundLeft)
             {
                 if (_wasOutLeftEvent[curEvent])
@@ -150,10 +154,12 @@ public class EventSightChecker : MonoBehaviour
             {
                 if (_wasOutRightEvent[curEvent])
                 {
+                    Debug.Log("오른쪽 안으로 나갔다!");
                     _sightOutRightCnt--;
                 }
                 else
                 {
+                    Debug.Log("오른쪽 밖으로 나갔다!");
                     _sightOutRightCnt++;
                 }
                 _wasOutRightEvent[curEvent] = curEventBoundRight;

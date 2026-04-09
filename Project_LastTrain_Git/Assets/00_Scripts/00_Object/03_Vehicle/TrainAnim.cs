@@ -107,8 +107,6 @@ public class TrainAnim : MonoBehaviour
         }
 
         target.transform.rotation = Quaternion.Euler(originRot);
-
-
     }
     public IEnumerator StartTrainAnim(Vector3 targetPos,float speed)
     {

@@ -61,6 +61,10 @@ public class BombEvent : Event,ITrainDamageEvent
         float warningTime = 0.125f;
         while (curTime <= 1f)
         {
+            if (!GameManager.Instance.IsGamePlaying())
+            {
+                yield return null;
+            }
             _rend.material.color = Color.red;
             yield return new WaitForSeconds(warningTime);
             curTime += warningTime;

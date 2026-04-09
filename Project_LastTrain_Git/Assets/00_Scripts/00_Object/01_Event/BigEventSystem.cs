@@ -109,5 +109,6 @@ public class BigEventSystem : MonoBehaviour
     {
         TurnOffBigEvent();
         SetBigEventSystem();
+        _switch.ResetSwitch();
     }
 }

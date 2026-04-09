@@ -53,6 +53,13 @@ public class Switch : MonoBehaviour, IInteractable
         _uiControlGuide.Hide();
     }
 
+    public void ResetSwitch()
+    {
+        SwitchUnActive();
+        sheild.TurnOff();
+    }
+
+
     public IEnumerator LeverProcess()
     {
         _lever.transform.localRotation = Quaternion.Euler(60f, 0, 0);
