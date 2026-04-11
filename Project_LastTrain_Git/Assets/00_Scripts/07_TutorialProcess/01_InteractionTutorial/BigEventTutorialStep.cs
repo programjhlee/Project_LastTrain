@@ -37,7 +37,7 @@ public class BigEventTutorialStep : TutorialStep
                 yield return new WaitForSeconds(2f);
                 _bigEvent = _bigEventSystem.SpawnBigEvent();
                 _bigEvent.Damage = 0;
-                _bigEvent.OnDestroy += _onCrashed;
+                _bigEvent.OnBlocked += _onCrashed;
             }
             yield return null;
         }

@@ -136,6 +136,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (int.Parse(_enemyLevelTable[j]["LEVEL"].ToString()) == LevelManager.Instance.Level)
                 {
+                    Debug.Log(LevelManager.Instance.Level);
                     _enemyDataDics[_enemyID[i]].maxHp *= float.Parse(_enemyLevelTable[j]["HP"].ToString());
                     _enemyDataDics[_enemyID[i]].moveSpeed *= float.Parse(_enemyLevelTable[j]["MOVESPEED"].ToString());
                     _enemyDataDics[_enemyID[i]].chaseSpeed *= float.Parse(_enemyLevelTable[j]["CHASESPEED"].ToString());
@@ -143,6 +144,22 @@ public class EnemySpawner : MonoBehaviour
                     break;
                 }
             }
+        }
+    }
+
+    public void ResetEnemiesData()
+    {
+        for (int i = 0; i < _enemyInfoTable.Count; i++)
+        {
+            _enemyID[i] = int.Parse(_enemyInfoTable[i]["ENEMYID"].ToString());
+            _enemyDataSOList[i].enemyID = _enemyID[i];
+            _enemyDataSOList[i].maxHp = float.Parse((_enemyInfoTable[i]["HP"].ToString()));
+            _enemyDataSOList[i].moveSpeed = float.Parse((_enemyInfoTable[i]["MOVESPEED"].ToString()));
+            _enemyDataSOList[i].chaseSpeed = float.Parse((_enemyInfoTable[i]["CHASESPEED"].ToString()));
+            _enemyDataSOList[i].findDistance = float.Parse((_enemyInfoTable[i]["FINDDISTANCE"].ToString()));
+            _enemyDataSOList[i].attackDistance = float.Parse((_enemyInfoTable[i]["ATTACKSPEED"].ToString()));
+            _enemyDataSOList[i].prefabAddress = _enemyInfoTable[i]["ADDRESS"].ToString();
+            _enemyDataDics[_enemyID[i]] = _enemyDataSOList[i];
         }
     }
     public Enemy SpawnEnemy()

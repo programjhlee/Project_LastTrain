@@ -49,6 +49,7 @@ public class GameScene : MonoBehaviour
         _train.ResetTrain();
         _player.ResetPlayerData();
         _platformController.ResetPlatform();
+        _enemySpawner.ResetEnemiesData();
         _enemySpawner.SetEnemiesData();
     }
     public void SceneClear()

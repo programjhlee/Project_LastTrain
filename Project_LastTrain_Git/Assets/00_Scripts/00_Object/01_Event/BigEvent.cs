@@ -39,6 +39,7 @@ public class BigEvent : MonoBehaviour
 
     public event Action<float> OnTrainCrashed;
     public event Action OnDestroy;
+    public event Action OnBlocked;
     public void Init(float speed,Train train)
     {
         gameObject.SetActive(true);
@@ -61,6 +62,7 @@ public class BigEvent : MonoBehaviour
         OnDestroy?.Invoke();
         OnTrainCrashed = null;
         OnDestroy = null;
+        OnBlocked = null;
     }
 
     public void Update()
@@ -86,6 +88,7 @@ public class BigEvent : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Shield"))
         {
+            OnBlocked?.Invoke();
             Instantiate(_bigEventEffect, transform.position, Quaternion.identity);
             SoundManager.Instance.PlaySFX(_bigEventSoundEffect);
             gameObject.SetActive(false);

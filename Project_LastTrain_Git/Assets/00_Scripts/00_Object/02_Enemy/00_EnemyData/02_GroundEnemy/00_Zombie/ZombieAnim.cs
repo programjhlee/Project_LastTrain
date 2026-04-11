@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -34,6 +35,13 @@ public class ZombieAnim : MonoBehaviour
                 attackClipLength = clip.length;
             }
         }
+        Material[] mats = _zombieRends.materials;
+
+        for (int i = 0; i < mats.Length; i++)
+        {
+            mats[i].color = Color.white;
+        }
+
     }
 
     public void PlayZombieAttack()

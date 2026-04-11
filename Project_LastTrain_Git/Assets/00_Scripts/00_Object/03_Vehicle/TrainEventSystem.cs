@@ -45,7 +45,7 @@ public class TrainEventSystem : MonoBehaviour
             _eventDataList[i].EventName = _trainEventData[i]["EVENTNAME"].ToString();
             _eventDataList[i].CyclePerTime = float.Parse(_trainEventData[i]["CYCLEPERTIME"].ToString());
             _eventDataList[i].DamageToTrain = float.Parse(_trainEventData[i]["DAMAGETOTRAIN"].ToString());
-            _eventDataList[i].FixAmount = float.Parse(_trainEventData[i]["FIXAMOUNT"].ToString()) + (float.Parse(_trainEventData[i]["FIXAMOUNTPERLEVEL"].ToString()) * LevelManager.Instance.Level);
+            _eventDataList[i].FixAmount = float.Parse(_trainEventData[i]["FIXAMOUNT"].ToString());
             _eventDataDics[_eventDataList[i].EventID] = _eventDataList[i];
             eventID[i] = _eventDataList[i].EventID;
 
@@ -201,6 +201,20 @@ public class TrainEventSystem : MonoBehaviour
             {
                 _eventSpawnTime = float.Parse(_eventLevelSpawnTimeData[i]["EVENTINTERVAL"].ToString());
                 break;
+            }
+        }
+
+
+        for(int i = 0; i < _trainEventData.Count; i++)
+        {
+            for (int j = 0; j < eventID.Length; j++)
+            {
+                if (int.Parse(_trainEventData[i]["EVENTID"].ToString()) == eventID[j])
+                {
+                    Debug.Log(_trainEventData[i]["EVENTNAME"].ToString());
+                    _eventDataDics[eventID[j]].FixAmount = float.Parse(_trainEventData[i]["FIXAMOUNT"].ToString()) + (float.Parse(_trainEventData[i]["FIXAMOUNTPERLEVEL"].ToString()) * LevelManager.Instance.Level);
+                    Debug.Log(_eventDataDics[eventID[j]].FixAmount);
+                }
             }
         }
     }

@@ -37,7 +37,6 @@ public class Switch : MonoBehaviour, IInteractable
         _bodyRend.material.color = Color.white;
         _leverRend.material.color = Color.white;
         gameObject.layer = DEFAULT_RAY;
-        sheild.TurnOff();
     }
 
     public void Update()

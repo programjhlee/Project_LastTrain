@@ -18,8 +18,10 @@ public abstract class Enemy : MonoBehaviour
             enemyData.attackDistance = 1.5f;
             enemyData.findDistance = 5f;
             enemyData.attackSpeed = 0.25f;
+            return;
         }
         enemyData = enemydt;
+        Debug.Log(enemyData.maxHp);
     }
     public abstract void OnUpdate();
     public abstract void OnLateUpdate();

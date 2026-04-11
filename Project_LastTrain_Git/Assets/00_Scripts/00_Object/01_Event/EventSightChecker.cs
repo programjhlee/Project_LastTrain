@@ -57,7 +57,7 @@ public class EventSightChecker : MonoBehaviour
             }
             _ui_eventCautionRight.SetEventCount(_sightOutRightCnt);
         }
-        else if(_sightOutLeftCnt <= 0 || _sightOutRightCnt <= 0)
+        if(_sightOutLeftCnt <= 0 || _sightOutRightCnt <= 0)
         {
             if(_sightOutLeftCnt <= 0)
             {
@@ -130,14 +130,11 @@ public class EventSightChecker : MonoBehaviour
                     _sightOutRightCnt++;
                 }
             }
-            Debug.Log($"{curEvent} : WasLeft : {_wasOutLeftEvent[curEvent]}, WasRight {_wasOutRightEvent[curEvent]}");
         }
         else
         {
             bool curEventBoundLeft = CheckOutBound(leftBound, curEventCol);
             bool curEventBoundRight = CheckOutBound(rightBound, curEventCol);
-            Debug.Log($"{curEvent} : Left : {curEventBoundLeft}, Right {curEventBoundRight}");
-            Debug.Log($"{curEvent} : WasLeft : {_wasOutLeftEvent[curEvent]}, WasRight {_wasOutRightEvent[curEvent]}");
             if (_wasOutLeftEvent[curEvent] != curEventBoundLeft)
             {
                 if (_wasOutLeftEvent[curEvent])
@@ -154,12 +151,10 @@ public class EventSightChecker : MonoBehaviour
             {
                 if (_wasOutRightEvent[curEvent])
                 {
-                    Debug.Log("오른쪽 안으로 나갔다!");
                     _sightOutRightCnt--;
                 }
                 else
                 {
-                    Debug.Log("오른쪽 밖으로 나갔다!");
                     _sightOutRightCnt++;
                 }
                 _wasOutRightEvent[curEvent] = curEventBoundRight;

@@ -24,7 +24,7 @@ public class UI_Coin : UI_Base
         _uiRect.transform.DOKill();
         coinText.text = $" X {coin:D2}";
         _uiRect.DOAnchorPosY(10f, 0.02f).SetRelative().SetLoops(2, LoopType.Yoyo);
-        _uiRect.DOShakeScale(0.02f,0.2f);
+        _uiRect.DOShakeScale(0.02f,0.2f).OnComplete(()=> _uiRect.anchoredPosition = new Vector2(250,-150));
     }
 
 }
